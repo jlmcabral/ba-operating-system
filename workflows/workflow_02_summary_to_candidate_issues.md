@@ -50,6 +50,30 @@ When producing candidate issues, select the template as follows:
 
 ---
 
+## EPIC PROPOSAL LOGIC — For Request-based structure
+
+When proposing candidate issues under a **Request** (not an Epic), apply this logic:
+
+**Assess scope of the Request:**
+- Is the Request trying to accomplish a single, coherent outcome that can be addressed in one sprint or phase?
+- Or does it contain multiple distinct stages, phases, or streams of work that would benefit from grouping?
+
+**If scope is small/focused:**
+- Propose candidate **Tasks**, **Stories**, or **Bugs** directly under the Request
+- Do not create an Epic
+
+**If scope is large and naturally groups into stages/phases:**
+- Propose creating an **Epic** under the Request to group related work
+- Propose candidate **Tasks**, **Stories**, or **Bugs** under the Epic, organized by stage or theme
+- Example stages: "Phase 1: Data Setup", "Phase 2: User Interface", "Phase 3: Integration"
+
+**Do not propose:**
+- Linking candidate issues to external Epics outside the Request hierarchy
+- Creating Epics without clear stage/phase boundaries
+- Generic groupings that do not represent coherent, separable work
+
+---
+
 ## INPUT
 
 I will provide you with a structured meeting summary produced by Workflow 01. It is already cleaned and organised — do not re-summarise it. Use it as your source of truth for what was discussed and why.

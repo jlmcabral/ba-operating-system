@@ -72,7 +72,7 @@ Depending on the declared mode:
 
 - **idea:** Extract the core need from what I described. Identify who is affected, what problem they have, and what outcome they are looking for. If the input sounds like a proposed solution rather than a problem, flag it immediately before proceeding.
 - **draft:** Read the draft carefully. Identify what is already well-formed, what is missing, what is a solution disguised as a requirement, and what does not comply with the templates.
-- **jira:** Fetch the issue using the provided key via the Atlassian MCP server. Treat it the same as a draft from that point forward.
+- **jira:** Fetch the issue using the provided key via the Atlassian MCP server. The issue is already positioned in the correct location in the hierarchy (Request, Epic, or standalone). Do not infer or propose epic/parent links — treat the issue as a standalone work item to be refined. Treat it the same as a draft from that point forward.
 
 If the issue type is not declared, infer it using these rules:
 
