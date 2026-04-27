@@ -122,15 +122,16 @@ Triggers when:
 
 ### 📋 Completeness
 
-Required fields are empty, contain placeholders, or have unresolved `[INFERRED]` labels that have not been confirmed.
+Required fields are empty, contain placeholders, or have unresolved `[INFERRED]` labels that have not been confirmed. **Note:** The technical approach is expected to be sparse or empty at this stage — the development team will define it during refinement and sprint planning. Do not flag incomplete technical approach as a readiness issue.
 
 **Critical blocker:** Yes if required fields are missing. ⚠️ Needs Minor Work if fields are present but thin.
 
 Triggers when:
 
-- Any required template field is empty or contains a placeholder
+- Any required template field (problem statement, acceptance criteria, context) is empty or contains a placeholder
 - `[INFERRED]` labels are present and unconfirmed
 - The description lacks enough context for engineering to understand the need
+- Technical approach is sparse or absent — this is **not** a trigger; it is expected
 
 ---
 
@@ -153,43 +154,38 @@ Triggers when:
 
 Produce a table with one row per issue assessed. Columns:
 
-| Issue Key | Title   | Type               | Readiness    | Failure categories                                    |
-| --------- | ------- | ------------------ | ------------ | ----------------------------------------------------- |
-| [key]     | [title] | Story / Task / Bug | ✅ / ⚠️ / ❌ | [list applicable category icons and names, or "None"] |
+| Issue Key                               | Title   | Type               | Readiness    | Failure categories                                    |
+| --------------------------------------- | ------- | ------------------ | ------------ | ----------------------------------------------------- |
+| [[key](https://jira.int.kn/browse/KEY)] | [title] | Story / Task / Bug | ✅ / ⚠️ / ❌ | [list applicable category icons and names, or "None"] |
 
 Sort the table: Ready first, then Needs Minor Work, then Not Ready.
 
-After the table, provide:
+---
 
-- Total issues assessed and breakdown by readiness tier
-- Failure category frequency: which categories appear most often across the batch — this is where systemic patterns surface
-- One honest sentence on the overall health of the batch
+### Output 2 — Detailed assessment (issues not ready only)
+
+**For each issue marked ⚠️ or ❌ only,** produce a detailed assessment using the following structure. **Do not include detailed assessments for ✅ Ready issues.**
 
 ---
 
-### Output 2 — Detail per issue
-
-For each issue, produce a detailed assessment using the following structure:
-
----
-
-**[ISSUE KEY] — [Title]**
+**[[ISSUE KEY](https://jira.int.kn/browse/ISSUE-KEY)] — [Title]**
 **Type:** Story / Task / Bug
-**Readiness:** ✅ Ready / ⚠️ Needs Minor Work / ❌ Not Ready
+**Readiness:** ⚠️ Needs Minor Work / ❌ Not Ready
+**Reporter:** [reporter name]
 
 **Check results:**
 
-| Category           | Result                             | Finding                                                    |
-| ------------------ | ---------------------------------- | ---------------------------------------------------------- |
-| 🎯 Problem framing | ✅ Pass / ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
-| 📐 Scope           | ✅ Pass / ⚠️ Flag / ❌ Fail        | [brief finding]                                            |
-| ✅ AC — quality    | ✅ Pass / ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
-| 🖥️ AC — UI/UX trap | ✅ Pass / ⚠️ Design debt / ❌ Fail | [brief finding]                                            |
-| 📋 Completeness    | ✅ Pass / ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
-| 👤 Persona gap     | ✅ / ⚠️ Note                       | [brief finding — observational only, does not affect tier] |
+| Category           | Result                   | Finding                                                    |
+| ------------------ | ------------------------ | ---------------------------------------------------------- |
+| 🎯 Problem framing | ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
+| 📐 Scope           | ⚠️ Flag / ❌ Fail        | [brief finding]                                            |
+| ✅ AC — quality    | ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
+| 🖥️ AC — UI/UX trap | ⚠️ Design debt / ❌ Fail | [brief finding]                                            |
+| 📋 Completeness    | ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
+| 👤 Persona gap     | ⚠️ Note                  | [brief finding — observational only, does not affect tier] |
 
 **What needs to change before refinement:**
-A numbered list of specific, actionable items — one per failing or weak check, excluding persona gap. Each item must say exactly what needs to be fixed, not just that something is wrong. If the issue is Ready, write "None — this issue is ready to present."
+A numbered list of specific, actionable items — one per failing or weak check, excluding persona gap.
 
 ---
 
