@@ -63,6 +63,8 @@ Failure categories answer a different question: what type of problem does this i
 
 There are six categories. Five are active quality signals. One is observational only.
 
+**Note on issue type applicability:** Not all categories apply to all issue types. See the table at the end of this section.
+
 ---
 
 ### 🎯 Problem framing
@@ -70,6 +72,10 @@ There are six categories. Five are active quality signals. One is observational 
 The most critical category. The issue is solution-framed, the user need is unclear, or the problem statement is missing entirely. Everything else in the issue depends on this being right.
 
 **Critical blocker:** Yes — automatically sets the issue to ❌ Not Ready.
+
+**Applies to:** Stories, Bugs (all user-facing issue types)
+
+**Does not apply to:** Tasks (technical work is not grounded in user needs; scope and completion criteria are the primary signals)
 
 Triggers when:
 
@@ -81,15 +87,17 @@ Triggers when:
 
 ### 📐 Scope
 
-The issue covers more than one distinct user need or outcome. A refinement session on an oversized issue goes in circles because the team cannot agree on boundaries.
+The issue covers more than one distinct outcome or concern. For Stories, this means two clearly distinct user needs or outcomes. For Tasks, this means work that could reasonably be split into separate, independently deliverable pieces.
 
 **Critical blocker:** Yes — automatically sets the issue to ❌ Not Ready.
 
+**Applies to:** Stories, Tasks, Bugs
+
 Triggers when:
 
-- Two clearly distinct user outcomes are present in one issue
-- Acceptance criteria scenarios cover fundamentally different user journeys or contexts
-- Splitting the issue would produce two independently deliverable and testable stories
+- (Stories, Bugs) Two clearly distinct user outcomes are present in one issue
+- (Stories, Bugs) Acceptance criteria scenarios cover fundamentally different user journeys or contexts
+- (All types) Splitting the issue would produce two independently deliverable and testable units
 
 ---
 
@@ -141,6 +149,10 @@ The affected user is generic or unstated. In this context, this is a low-signal 
 
 **Critical blocker:** No — this category never affects the readiness tier. It is recorded for visibility only and will be reassessed after real usage to determine whether it continues to provide value.
 
+**Applies to:** Stories, Bugs
+
+**Does not apply to:** Tasks
+
 Triggers when:
 
 - The persona is entirely absent
@@ -148,7 +160,26 @@ Triggers when:
 
 ---
 
+## CATEGORY APPLICABILITY BY ISSUE TYPE
+
+| Category | Story | Task | Bug |
+|----------|-------|------|-----|
+| 🎯 Problem framing | ✅ Applies | ❌ N/A | ✅ Applies |
+| 📐 Scope | ✅ Applies | ✅ Applies | ✅ Applies |
+| ✅ AC — quality | ✅ Applies | ✅ Applies | ✅ Applies |
+| 🖥️ AC — UI/UX trap | ✅ Applies | ❌ N/A (tasks are technical) | ✅ Applies |
+| 📋 Completeness | ✅ Applies | ✅ Applies | ✅ Applies |
+| 👤 Persona gap | ✅ Observational | ❌ N/A | ✅ Observational |
+
+**Assessment rule:** When an issue type does not apply to a category, do not flag that category. For Tasks, skip Problem framing and Persona gap checks entirely. For Tasks, do not flag the UI/UX trap category — technical work is not expected to include UI/UX considerations.
+
+---
+
 ## YOUR TASK
+
+### Step 1 — Determine issue type
+
+For each issue, identify its type: Story, Task, or Bug. Use this to apply only the applicable failure categories.
 
 ### Output 1 — Summary table
 
@@ -160,11 +191,17 @@ Produce a table with one row per issue assessed. Columns:
 
 Sort the table: Ready first, then Needs Minor Work, then Not Ready.
 
+**Type-specific guidance:**
+- For **Stories and Bugs:** Check all six categories (with persona gap as observational).
+- For **Tasks:** Check only Scope, AC — quality, and Completeness. Omit Problem framing, UI/UX trap, and Persona gap.
+
 ---
 
 ### Output 2 — Detailed assessment (issues not ready only)
 
 **For each issue marked ⚠️ or ❌ only,** produce a detailed assessment using the following structure. **Do not include detailed assessments for ✅ Ready issues.**
+
+Only include rows in the results table for categories that apply to the issue type.
 
 ---
 
@@ -177,12 +214,7 @@ Sort the table: Ready first, then Needs Minor Work, then Not Ready.
 
 | Category           | Result                   | Finding                                                    |
 | ------------------ | ------------------------ | ---------------------------------------------------------- |
-| 🎯 Problem framing | ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
-| 📐 Scope           | ⚠️ Flag / ❌ Fail        | [brief finding]                                            |
-| ✅ AC — quality    | ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
-| 🖥️ AC — UI/UX trap | ⚠️ Design debt / ❌ Fail | [brief finding]                                            |
-| 📋 Completeness    | ⚠️ Weak / ❌ Fail        | [brief finding]                                            |
-| 👤 Persona gap     | ⚠️ Note                  | [brief finding — observational only, does not affect tier] |
+| [applicable categories only] | ⚠️ / ❌ | [brief finding]                                            |
 
 **What needs to change before refinement:**
 A numbered list of specific, actionable items — one per failing or weak check, excluding persona gap.
