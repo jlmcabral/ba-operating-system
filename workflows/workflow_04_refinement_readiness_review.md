@@ -61,7 +61,7 @@ One or more critical blockers are present. Presenting this issue in refinement w
 
 Failure categories answer a different question: what type of problem does this issue have? They are independent of the readiness tier — an issue can have multiple categories flagged, and the combination determines the tier.
 
-There are six categories. Five are active quality signals. One is observational only.
+There are five categories.
 
 **Note on issue type applicability:** Not all categories apply to all issue types. See the table at the end of this section.
 
@@ -143,33 +143,15 @@ Triggers when:
 
 ---
 
-### 👤 Persona gap _(observational only)_
-
-The affected user is generic or unstated. In this context, this is a low-signal check because the application has a limited, well-known user base and engineering already knows who they are building for.
-
-**Critical blocker:** No — this category never affects the readiness tier. It is recorded for visibility only and will be reassessed after real usage to determine whether it continues to provide value.
-
-**Applies to:** Stories, Bugs
-
-**Does not apply to:** Tasks
-
-Triggers when:
-
-- The persona is entirely absent
-- The story uses a completely generic label with no contextual qualifier
-
----
-
 ## CATEGORY APPLICABILITY BY ISSUE TYPE
 
-| Category | Story | Task | Bug |
-|----------|-------|------|-----|
-| 🎯 Problem framing | ✅ Applies | ❌ N/A | ✅ Applies |
-| 📐 Scope | ✅ Applies | ✅ Applies | ✅ Applies |
-| ✅ AC — quality | ✅ Applies | ✅ Applies | ✅ Applies |
+| Category           | Story      | Task                         | Bug        |
+| ------------------ | ---------- | ---------------------------- | ---------- |
+| 🎯 Problem framing | ✅ Applies | ❌ N/A                       | ✅ Applies |
+| 📐 Scope           | ✅ Applies | ✅ Applies                   | ✅ Applies |
+| ✅ AC — quality    | ✅ Applies | ✅ Applies                   | ✅ Applies |
 | 🖥️ AC — UI/UX trap | ✅ Applies | ❌ N/A (tasks are technical) | ✅ Applies |
-| 📋 Completeness | ✅ Applies | ✅ Applies | ✅ Applies |
-| 👤 Persona gap | ✅ Observational | ❌ N/A | ✅ Observational |
+| 📋 Completeness    | ✅ Applies | ✅ Applies                   | ✅ Applies |
 
 **Assessment rule:** When an issue type does not apply to a category, do not flag that category. For Tasks, skip Problem framing and Persona gap checks entirely. For Tasks, do not flag the UI/UX trap category — technical work is not expected to include UI/UX considerations.
 
@@ -192,6 +174,7 @@ Produce a table with one row per issue assessed. Columns:
 Sort the table: Ready first, then Needs Minor Work, then Not Ready.
 
 **Type-specific guidance:**
+
 - For **Stories and Bugs:** Check all six categories (with persona gap as observational).
 - For **Tasks:** Check only Scope, AC — quality, and Completeness. Omit Problem framing, UI/UX trap, and Persona gap.
 
@@ -212,9 +195,9 @@ Only include rows in the results table for categories that apply to the issue ty
 
 **Check results:**
 
-| Category           | Result                   | Finding                                                    |
-| ------------------ | ------------------------ | ---------------------------------------------------------- |
-| [applicable categories only] | ⚠️ / ❌ | [brief finding]                                            |
+| Category                     | Result  | Finding         |
+| ---------------------------- | ------- | --------------- |
+| [applicable categories only] | ⚠️ / ❌ | [brief finding] |
 
 **What needs to change before refinement:**
 A numbered list of specific, actionable items — one per failing or weak check, excluding persona gap.
