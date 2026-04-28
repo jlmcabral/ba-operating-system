@@ -58,7 +58,7 @@ Declare which mode you are running before providing input:
 
 - Application context: [NAME OF APPLICATION / PRODUCT]
 - Stakeholder role(s) or user affected: [WHO THIS IS FOR]
-- Issue type (if known): [STORY / TASK / BUG — leave blank if unsure]
+- Issue type (if known): [STORY / TASK / BUG / REQUEST — leave blank if unsure]
 
 [PASTE YOUR IDEA, DRAFT, OR JIRA ISSUE KEY HERE]
 
@@ -100,20 +100,22 @@ As a [specific user], I want [what], so that [why — outcome, not feature].
 **Acceptance criteria**
 Written in Gherkin syntax. Enforce the following formatting rules strictly — no exceptions:
 
-- Each scenario begins with `Scenario:` followed by a short descriptive title
+- Each scenario begins with `Scenario #:` followed by a short descriptive title
+- Each scenario is numbered and follow a sequential order
 - Each step keyword (**Given**, **When**, **Then**, **And**) is on its own line
-- Step keywords are in **bold**
+- Step keywords are in **bold** (expect for **And** step)
 - The rest of the sentence is not bold
 - There is one blank line between scenarios
 
 Example of correct formatting:
 
-Scenario: User filters results by date range
+Scenario 1: User filters results by date range
 
 **Given** the user is on the search results page
+And has all the UI has loaded
 **When** they select a start date and an end date
 **Then** only results within that date range are displayed
-**And** the filter selection is visually indicated
+And the filter selection is visually indicated
 
 **Confidence level**
 High / Medium / Low — how well-grounded is this issue in an actual user problem vs. a stakeholder feature preference or internal assumption?
@@ -184,11 +186,31 @@ Apply this check strictly. The absence of a Figma file is not a reason to descri
 
 ---
 
+**Acceptance criteria — test case drift check**
+Acceptance criteria define the _behaviour pattern_. Test cases verify the _exhaustive permutations_. When criteria start enumerating every column, every field type, every edge case, or every data combination, they have drifted from "what the system does" into "how QA verifies it."
+
+For every criterion, ask: does this describe a pattern that applies generally, or is it one instance of a verification matrix?
+
+Signals of drift:
+
+- Multiple scenarios that differ only by which column, field, or entity they reference
+- Criteria specifying data-type-specific behaviour that follows standard conventions (alphabetical, chronological, numerical)
+- Scenarios that read like a test matrix row rather than a user outcome
+
+For every criterion that has drifted:
+
+1. Flag it with:
+   > 🧪 **Test case drift.** This criterion belongs in a test plan, not acceptance criteria. The underlying behaviour pattern is: [generalised version].
+2. Replace it with the generalised behaviour pattern, and note that the data-type-specific details are derivable by QA.
+
+---
+
 **Acceptance criteria — quality and format check**
 Verify that every acceptance criterion is:
 
 - Testable — can a tester verify it as pass/fail without ambiguity?
 - Outcome-focused — does it describe what should be true, not how it should be built? (see UI/UX trap check above)
+- Not drifting into test case territory (see test case drift check above)
 - Correctly formatted in Gherkin syntax as specified in Step 2
 
 Flag any criterion that fails and suggest a corrected version.

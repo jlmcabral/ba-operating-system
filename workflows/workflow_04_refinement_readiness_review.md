@@ -103,7 +103,7 @@ Triggers when:
 
 ### ✅ Acceptance criteria — quality
 
-Criteria are untestable, ambiguous, or missing important scenarios that a tester would need to verify the story is done.
+Criteria are untestable, ambiguous, drifting into test case territory, or missing important scenarios that a tester would need to verify the story is done.
 
 **Critical blocker:** Yes if the majority of criteria fail. ⚠️ Needs Minor Work if one or two criteria are weak but the rest are solid.
 
@@ -112,6 +112,7 @@ Triggers when:
 - A criterion cannot be verified as pass/fail
 - A criterion is so vague it could be interpreted multiple ways
 - Key scenarios are missing that any reasonable tester would expect
+- 🧪 Criteria enumerate permutations (every column, every data type, every field) instead of describing the behaviour pattern once — this is test case drift and belongs in a test plan, not acceptance criteria
 
 ---
 
