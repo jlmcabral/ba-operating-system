@@ -1,3 +1,8 @@
+---
+name: orchestrate-assess-refinement
+description: Assess all issues from configured columns for refinement readiness in batch. Use when user says /assess-refinement or wants a pre-refinement health check.
+---
+
 # Orchestrator: Assess Refinement Readiness
 
 **Purpose:** Assess all issues from configured Jira project columns for refinement readiness. Produces a summary table of all issues and detailed breakdowns for those that are not ready.
@@ -43,7 +48,7 @@ OUTPUT: Summary table + detailed breakdowns for failures
 ## Detailed Steps
 
 ### Step 1 — Fetch all eligible issues
-**Read:** `skills/fetch-issues-by-status.md`
+**Read:** `skills/fetch-issues-by-status/SKILL.md`
 
 Fetch all issues from the projects and statuses configured in `config/project.md`. This uses the default refinement assessment columns.
 
@@ -52,7 +57,7 @@ Carry forward: **issues** (list of all fetched issues), **fetch_summary**.
 If no issues are found, report this and stop.
 
 ### Step 2 — Classify all issues first (Parallel)
-**Read:** `skills/analyze-input-type.md`
+**Read:** `skills/analyze-input-type/SKILL.md`
 
 Before fetching any templates, determine the issue type for every fetched issue. **Launch all classifications in parallel as background agents:**
 
@@ -75,7 +80,7 @@ Merge all returned issue types into **issue_types** map (issue key → determine
 Carry forward: **issue_types** (map of issue key → determined type).
 
 ### Step 3 — Fetch templates (deduplicated)
-**Read:** `skills/fetch-required-templates.md`
+**Read:** `skills/fetch-required-templates/SKILL.md`
 
 **Token optimisation:** Identify the unique issue types present in the batch. Fetch each template **once** — not once per issue.
 
@@ -96,7 +101,7 @@ Launch background agent with:
   - mode: "background"
   - prompt: [
       Include:
-      - skills/normalize-issue-context.md
+      - skills/normalize-issue-context/SKILL.md
       - applicable validation skills (based on issue_type from Step 2)
       - issue_content
       - canonical issue schema
@@ -107,20 +112,7 @@ Launch background agent with:
   - Record the agent_id returned
 ```
 
-**Validation logic per issue type (same as `/craft`):**
-
-**For Stories and Bugs (6 validators):**
-- `skills/validate-problem-framing.md`
-- `skills/validate-scope.md`
-- `skills/validate-ac-quality.md`
-- `skills/validate-ac-uiux-trap.md`
-- `skills/validate-completeness.md`
-- `skills/validate-persona.md`
-
-**For Tasks (3 validators):**
-- `skills/validate-scope.md`
-- `skills/validate-ac-quality.md`
-- `skills/validate-completeness.md`
+**Validation logic per issue type:** See [`orchestrators/REFERENCE-validation-dispatch.md`](REFERENCE-validation-dispatch.md) for the applicable validators table and dispatch pattern.
 
 **Wait for all issue agents to complete:**
 
@@ -133,7 +125,7 @@ Merge all returned validation_findings into a single **assessments** list (map o
 Carry forward: **assessments** (list of issue key + validation findings for all issues).
 
 ### Step 5 — Format the batch report
-**Read:** `skills/format-readiness-report.md`
+**Read:** `skills/format-readiness-report/SKILL.md`
 
 Generate the readiness report in **batch mode**:
 

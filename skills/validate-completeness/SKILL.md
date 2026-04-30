@@ -1,3 +1,8 @@
+---
+name: validate-completeness
+description: Check all required fields are populated with no unresolved placeholders or inferences. Use when validating any issue type during craft or assess flows.
+---
+
 # Skill: Validate Completeness
 
 **Purpose:** Check whether all required fields are populated, whether any contain placeholders or unresolved inferences, and whether there is enough context for engineering to understand the need.
@@ -27,7 +32,9 @@
 
 ## Instructions
 
-1. Compare the canonical issue against the template structure to identify:
+1. **Completeness check (deterministic):** Run `scripts/check-completeness.js` (co-located in this skill's directory) with the canonical_issue and issue_type as JSON input. The script will identify missing, inferred, and placeholder fields without ambiguity. Adopt its output directly.
+
+2. For fields the script identifies, produce findings as described below. Additionally, apply judgment for:
 
    **Empty required fields:** Any field that the template marks as required but is empty or contains only a placeholder (e.g., "[TBD]", "[TODO]", "...").
 

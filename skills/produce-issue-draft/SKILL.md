@@ -1,3 +1,8 @@
+---
+name: produce-issue-draft
+description: Write a complete issue draft from enriched canonical issue and template structure. Use when all clarification is complete and the draft should be authored.
+---
+
 # Skill: Produce Issue Draft
 
 **Purpose:** Using the enriched canonical issue and the fetched template structure, produce a complete issue draft with all required fields populated. This is the main authoring step — the output should look like the final version.

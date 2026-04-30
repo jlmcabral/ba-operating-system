@@ -21,6 +21,25 @@ A skill is a **single, focused decision point or transformation**. It takes inpu
 
 **Principle:** A skill should be small enough that a BA can read it in <5 minutes.
 
+### Routing Metadata (Frontmatter)
+
+Every skill and orchestrator begins with YAML frontmatter:
+
+```yaml
+---
+name: skill-name
+description: Brief description of capability. Use when [specific triggers].
+---
+```
+
+**Why:** The description is the only thing the agent sees when deciding which skill is relevant. Explicit "Use when..." triggers prevent skill thrashing (agent loads wrong skill, wastes tokens, backs out). This is a routing optimisation.
+
+**Rules:**
+- Max 1024 characters
+- First sentence: what it does
+- Second sentence: "Use when [specific triggers]"
+- Include keywords the user might say
+
 ### Skill Naming Convention
 
 | Purpose | Pattern | Example |
@@ -157,9 +176,66 @@ The bad example is vague. Downstream skills won't know what to expect.
 | Size | What to Do |
 |------|-----------|
 | <50 lines | Good. Ship it. ✅ |
-| 50-150 lines | OK. Consider splitting if there are two distinct jobs. ⚠️ |
-| 150-300 lines | Large. Probably should be two skills. ⚠️ |
-| >300 lines | Too large. Definitely split. ❌ |
+| 50-100 lines | OK. Consider splitting if there are two distinct jobs. ⚠️ |
+| >100 lines | Split into main skill + REFERENCE file. The main skill stays lean; advanced content loads on demand. ❌ |
+
+### Progressive Disclosure
+
+When a skill or config file exceeds 100 lines, apply progressive disclosure:
+
+1. Keep the **frequently-referenced core** in the main skill file
+2. Move **detailed examples, formatting rules, and edge cases** to a `REFERENCE.md` file inside the skill's directory
+3. The main file links to the reference: "See [REFERENCE.md](REFERENCE.md) for examples"
+
+```
+skills/
+└── validate-ac-quality/
+    ├── validate-ac-quality.md   # Lean core (<100 lines)
+    ├── REFERENCE.md             # Detailed examples, loaded on demand
+    └── scripts/
+        └── validate-gherkin.js
+```
+
+**Why:** Smaller files mean fewer tokens loaded into context on every run. Most invocations only need the quick rules — detailed examples are loaded only when the skill specifically needs them.
+
+### Deterministic Scripts
+
+When a skill includes logic that doesn't require LLM judgment, extract it into a co-located script:
+
+```
+skills/
+└── validate-ac-quality/
+    ├── validate-ac-quality.md   # Main skill (references script)
+    └── scripts/
+        └── validate-gherkin.js  # Deterministic format check
+```
+
+Every skill is a directory — even those without scripts. This keeps the structure consistent:
+
+```
+skills/
+├── analyze-input-type/
+│   └── analyze-input-type.md
+├── validate-ac-quality/
+│   ├── validate-ac-quality.md
+│   └── scripts/
+│       └── validate-gherkin.js
+└── validate-completeness/
+    ├── validate-completeness.md
+    └── scripts/
+        └── check-completeness.js
+```
+
+| Use scripts for | Keep in LLM skills |
+|-----------------|-------------------|
+| Format validation (Gherkin structure) | Semantic quality (testability, coherence) |
+| Field presence checks (missing/placeholder) | Context-dependent completeness |
+| Schema compliance | Judgment about sufficiency |
+| Consistent transformations | Creative rewriting |
+
+**Why:** Scripts save tokens (no re-interpreting rules), improve reliability (same input → same output), and are faster. The skill calls the script first, then applies LLM judgment only to ambiguous cases.
+
+**Co-location rule:** Scripts live inside the skill's directory, not in a global `scripts/` folder. This keeps each skill self-contained — everything it needs is in one place.
 
 ---
 
@@ -241,7 +317,7 @@ Every orchestrator file has this structure:
 ## Detailed Steps
 
 ### Step X — [What this does]
-**Read:** `skills/skill-name.md`
+**Read:** `skills/skill-name/SKILL.md`
 
 [Instructions and decision logic]
 
@@ -293,6 +369,22 @@ Step 6: ...
 1. **Parallel tasks must be independent** — They can't depend on each other's output.
 2. **Document the dispatch** — Show how to launch background agents (see `orchestrate-craft.md` Step 6 for example).
 3. **Document the merge** — Show how to combine results after all agents complete.
+
+### Shared Reference Files (DRY Dispatch)
+
+When multiple orchestrators share the same logic pattern, extract it into a `REFERENCE-*.md` file:
+
+```
+orchestrators/
+├─ orchestrate-craft.md              # References dispatch pattern
+├─ orchestrate-assess-single.md      # References dispatch pattern
+├─ orchestrate-assess-refinement.md  # References dispatch pattern
+└─ REFERENCE-validation-dispatch.md  # Defines the pattern once
+```
+
+**Why:** Changes to dispatch logic (adding a new validator, changing the combine format) happen in one place. Orchestrators stay focused on their unique flow rather than repeating boilerplate.
+
+**When to extract:** If the same logic block appears in 2+ orchestrators with only minor variations, extract it.
 
 ---
 
@@ -378,12 +470,14 @@ Is it >25 steps?
 
 ## Checklist: Adding a New Skill
 
+- [ ] Skill has YAML frontmatter with `name` and `description` (includes "Use when..." trigger)
 - [ ] Skill does **one thing** (test: can you explain it in one sentence?)
 - [ ] Skill name follows naming convention (fetch-, validate-, analyze-, produce-, etc.)
 - [ ] Skill file includes: Purpose, Input, Output, Applicability, Instructions
 - [ ] Input/output contracts are **precise** (not vague)
 - [ ] Skill references applicable `config/` files
-- [ ] Skill is <150 lines (if not, consider splitting)
+- [ ] Skill is <100 lines (if not, split into main + REFERENCE file)
+- [ ] Deterministic logic extracted to `scripts/` where applicable
 - [ ] At least one orchestrator calls this skill
 - [ ] Orchestrator updated to carry state forward
 
@@ -391,12 +485,14 @@ Is it >25 steps?
 
 ## Checklist: Adding a New Orchestrator
 
+- [ ] Orchestrator has YAML frontmatter with `name` and `description` (includes "Use when..." trigger)
 - [ ] Orchestrator solves a clear user problem (one entry point, one workflow)
 - [ ] Orchestrator name follows convention (orchestrate-{domain} or orchestrate-{verb})
 - [ ] Entry point defined in `entry-points.md`
 - [ ] Flow diagram shows all steps, pause points, and parallelization
 - [ ] Each step references a skill file
 - [ ] State is carried forward explicitly ("Carry forward: X, Y")
+- [ ] Shared patterns reference REFERENCE files (don't duplicate dispatch logic)
 - [ ] Parallel steps are documented with dispatch and merge instructions
 - [ ] Orchestrator is <50 steps (if more, consider splitting)
 

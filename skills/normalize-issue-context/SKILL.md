@@ -1,3 +1,8 @@
+---
+name: normalize-issue-context
+description: Transform raw input (idea, draft, or Jira issue) into a canonical schema for downstream skills. Use when preparing input for validation or drafting.
+---
+
 # Skill: Normalise Issue Context
 
 **Purpose:** Transform raw input — whether it is a loose idea, a pasted draft, or a fetched Jira issue — into a canonical schema that all downstream skills can consume consistently.

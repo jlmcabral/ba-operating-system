@@ -1,3 +1,8 @@
+---
+name: generate-follow-up-questions
+description: Produce targeted follow-up questions from unresolved validation findings. Use when validation has gaps that require user input to resolve.
+---
+
 # Skill: Generate Follow-up Questions
 
 **Purpose:** Based on validation findings and unresolved gaps, produce a targeted list of follow-up questions that would bring the issue closer to refinement-ready quality.

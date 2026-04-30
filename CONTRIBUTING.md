@@ -6,9 +6,18 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
 
 ## Adding a new skill
 
-1. **Create the file:** Add a new `.md` file in the `skills/` directory. Use kebab-case naming (e.g., `validate-new-check.md`).
+1. **Create the file:** Add a new directory in `skills/` with a `SKILL.md` file inside. Use kebab-case naming for the directory (e.g., `skills/validate-new-check/SKILL.md`).
 
-2. **Follow the structure:** Every skill must have these sections:
+2. **Add YAML frontmatter:** Every skill must begin with:
+   ```yaml
+   ---
+   name: skill-name
+   description: Brief description of capability. Use when [specific triggers].
+   ---
+   ```
+   The `description` must clearly state what the skill does (first sentence) and when to use it (second sentence with "Use when..."). Max 1024 characters.
+
+3. **Follow the structure:** Every skill must have these sections:
    - **Purpose** — One sentence: what does this skill do?
    - **Config references** — Which config files does it read?
    - **Input** — What does it need to receive?
@@ -18,11 +27,23 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
    For validation skills, also include:
    - **Applicability** — Which issue types does this check apply to?
 
-3. **Update the inventory:** Add your skill to the table in `skills/README.md`.
+4. **Consider scripts for deterministic logic:** If the skill includes checks that don't require LLM judgment (format validation, field presence checks), add a co-located `scripts/` directory inside the skill:
+   ```
+   skills/
+   └── my-skill/
+       ├── SKILL.md
+       └── scripts/
+           └── validator.js
+   ```
+   Skills should call the script first, then apply LLM judgment only to ambiguous cases.
 
-4. **Reference it in orchestrators:** If an existing orchestrator should use this skill, add it to the orchestrator's flow.
+5. **Keep it under 100 lines:** If a skill exceeds 100 lines, split reference material into a `REFERENCE.md` file alongside it. The main skill stays lean; advanced content is loaded on demand.
 
-5. **Update architecture:** If the skill introduces a new category, update `ARCHITECTURE.md`.
+6. **Update the inventory:** Add your skill to the table in `skills/README.md`.
+
+7. **Reference it in orchestrators:** If an existing orchestrator should use this skill, add it to the orchestrator's flow.
+
+8. **Update architecture:** If the skill introduces a new category, update `ARCHITECTURE.md`.
 
 ---
 
@@ -30,13 +51,17 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
 
 1. **Create the file:** Add a new `.md` file in `orchestrators/`.
 
-2. **Define the flow:** List which skills run, in what order, with what state passes between them.
+2. **Add YAML frontmatter:** Same format as skills — `name` and `description` with "Use when..." trigger.
 
-3. **Mark pause points:** If the orchestrator needs user input mid-flow, mark it with ⏸️.
+3. **Define the flow:** List which skills run, in what order, with what state passes between them.
 
-4. **Add an entry point:** Create a command for it in `entry-points.md`.
+4. **Use shared references:** For validation dispatch, reference `orchestrators/REFERENCE-validation-dispatch.md` instead of repeating the pattern inline.
 
-5. **Update READMEs:** Add it to `orchestrators/README.md` and `ARCHITECTURE.md`.
+5. **Mark pause points:** If the orchestrator needs user input mid-flow, mark it with ⏸️.
+
+6. **Add an entry point:** Create a command for it in `entry-points.md`.
+
+7. **Update READMEs:** Add it to `orchestrators/README.md` and `ARCHITECTURE.md`.
 
 ---
 
@@ -44,10 +69,13 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
 
 Quality rules live in `config/quality-standards.md`. This is the **single source of truth** — do not duplicate these rules in skill files.
 
+Detailed examples and formatting references live in `skills/validate-ac-quality/REFERENCE.md` — co-located with the skill that uses them.
+
 When you update a standard:
 - The change automatically applies to all skills that reference it
 - No skill files need to be edited
 - Consider whether the change affects the readiness assessment (if so, verify with `/assess-refinement`)
+- If adding examples or detailed formatting rules, put them in the REFERENCE file, not the main standards file
 
 ---
 

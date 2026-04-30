@@ -1,3 +1,8 @@
+---
+name: ask-clarification-questions
+description: Ask targeted questions to fill gaps in a canonical issue before drafting. Use when the canonical issue has [MISSING] fields or vague problem/scope definitions.
+---
+
 # Skill: Ask Clarification Questions
 
 **Purpose:** Before producing a draft, ask the user targeted questions to build a shared understanding of the problem and scope. This reduces assumptions, avoids wasteful draft-then-question cycles, and saves tokens.

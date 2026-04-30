@@ -120,16 +120,16 @@ Skills instruct the AI to fetch data; the AI handles the actual MCP communicatio
 Here is what happens when you type `/craft BAIKAL-1234`:
 
 1. The entry point triggers `orchestrate-craft`
-2. The orchestrator reads `skills/fetch-issue-by-key.md` → fetches BAIKAL-1234 from Jira
-3. It reads `skills/analyze-input-type.md` → determines it is a Story
-4. It reads `skills/fetch-required-templates.md` → fetches only the Story template
-5. It reads `skills/normalize-issue-context.md` → converts the issue into a standard format
-6. It reads `skills/ask-clarification-questions.md` → asks you 3-5 questions about gaps
+2. The orchestrator reads `skills/fetch-issue-by-key/SKILL.md` → fetches BAIKAL-1234 from Jira
+3. It reads `skills/analyze-input-type/SKILL.md` → determines it is a Story
+4. It reads `skills/fetch-required-templates/SKILL.md` → fetches only the Story template
+5. It reads `skills/normalize-issue-context/SKILL.md` → converts the issue into a standard format
+6. It reads `skills/ask-clarification-questions/SKILL.md` → asks you 3-5 questions about gaps
 7. **You answer the questions**
-8. It reads `skills/produce-issue-draft.md` → writes the full draft
+8. It reads `skills/produce-issue-draft/SKILL.md` → writes the full draft
 9. It runs validation skills → finds two issues (weak problem statement, one UI/UX trap)
-10. It reads `skills/revise-draft-from-findings.md` → fixes the UI/UX trap, strengthens the problem statement
-11. It reads `skills/generate-follow-up-questions.md` → prepares 2 follow-up questions
+10. It reads `skills/revise-draft-from-findings/SKILL.md` → fixes the UI/UX trap, strengthens the problem statement
+11. It reads `skills/generate-follow-up-questions/SKILL.md` → prepares 2 follow-up questions
 12. **You see:** The revised draft + 2 validation findings with explanations + note about follow-up questions
 
 ---

@@ -1,3 +1,8 @@
+---
+name: orchestrate-help
+description: Guide the user to the right entry point with an interactive decision tree. Use when user says /help or is unsure which command to run.
+---
+
 # Orchestrator: Help
 
 **Purpose:** Guide the user to the right entry point based on what they're trying to do. Interactive decision tree.

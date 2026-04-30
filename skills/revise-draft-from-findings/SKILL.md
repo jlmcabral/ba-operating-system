@@ -1,3 +1,8 @@
+---
+name: revise-draft-from-findings
+description: Apply validation findings to improve an issue draft — rewrite bad ACs, fix formatting, strengthen problem statements. Use when validation has produced fixable findings.
+---
+
 # Skill: Revise Draft from Findings
 
 **Purpose:** After validation skills have run and produced findings, apply those findings to improve the issue draft. This skill rewrites problematic acceptance criteria, fixes UI/UX trap issues, resolves test-case drift, and strengthens weak problem statements — producing a revised draft.

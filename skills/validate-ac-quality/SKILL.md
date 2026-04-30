@@ -1,3 +1,8 @@
+---
+name: validate-ac-quality
+description: Check acceptance criteria for testability, coherence, Gherkin formatting, and test-case drift. Use when validating any issue type during craft or assess flows.
+---
+
 # Skill: Validate Acceptance Criteria Quality
 
 **Purpose:** Check whether acceptance criteria are testable, coherent, correctly formatted in Gherkin, and not drifting into test case territory.
@@ -26,9 +31,11 @@
 
 ## Instructions
 
-1. Read `config/quality-standards.md` for the AC quality rules and Gherkin formatting standard.
+1. Read `config/quality-standards.md` for the AC quality rules and Gherkin formatting standard. For detailed examples, read `REFERENCE.md` (co-located in this skill's directory).
 
-2. For every acceptance criterion, check:
+2. **Format check (deterministic):** Run `scripts/validate-gherkin.js` (co-located in this skill's directory) against the acceptance criteria text. Any issues reported by the script are definitive formatting failures — do not second-guess them.
+
+3. For every acceptance criterion, also check with LLM judgment:
 
    **Testability:** Can a tester verify this as pass/fail without ambiguity? If not, flag it.
 

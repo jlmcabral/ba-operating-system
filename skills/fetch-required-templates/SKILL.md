@@ -1,3 +1,8 @@
+---
+name: fetch-required-templates
+description: Fetch the Jira issue template for a given type (Story, Task, Bug) and optionally the Quality Management Playbook. Use when preparing to draft or validate an issue.
+---
+
 # Skill: Fetch Required Templates
 
 **Purpose:** Fetch only the Jira issue template(s) needed for the current work, based on the determined issue type. Optionally fetch the Quality Management Playbook when classifying bugs.

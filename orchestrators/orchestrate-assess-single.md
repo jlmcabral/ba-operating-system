@@ -1,3 +1,8 @@
+---
+name: orchestrate-assess-single
+description: Assess one Jira issue for refinement readiness with detailed findings. Use when user says /assess with a single Jira key.
+---
+
 # Orchestrator: Assess Single Issue
 
 **Purpose:** Assess one Jira issue for refinement readiness without fetching other issues. Produces a detailed readiness report for that issue only.
@@ -45,21 +50,21 @@ OUTPUT: Detailed readiness report
 ## Detailed Steps
 
 ### Step 1 — Fetch the issue
-**Read:** `skills/fetch-issue-by-key.md`
+**Read:** `skills/fetch-issue-by-key/SKILL.md`
 
 Fetch the Jira issue using the provided key. If the fetch fails, report the failure and stop.
 
 Carry forward: **issue_content**, **issue_type** (as declared in Jira).
 
 ### Step 2 — Analyse the issue type
-**Read:** `skills/analyze-input-type.md`
+**Read:** `skills/analyze-input-type/SKILL.md`
 
 Confirm the issue type. If the Jira-declared type appears incorrect, note the mismatch in the report.
 
 Carry forward: **issue_type** (confirmed or recommended), **type_mismatch** (if any).
 
 ### Step 3 — Fetch the right template
-**Read:** `skills/fetch-required-templates.md`
+**Read:** `skills/fetch-required-templates/SKILL.md`
 
 Fetch only the template for the determined issue type. If Bug, also fetch the Quality Management Playbook.
 
@@ -76,7 +81,7 @@ Launch background agent with:
 Carry forward: **template_structure**, **playbook_reference** (if fetched).
 
 ### Step 4 — Normalise the issue
-**Read:** `skills/normalize-issue-context.md`
+**Read:** `skills/normalize-issue-context/SKILL.md`
 
 Transform the fetched issue into the canonical schema.
 
@@ -97,35 +102,17 @@ After both Step 3 and Step 4 agents complete (use `read_agent` with `wait: true`
 Carry forward: **canonical_issue**, **template_structure**, **playbook_reference**.
 
 ### Step 5 — Run validations (Parallel)
-Run the applicable validation skills based on the issue type **in parallel** using background agents (same pattern as `/craft` Step 6).
 
-**For Stories and Bugs:**
-1. `skills/validate-problem-framing.md` → agent "val-problem-framing"
-2. `skills/validate-scope.md` → agent "val-scope"
-3. `skills/validate-ac-quality.md` → agent "val-ac-quality"
-4. `skills/validate-ac-uiux-trap.md` → agent "val-ac-uiux"
-5. `skills/validate-completeness.md` → agent "val-completeness"
-6. `skills/validate-persona.md` → agent "val-persona"
+**Read:** [`orchestrators/REFERENCE-validation-dispatch.md`](REFERENCE-validation-dispatch.md)
 
-**For Tasks:**
-1. `skills/validate-scope.md` → agent "val-scope"
-2. `skills/validate-ac-quality.md` → agent "val-ac-quality"
-3. `skills/validate-completeness.md` → agent "val-completeness"
+Run the applicable validation skills based on the issue type **in parallel** using the standard dispatch pattern.
 
-**How to dispatch:**
-
-For each applicable skill, launch as a background agent (see `/craft` Step 6 for dispatch template). Record all agent_ids.
-
-After all agents are launched, wait for all to complete using `read_agent` with `wait: true` on each.
-
-**Combine findings:**
-
-From all returned results, extract the `finding` and `severity` fields. Merge into a single **validation_findings** list. Filter out findings where `finding == null` before proceeding to Step 6.
+**Input to dispatch:** canonical_issue, issue_type, template_structure.
 
 Carry forward: **validation_findings** (combined from all checks that ran, sorted by severity).
 
 ### Step 6 — Format the report
-**Read:** `skills/format-readiness-report.md`
+**Read:** `skills/format-readiness-report/SKILL.md`
 
 Generate the readiness report in **single mode** — detailed assessment with all fields visible.
 

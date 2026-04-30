@@ -1,3 +1,8 @@
+---
+name: fetch-issues-by-status
+description: Fetch all issues from configured Jira project columns. Use when running batch refinement assessment across the backlog.
+---
+
 # Skill: Fetch Issues by Status
 
 **Purpose:** Fetch all issues from configured Jira projects and status columns. Used by the batch readiness assessment orchestrator.

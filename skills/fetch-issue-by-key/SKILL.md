@@ -1,3 +1,8 @@
+---
+name: fetch-issue-by-key
+description: Fetch a single Jira issue by key via MCP and return its full content. Use when a Jira key is provided as input to craft or assess flows.
+---
+
 # Skill: Fetch Issue by Key
 
 **Purpose:** Fetch a single Jira issue by its key via the MCP server and return its full content.

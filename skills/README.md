@@ -22,52 +22,52 @@ These retrieve data from external systems (Jira, Confluence) via [MCP](../GLOSSA
 
 | Skill | Purpose |
 |-------|---------|
-| [`fetch-issue-by-key`](fetch-issue-by-key.md) | Fetch a single Jira issue by its key |
-| [`fetch-issues-by-status`](fetch-issues-by-status.md) | Fetch all issues from configured project columns |
-| [`fetch-required-templates`](fetch-required-templates.md) | Fetch the right issue template based on issue type |
+| [`fetch-issue-by-key`](fetch-issue-by-key/SKILL.md) | Fetch a single Jira issue by its key |
+| [`fetch-issues-by-status`](fetch-issues-by-status/SKILL.md) | Fetch all issues from configured project columns |
+| [`fetch-required-templates`](fetch-required-templates/SKILL.md) | Fetch the right issue template based on issue type |
 
 ### Analysis skills
 These examine input to determine what it is and prepare it for processing.
 
 | Skill | Purpose |
 |-------|---------|
-| [`analyze-input-type`](analyze-input-type.md) | Determine if the input is a Story, Task, or Bug |
-| [`normalize-issue-context`](normalize-issue-context.md) | Transform any input format into a standard shape |
+| [`analyze-input-type`](analyze-input-type/SKILL.md) | Determine if the input is a Story, Task, or Bug |
+| [`normalize-issue-context`](normalize-issue-context/SKILL.md) | Transform any input format into a standard shape |
 
 ### Interaction skills
 These involve direct communication with you.
 
 | Skill | Purpose |
 |-------|---------|
-| [`ask-clarification-questions`](ask-clarification-questions.md) | Ask targeted questions before writing a draft |
+| [`ask-clarification-questions`](ask-clarification-questions/SKILL.md) | Ask targeted questions before writing a draft |
 
 ### Production skills
 These create or improve issue content.
 
 | Skill | Purpose |
 |-------|---------|
-| [`produce-issue-draft`](produce-issue-draft.md) | Write a complete issue draft from the template |
-| [`revise-draft-from-findings`](revise-draft-from-findings.md) | Improve a draft based on validation feedback |
+| [`produce-issue-draft`](produce-issue-draft/SKILL.md) | Write a complete issue draft from the template |
+| [`revise-draft-from-findings`](revise-draft-from-findings/SKILL.md) | Improve a draft based on validation feedback |
 
 ### Validation skills
 These check specific quality aspects of an issue. They all operate on the same standardised input format (produced by `normalize-issue-context`).
 
 | Skill | Purpose | Applies to |
 |-------|---------|------------|
-| [`validate-problem-framing`](validate-problem-framing.md) | Is this grounded in a real user need? | Story, Bug |
-| [`validate-scope`](validate-scope.md) | Is this trying to do too much? | All types |
-| [`validate-ac-quality`](validate-ac-quality.md) | Are acceptance criteria testable and coherent? | All types |
-| [`validate-ac-uiux-trap`](validate-ac-uiux-trap.md) | Are criteria describing outcomes, not interfaces? | Story, Bug |
-| [`validate-completeness`](validate-completeness.md) | Are all required fields filled? | All types |
-| [`validate-persona`](validate-persona.md) | Is the affected persona specific enough? | Story, Bug |
+| [`validate-problem-framing`](validate-problem-framing/SKILL.md) | Is this grounded in a real user need? | Story, Bug |
+| [`validate-scope`](validate-scope/SKILL.md) | Is this trying to do too much? | All types |
+| [`validate-ac-quality`](validate-ac-quality/SKILL.md) | Are acceptance criteria testable and coherent? | All types |
+| [`validate-ac-uiux-trap`](validate-ac-uiux-trap/SKILL.md) | Are criteria describing outcomes, not interfaces? | Story, Bug |
+| [`validate-completeness`](validate-completeness/SKILL.md) | Are all required fields filled? | All types |
+| [`validate-persona`](validate-persona/SKILL.md) | Is the affected persona specific enough? | Story, Bug |
 
 ### Output skills
 These format results for presentation.
 
 | Skill | Purpose |
 |-------|---------|
-| [`generate-follow-up-questions`](generate-follow-up-questions.md) | Create targeted questions from validation gaps |
-| [`format-readiness-report`](format-readiness-report.md) | Generate readiness reports (single or batch) |
+| [`generate-follow-up-questions`](generate-follow-up-questions/SKILL.md) | Create targeted questions from validation gaps |
+| [`format-readiness-report`](format-readiness-report/SKILL.md) | Generate readiness reports (single or batch) |
 
 ---
 
@@ -75,19 +75,44 @@ These format results for presentation.
 
 Every skill file follows the same structure:
 
-1. **Purpose** — What the skill does (one sentence)
-2. **Config references** — Which configuration files it reads
-3. **Input** — What it needs to receive
-4. **Applicability** (validation skills only) — Which issue types it applies to
-5. **Instructions** — Step-by-step logic the AI follows
-6. **Output** — What it produces for downstream skills
+1. **Frontmatter** — YAML metadata (`name`, `description` with "Use when..." trigger)
+2. **Purpose** — What the skill does (one sentence)
+3. **Config references** — Which configuration files it reads
+4. **Input** — What it needs to receive
+5. **Applicability** (validation skills only) — Which issue types it applies to
+6. **Instructions** — Step-by-step logic the AI follows
+7. **Output** — What it produces for downstream skills
+
+### Frontmatter format
+
+Every skill begins with YAML frontmatter:
+
+```yaml
+---
+name: skill-name
+description: Brief description of capability. Use when [specific triggers].
+---
+```
+
+The `description` field is critical for agent routing — it must clearly communicate what the skill does and when to use it. Keep it under 1024 characters. The "Use when..." sentence provides explicit triggers.
 
 ---
 
 ## Adding a new skill
 
-1. Create a new `.md` file in this directory
-2. Follow the structure above (Purpose → Config → Input → Instructions → Output)
-3. Add the skill to the inventory table in this README
-4. Reference it in any orchestrators that should use it
-5. Update the [Architecture guide](../ARCHITECTURE.md) if the skill introduces a new category
+1. Create a new directory in `skills/` named after the skill (kebab-case)
+2. Add a `SKILL.md` file inside (e.g., `skills/my-skill/SKILL.md`) — the directory name IS the skill identity
+3. Add YAML frontmatter with `name` and `description` (include "Use when..." trigger)
+4. Follow the structure above (Purpose → Config → Input → Instructions → Output)
+5. If the skill includes deterministic logic (formatting validation, field checking), add a co-located `scripts/` directory:
+   ```
+   skills/
+   └── my-skill/
+       ├── SKILL.md           # Main skill instructions
+       └── scripts/
+           └── helper.js      # Deterministic logic
+   ```
+6. Keep the skill under 100 lines. If it exceeds this, split reference material into a `REFERENCE.md` file inside the skill's directory
+7. Add the skill to the inventory table in this README
+8. Reference it in any orchestrators that should use it
+9. Update the [Architecture guide](../ARCHITECTURE.md) if the skill introduces a new category

@@ -1,3 +1,8 @@
+---
+name: format-readiness-report
+description: Generate readiness assessment output in single or batch mode with tier classification and actionable findings. Use when presenting validation results to the user.
+---
+
 # Skill: Format Readiness Report
 
 **Purpose:** Generate the readiness assessment output in the appropriate format — either a detailed report for a single issue, or a summary table with failure details for a batch of issues.

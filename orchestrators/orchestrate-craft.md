@@ -1,3 +1,8 @@
+---
+name: orchestrate-craft
+description: Shape an idea, draft, or Jira issue into a complete validated issue with clarification, validation, and revision. Use when user says /craft or wants to write/improve an issue.
+---
+
 # Orchestrator: Craft
 
 **Purpose:** Transform a loose idea, a draft, or an existing Jira issue into a complete, validated issue draft — with upfront clarification, targeted validation, and available follow-up questions.
@@ -49,17 +54,17 @@ OUTPUT: Revised draft + mention of available follow-up questions
 ## Detailed Steps
 
 ### Step 1 — Analyse the input
-**Read:** `skills/analyze-input-type.md`
+**Read:** `skills/analyze-input-type/SKILL.md`
 
 Determine the issue type (Story, Task, Bug) and input mode (idea, draft, jira).
 
-- If input is a Jira issue key, first execute `skills/fetch-issue-by-key.md` to retrieve the issue content.
+- If input is a Jira issue key, first execute `skills/fetch-issue-by-key/SKILL.md` to retrieve the issue content.
 - Carry forward: **issue_type**, **input_mode**, **type_confidence**, **type_mismatch** (if any).
 
 If the determined type differs from what the user declared or what Jira says, inform the user of the mismatch and your recommendation before proceeding. If this changes the issue type, note it for the next step.
 
 ### Step 2 — Fetch the right template
-**Read:** `skills/fetch-required-templates.md`
+**Read:** `skills/fetch-required-templates/SKILL.md`
 
 Using the determined issue type from Step 1:
 - Fetch **only** the template for that issue type (Story, Task, or Bug).
@@ -69,14 +74,14 @@ Using the determined issue type from Step 1:
 Carry forward: **template_structure**, **playbook_reference** (if fetched).
 
 ### Step 3 — Normalise the input
-**Read:** `skills/normalize-issue-context.md`
+**Read:** `skills/normalize-issue-context/SKILL.md`
 
 Transform the raw input into the canonical schema. This ensures all downstream skills work with the same structure regardless of whether the input was an idea, draft, or Jira issue.
 
 Carry forward: **canonical_issue** (all fields populated or marked `[MISSING]`).
 
 ### Step 4 — Ask clarification questions
-**Read:** `skills/ask-clarification-questions.md`
+**Read:** `skills/ask-clarification-questions/SKILL.md`
 
 Review the canonical issue for gaps. Ask the user targeted questions about:
 - The problem and user need
@@ -90,71 +95,31 @@ If the input is already rich enough (well-structured Jira issue, detailed draft)
 After receiving answers, update the canonical issue with the user's responses. Carry forward: **enriched canonical_issue**.
 
 ### Step 5 — Produce the draft
-**Read:** `skills/produce-issue-draft.md`
+**Read:** `skills/produce-issue-draft/SKILL.md`
 
 Using the enriched canonical issue and template structure, produce a complete issue draft. All template sections must be visible. This should look like the final version.
 
 Carry forward: **issue_draft**.
 
 ### Step 6 — Run validations (Parallel)
-Run the applicable validation skills based on the issue type **in parallel** using background agents. All agents operate on the same canonical issue and enriched_canonical_issue.
 
-**For Stories:** Launch 6 background agents in parallel:
-1. `skills/validate-problem-framing.md` → agent "val-problem-framing"
-2. `skills/validate-scope.md` → agent "val-scope"
-3. `skills/validate-ac-quality.md` → agent "val-ac-quality"
-4. `skills/validate-ac-uiux-trap.md` → agent "val-ac-uiux"
-5. `skills/validate-completeness.md` → agent "val-completeness"
-6. `skills/validate-persona.md` → agent "val-persona"
+**Read:** [`orchestrators/REFERENCE-validation-dispatch.md`](REFERENCE-validation-dispatch.md)
 
-**For Tasks:** Launch 3 background agents in parallel:
-1. `skills/validate-scope.md` → agent "val-scope"
-2. `skills/validate-ac-quality.md` → agent "val-ac-quality"
-3. `skills/validate-completeness.md` → agent "val-completeness"
+Run the applicable validation skills based on the issue type **in parallel** using the standard dispatch pattern. All agents operate on the same enriched_canonical_issue.
 
-**For Bugs:** Launch 6 background agents in parallel (same as Stories).
-
-**How to dispatch:**
-
-For each applicable skill:
-```
-Launch background agent with:
-  - name: "val-{skill-name}"
-  - agent_type: "general-purpose"
-  - mode: "background"
-  - prompt: Include the skill file content, enriched_canonical_issue, and issue_type
-  - Record the agent_id returned
-```
-
-After all agents are launched, wait for all to complete using `read_agent` with `wait: true` on each. Collect results in the order they complete.
-
-**Combine findings:**
-
-From all returned results, extract the `finding` and `severity` fields. Merge into a single **validation_findings** list, preserving severity levels and the order findings were discovered.
-
-Example merged output:
-```
-validation_findings = [
-  { skill: "validate-problem-framing", finding: "...", severity: "critical" },
-  { skill: "validate-scope", finding: "...", severity: "critical" },
-  { skill: "validate-ac-quality", finding: "...", severity: "medium" },
-  { skill: "validate-persona", finding: null, severity: null }  # passed
-]
-```
-
-Filter out findings where `finding == null` before proceeding to Step 7.
+**Input to dispatch:** enriched_canonical_issue, issue_type, template_structure.
 
 Carry forward: **validation_findings** (combined from all checks that ran, sorted by severity).
 
 ### Step 7 — Revise the draft
-**Read:** `skills/revise-draft-from-findings.md`
+**Read:** `skills/revise-draft-from-findings/SKILL.md`
 
 Apply fixable findings to the draft (rewrite bad ACs, fix formatting, strengthen weak problem statements). Leave unfixable findings for follow-up questions.
 
 Carry forward: **revised_draft**, **unresolved_findings**.
 
 ### Step 8 — Generate follow-up questions
-**Read:** `skills/generate-follow-up-questions.md`
+**Read:** `skills/generate-follow-up-questions/SKILL.md`
 
 From the unresolved findings, produce a targeted list of follow-up questions.
 

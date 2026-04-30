@@ -1,3 +1,8 @@
+---
+name: validate-scope
+description: Assess whether an issue covers more than one distinct user need or independently deliverable outcome. Use when validating any issue type — critical blocker when it fails.
+---
+
 # Skill: Validate Scope
 
 **Purpose:** Assess whether the issue is trying to do too much — covering more than one distinct user need or independently deliverable outcome.

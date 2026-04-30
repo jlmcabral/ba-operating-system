@@ -1,3 +1,8 @@
+---
+name: validate-ac-uiux-trap
+description: Check whether acceptance criteria describe user outcomes or interface behaviour. Use when validating Stories or Bugs — skip for Tasks.
+---
+
 # Skill: Validate AC — UI/UX Trap
 
 **Purpose:** Check whether acceptance criteria describe user outcomes or interface behaviour. When criteria describe how the UI looks instead of what must be true for the user, they constrain engineering unnecessarily and become wrong the moment the design changes.

@@ -1,3 +1,8 @@
+---
+name: validate-persona
+description: Check whether the affected persona is specific enough based on configured personas. Use when validating Stories or Bugs — observational only, never blocks readiness.
+---
+
 # Skill: Validate Persona
 
 **Purpose:** Check whether the affected user or persona is specific enough to be meaningful, based on the known personas defined in configuration.

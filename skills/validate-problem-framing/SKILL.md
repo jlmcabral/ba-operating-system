@@ -1,3 +1,8 @@
+---
+name: validate-problem-framing
+description: Check whether an issue is grounded in a real user problem or is describing a solution/feature preference. Use when validating Stories or Bugs — critical blocker when it fails.
+---
+
 # Skill: Validate Problem Framing
 
 **Purpose:** Check whether the issue is framed around a real user problem or is describing a solution, feature preference, or internal assumption.

@@ -1,3 +1,8 @@
+---
+name: analyze-input-type
+description: Determine issue type (Story, Task, Bug) and input mode from raw user input. Use when classifying new input at the start of a craft or assess flow.
+---
+
 # Skill: Analyse Input Type
 
 **Purpose:** Determine the issue type (Story, Task, or Bug) from the user's input. This runs early in the orchestration flow to guide which templates to fetch and which validation checks to apply.
