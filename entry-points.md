@@ -25,6 +25,7 @@ Not sure which command to use? Run `/help` — it will guide you to the right on
 ```
 
 **What you get back:**
+
 - A simple question about your goal
 - A recommendation for which command to use
 - Explanations of all available commands
@@ -40,21 +41,25 @@ Not sure which command to use? Run `/help` — it will guide you to the right on
 **How to use it:**
 
 From an idea:
+
 ```
 /craft I need a way for operations managers to see which tasks are overdue without opening each one individually
 ```
 
 From a Jira issue:
+
 ```
-/craft BAIKAL-1234
+/craft PROJECT-1234
 ```
 
 From a draft:
+
 ```
 /craft [paste your draft here]
 ```
 
 **What you get back:**
+
 1. Clarifying questions (if needed) — answer these first
 2. A complete issue draft with all template sections
 3. Validation findings (only problems — not a checklist of passes)
@@ -69,10 +74,11 @@ From a draft:
 **How to use it:**
 
 ```
-/assess BAIKAL-1234
+/assess PROJECT-1234
 ```
 
 **What you get back:**
+
 - A readiness tier: ✅ Ready, ⚠️ Needs Minor Work, or ❌ Not Ready
 - A detailed breakdown of what passes and what fails
 - Specific, actionable items for anything that needs to change
@@ -92,6 +98,7 @@ From a draft:
 No parameters needed — it uses the projects and statuses defined in your configuration.
 
 **What you get back:**
+
 1. A summary table showing every issue, its type, readiness tier, and failure categories
 2. Detailed breakdowns for issues that are ⚠️ or ❌ (ready issues are in the table but don't get a breakdown)
 

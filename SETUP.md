@@ -106,7 +106,7 @@ See the [Configuration README](config/README.md) for details on each file.
 Open GitHub Copilot in VS Code (agent mode) and run this test:
 
 ```
-Fetch Jira issue BAIKAL-1164 and tell me its title and description structure
+Fetch Jira issue PROJECT-1164 and tell me its title and description structure
 ```
 
 If you see real issue data come back, your MCP connection is working and you are ready to go.
@@ -122,6 +122,7 @@ Start with something simple:
 ```
 
 The system will:
+
 1. Determine this is a Story
 2. Fetch the Story template
 3. Ask you clarifying questions
@@ -133,15 +134,18 @@ The system will:
 ## Troubleshooting
 
 ### "MCP fetch failed" or "Cannot connect to Jira"
+
 - Check that your `.env` values are correct (URL, email, token)
 - Verify your API token hasn't expired at [Atlassian token management](https://id.atlassian.com/manage-profile/security/api-tokens)
 - If using VS Code, restart the session so `.vscode/mcp.json` re-reads the `.env` file
 
 ### "Template not found"
+
 - Check that the template issue keys in `config/project.md` match real issues in your Jira instance
-- The default templates (BAIKAL-1164, BAIKAL-1544, BAIKAL-1390) are specific to one project — update them for yours
+- The default templates (PROJECT-1164, PROJECT-1544, PROJECT-1390) are specific to one project — update them for yours
 
 ### The AI doesn't follow the skills/orchestrators
+
 - Make sure you're in GitHub Copilot **agent mode** (not inline or chat mode)
 - Check that the `.github/copilot-instructions.md` file references the new architecture (see below)
 

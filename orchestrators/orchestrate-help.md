@@ -106,7 +106,7 @@ Here are all the BA Operating System commands:
 
 🔍 `/assess [JIRA-KEY]`
    Use this to: Check if a specific issue is ready for refinement
-   Input: A Jira issue key (e.g., BAIKAL-1234)
+   Input: A Jira issue key (e.g., PROJECT-1234)
    Output: Readiness report with specific, actionable feedback
    Best for: Quick sanity checks after crafting
 
@@ -156,11 +156,13 @@ Here are all the BA Operating System commands:
 ## Implementation Notes
 
 This orchestrator is **simpler than others** because:
+
 - No skills are chained (it's pure presentation)
 - No state is carried between steps (each step is independent)
 - All logic is conditional branching and UI presentation
 
 **The AI handles:**
+
 1. Asking the question naturally
 2. Interpreting the user's answer (even if not word-for-word)
 3. Explaining the recommendation in the user's own language

@@ -14,13 +14,13 @@ The system runs on any AI tool that supports [MCP](GLOSSARY.md#mcp) (Model Conte
 
 ## Prerequisites
 
-| Dependency | Version | Purpose |
-|-----------|---------|---------|
-| [VS Code](https://code.visualstudio.com/) | Latest | Code editor / AI runtime |
-| [GitHub Copilot](https://github.com/features/copilot) | Active subscription | AI agent that runs the system |
-| [Docker](https://www.docker.com/products/docker-desktop/) | Latest | Runs the MCP server (Jira/Confluence connection) |
-| [Node.js](https://nodejs.org/) | 18+ | Runs deterministic validation scripts |
-| [Git](https://git-scm.com/) | Any | Clone the repository |
+| Dependency                                                | Version             | Purpose                                          |
+| --------------------------------------------------------- | ------------------- | ------------------------------------------------ |
+| [VS Code](https://code.visualstudio.com/)                 | Latest              | Code editor / AI runtime                         |
+| [GitHub Copilot](https://github.com/features/copilot)     | Active subscription | AI agent that runs the system                    |
+| [Docker](https://www.docker.com/products/docker-desktop/) | Latest              | Runs the MCP server (Jira/Confluence connection) |
+| [Node.js](https://nodejs.org/)                            | 18+                 | Runs deterministic validation scripts            |
+| [Git](https://git-scm.com/)                               | Any                 | Clone the repository                             |
 
 ## Quick start
 
@@ -38,11 +38,11 @@ The system runs on any AI tool that supports [MCP](GLOSSARY.md#mcp) (Model Conte
 
 ## Commands
 
-| Command | What it does |
-|---------|-------------|
-| `/craft [input]` | Shape an idea, draft, or Jira issue into a complete, validated issue |
-| `/assess [BAIKAL-1234]` | Check if one specific issue is ready for refinement |
-| `/assess-refinement` | Assess all issues in your configured columns before a refinement session |
+| Command                  | What it does                                                             |
+| ------------------------ | ------------------------------------------------------------------------ |
+| `/craft [input]`         | Shape an idea, draft, or Jira issue into a complete, validated issue     |
+| `/assess [PROJECT-1234]` | Check if one specific issue is ready for refinement                      |
+| `/assess-refinement`     | Assess all issues in your configured columns before a refinement session |
 
 → Full details and examples: [entry-points.md](entry-points.md)
 
@@ -95,23 +95,23 @@ ba-operating-system/
 
 ## Documentation
 
-| Document | What it covers |
-|----------|---------------|
-| [SETUP.md](SETUP.md) | Step-by-step setup from scratch |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | How the layers fit together |
-| [GLOSSARY.md](GLOSSARY.md) | Technical terms explained simply |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | How to add or modify skills |
-| [config/README.md](config/README.md) | Configuration guide |
-| [skills/README.md](skills/README.md) | Skill inventory and how to read a skill |
-| [orchestrators/README.md](orchestrators/README.md) | How orchestrators work |
-| [entry-points.md](entry-points.md) | Available commands with examples |
+| Document                                           | What it covers                          |
+| -------------------------------------------------- | --------------------------------------- |
+| [SETUP.md](SETUP.md)                               | Step-by-step setup from scratch         |
+| [ARCHITECTURE.md](ARCHITECTURE.md)                 | How the layers fit together             |
+| [GLOSSARY.md](GLOSSARY.md)                         | Technical terms explained simply        |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                 | How to add or modify skills             |
+| [config/README.md](config/README.md)               | Configuration guide                     |
+| [skills/README.md](skills/README.md)               | Skill inventory and how to read a skill |
+| [orchestrators/README.md](orchestrators/README.md) | How orchestrators work                  |
+| [entry-points.md](entry-points.md)                 | Available commands with examples        |
 
 ---
 
 ## MCP servers required
 
-| Server | Used for |
-|--------|----------|
+| Server                                                   | Used for                                 |
+| -------------------------------------------------------- | ---------------------------------------- |
 | [mcp-atlassian](https://mcp-atlassian.soomiles.com/docs) | Jira issues, templates, Confluence pages |
 
 See [config/mcp.md](config/mcp.md) for configuration details. Credentials live in a `.env` file (git-ignored). A `.vscode/mcp.json` is included for VS Code users, but any MCP-compatible runtime can read from `.env`.

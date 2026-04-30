@@ -13,7 +13,7 @@ The normalized representation of an issue, used as the working object throughout
 ```typescript
 canonical_issue = {
   // Identification
-  issue_key: string | null,           // Jira key (e.g., "BAIKAL-1234"), or null if draft
+  issue_key: string | null,           // Jira key (e.g., "PROJECT-1234"), or null if draft
   issue_type: "Story" | "Task" | "Bug",
   source: "jira" | "idea" | "draft",
 
@@ -49,6 +49,7 @@ canonical_issue = {
 ```
 
 **When populated:**
+
 - `analyze-input-type` → sets issue_type, source, is_spike
 - `normalize-issue-context` → populates ALL fields (missing ones marked `[MISSING]`)
 - `ask-clarification-questions` → enriches with user answers (status → "enriched")
@@ -75,6 +76,7 @@ ac_scenario = {
 ```
 
 **Rules:**
+
 - Each field is a list of step strings (including the keyword, e.g., "Given the user is logged in")
 - Steps must be testable (not vague)
 - Do NOT include "And" keywords at the start of a string; use separate entries in the array
@@ -87,20 +89,16 @@ ac_scenario = {
   scenario_title: "Overdue task is highlighted in red",
   given: [
     "Given the current date is 2026-05-15",
-    "Given a task with due_date = 2026-05-10"
+    "Given a task with due_date = 2026-05-10",
   ],
-  when: [
-    "When the user opens the task list"
-  ],
-  then: [
-    "Then the task row background is red"
-  ],
+  when: ["When the user opens the task list"],
+  then: ["Then the task row background is red"],
   data_context: null,
   edge_cases: [
     "Task completed before due date is not highlighted",
-    "Task due today is not highlighted (only AFTER due date)"
-  ]
-}
+    "Task due today is not highlighted (only AFTER due date)",
+  ],
+};
 ```
 
 ---
@@ -111,16 +109,17 @@ Output from any validation skill.
 
 ```typescript
 validation_finding = {
-  skill: string,                      // Which skill found this (e.g., "validate-scope")
-  criterion: string,                  // What was being checked (e.g., "scope-single-outcome")
+  skill: string, // Which skill found this (e.g., "validate-scope")
+  criterion: string, // What was being checked (e.g., "scope-single-outcome")
   severity: "critical" | "major" | "minor" | null,
-  finding: string | null,             // Description of the problem, or null if passed
-  context: object,                    // Optional: context for debugging
-  suggested_fix: string | null,       // Optional: hint for how to fix (not the fix itself)
-}
+  finding: string | null, // Description of the problem, or null if passed
+  context: object, // Optional: context for debugging
+  suggested_fix: string | null, // Optional: hint for how to fix (not the fix itself)
+};
 ```
 
 **Rules:**
+
 - `severity` is `null` when `finding` is `null` (i.e., check passed)
 - `critical` findings block readiness (e.g., missing problem statement)
 - `major` findings should be addressed before refinement (e.g., ambiguous AC)
@@ -134,15 +133,17 @@ validation_finding = {
   skill: "validate-scope",
   criterion: "scope-single-outcome",
   severity: "critical",
-  finding: "Issue addresses two distinct user needs: (1) override approval workflow, (2) audit trail. These should be split.",
+  finding:
+    "Issue addresses two distinct user needs: (1) override approval workflow, (2) audit trail. These should be split.",
   context: {
     identified_outcomes: [
       "Allow managers to override approval workflow",
-      "Maintain audit trail of all overrides"
-    ]
+      "Maintain audit trail of all overrides",
+    ],
   },
-  suggested_fix: "Create BAIKAL-1234a (override workflow) and BAIKAL-1234b (audit trail)"
-}
+  suggested_fix:
+    "Create PROJECT-1234a (override workflow) and PROJECT-1234b (audit trail)",
+};
 ```
 
 **Example (Passed check):**
@@ -154,8 +155,8 @@ validation_finding = {
   severity: null,
   finding: null,
   context: null,
-  suggested_fix: null
-}
+  suggested_fix: null,
+};
 ```
 
 ---
@@ -193,10 +194,12 @@ issue_draft = {
 ```
 
 **When populated:**
+
 - `produce-issue-draft` → populates ALL fields based on template + canonical_issue
 - `revise-draft-from-findings` → updates fields, appends to revision_notes
 
 **Format rules:**
+
 - `acceptance_criteria` is a formatted Gherkin block (ready to paste into Jira description)
 - `scope.in`, `scope.out`, `scope.non_goals` are Markdown bullet lists
 - `revision_notes` is ["✏️ Rewrote AC-001 to be testable", "✏️ Strengthened problem statement"]
@@ -208,10 +211,11 @@ issue_draft = {
 Enum for readiness assessment outcomes.
 
 ```typescript
-readiness_tier = "ready" | "minor_work" | "not_ready"
+readiness_tier = "ready" | "minor_work" | "not_ready";
 ```
 
 **Definitions:**
+
 - `"ready"` — Issue can enter refinement as-is. No blockers found.
 - `"minor_work"` — Issue needs small fixes (formatting, clarification) before refinement. No scope/logic problems.
 - `"not_ready"` — Issue has structural problems (scope split needed, missing acceptance criteria, weak problem framing). Cannot enter refinement.
@@ -241,6 +245,7 @@ readiness_assessment = {
 ```
 
 **Rules:**
+
 - If ANY critical finding exists → readiness_tier = "not_ready"
 - If 3+ major findings exist → readiness_tier = "not_ready"
 - If 1-2 major findings exist → readiness_tier = "minor_work"
@@ -259,6 +264,7 @@ validation_findings = validation_finding[]
 ```
 
 **When populated:**
+
 - In `/craft` Step 6, all applicable validators run in parallel
 - Results are merged into one array
 - Findings where finding == null are filtered out
@@ -271,21 +277,22 @@ validation_findings = [
     skill: "validate-problem-framing",
     criterion: "problem-not-solution",
     severity: "critical",
-    finding: "Problem statement describes the solution (a new 'Override' button) rather than the user need (managers cannot override blocked approvals)"
+    finding:
+      "Problem statement describes the solution (a new 'Override' button) rather than the user need (managers cannot override blocked approvals)",
   },
   {
     skill: "validate-scope",
     criterion: "scope-single-outcome",
     severity: "critical",
-    finding: "Issue addresses two outcomes..."
+    finding: "Issue addresses two outcomes...",
   },
   {
     skill: "validate-ac-quality",
     criterion: "ac-gherkin-format",
     severity: null,
-    finding: null
-  }
-]
+    finding: null,
+  },
+];
 ```
 
 ---
@@ -299,6 +306,7 @@ assessments = readiness_assessment[]
 ```
 
 **When populated:**
+
 - In `/assess-refinement` Step 4, each issue is validated
 - Results are combined into one array, sorted by readiness_tier
 
@@ -335,10 +343,11 @@ template_structure = {
 ### issue_type
 
 ```typescript
-issue_type = "Story" | "Task" | "Bug"
+issue_type = "Story" | "Task" | "Bug";
 ```
 
 **Definitions:**
+
 - `"Story"` — User-facing feature or capability
 - `"Task"` — Technical work (refactoring, infrastructure, chores)
 - `"Bug"` — Unintended behavior, defect
@@ -348,10 +357,11 @@ issue_type = "Story" | "Task" | "Bug"
 ### severity
 
 ```typescript
-severity = "critical" | "major" | "minor" | null
+severity = "critical" | "major" | "minor" | null;
 ```
 
 **Definitions:**
+
 - `"critical"` — Blocks refinement readiness
 - `"major"` — Should be fixed before refinement
 - `"minor"` — Nice-to-have improvement
@@ -362,10 +372,11 @@ severity = "critical" | "major" | "minor" | null
 ### status
 
 ```typescript
-status = "draft" | "enriched" | "validated"
+status = "draft" | "enriched" | "validated";
 ```
 
 **Definitions:**
+
 - `"draft"` — Raw input, no questions asked yet
 - `"enriched"` — Questions asked and answered by user
 - `"validated"` — Validation skills have run (may have findings)
@@ -374,16 +385,16 @@ status = "draft" | "enriched" | "validated"
 
 ## Quick Reference
 
-| Object | Used By | Created By | Purpose |
-|--------|---------|-----------|---------|
-| `canonical_issue` | All skills | normalize-issue-context | Working object for all processing |
-| `ac_scenario` | validate-ac-*, produce-issue-draft | analyze from issue | Individual acceptance criterion |
-| `validation_finding` | orchestrators, format-readiness-report | Any validate-* skill | One validation check result |
-| `issue_draft` | format-readiness-report, revise-draft | produce-issue-draft, revise-draft | Formatted issue ready for use |
-| `readiness_tier` | format-readiness-report | Computed from findings | High-level readiness status |
-| `readiness_assessment` | format-readiness-report (batch mode) | All validators | Full assessment of one issue |
-| `validation_findings` | revise-draft, format-readiness-report | All validators (merged) | All validation results for one issue |
-| `template_structure` | produce-issue-draft | fetch-required-templates | Issue template structure |
+| Object                 | Used By                                | Created By                        | Purpose                              |
+| ---------------------- | -------------------------------------- | --------------------------------- | ------------------------------------ |
+| `canonical_issue`      | All skills                             | normalize-issue-context           | Working object for all processing    |
+| `ac_scenario`          | validate-ac-\*, produce-issue-draft    | analyze from issue                | Individual acceptance criterion      |
+| `validation_finding`   | orchestrators, format-readiness-report | Any validate-\* skill             | One validation check result          |
+| `issue_draft`          | format-readiness-report, revise-draft  | produce-issue-draft, revise-draft | Formatted issue ready for use        |
+| `readiness_tier`       | format-readiness-report                | Computed from findings            | High-level readiness status          |
+| `readiness_assessment` | format-readiness-report (batch mode)   | All validators                    | Full assessment of one issue         |
+| `validation_findings`  | revise-draft, format-readiness-report  | All validators (merged)           | All validation results for one issue |
+| `template_structure`   | produce-issue-draft                    | fetch-required-templates          | Issue template structure             |
 
 ---
 

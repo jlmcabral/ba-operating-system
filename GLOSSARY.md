@@ -68,7 +68,7 @@ A standard that lets AI assistants connect to external tools and services. Think
 
 **Why you need it:** Without MCP, the AI cannot access your Jira issues or Confluence pages. With MCP connected, the AI can fetch issue templates, read existing issues, and retrieve reference documentation — all automatically.
 
-**How it works in practice:** You configure an MCP server (like `mcp-atlassian`) once in your environment. After that, skills can instruct the AI to "fetch Jira issue BAIKAL-1234" and it happens automatically.
+**How it works in practice:** You configure an MCP server (like `mcp-atlassian`) once in your environment. After that, skills can instruct the AI to "fetch Jira issue PROJECT-1234" and it happens automatically.
 
 ### Orchestrator {#orchestrator}
 

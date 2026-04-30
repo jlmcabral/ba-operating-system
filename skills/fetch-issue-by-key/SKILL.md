@@ -8,13 +8,14 @@ description: Fetch a single Jira issue by key via MCP and return its full conten
 **Purpose:** Fetch a single Jira issue by its key via the MCP server and return its full content.
 
 **Config references:**
+
 - `config/mcp.md` — MCP server details
 
 ---
 
 ## Input
 
-- **issue_key** — A Jira issue key (e.g., `BAIKAL-1234`)
+- **issue_key** — A Jira issue key (e.g., `PROJECT-1234`)
 
 ---
 

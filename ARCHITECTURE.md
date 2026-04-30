@@ -32,12 +32,12 @@ The system has five layers. Each layer has a clear job:
 
 These are the commands you use. There are four:
 
-| Command | What it does |
-|---------|-------------|
-| `/help` | Interactive guide to choose the right command |
-| `/craft [input]` | Shape an idea, draft, or Jira issue into a complete issue |
-| `/assess [key]` | Check if one specific issue is ready for refinement |
-| `/assess-refinement` | Check all issues in your configured columns |
+| Command              | What it does                                              |
+| -------------------- | --------------------------------------------------------- |
+| `/help`              | Interactive guide to choose the right command             |
+| `/craft [input]`     | Shape an idea, draft, or Jira issue into a complete issue |
+| `/assess [key]`      | Check if one specific issue is ready for refinement       |
+| `/assess-refinement` | Check all issues in your configured columns               |
 
 Entry points are just triggers — they tell the system which orchestrator to run.
 
@@ -51,11 +51,11 @@ Entry points are just triggers — they tell the system which orchestrator to ru
 
 Orchestrators are recipes. They define which skills to run, in what order, and where to pause for your input.
 
-| Orchestrator | Skills chained |
-|-------------|---------------|
-| `orchestrate-help` | Pure presentation — interactive decision tree, no skills chained |
-| `orchestrate-craft` | analyse → fetch template → ask questions → normalise → draft → validate → revise → follow-up |
-| `orchestrate-assess-single` | fetch issue → analyse → fetch template → normalise → validate → format report |
+| Orchestrator                    | Skills chained                                                                                     |
+| ------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `orchestrate-help`              | Pure presentation — interactive decision tree, no skills chained                                   |
+| `orchestrate-craft`             | analyse → fetch template → ask questions → normalise → draft → validate → revise → follow-up       |
+| `orchestrate-assess-single`     | fetch issue → analyse → fetch template → normalise → validate → format report                      |
 | `orchestrate-assess-refinement` | fetch all issues → classify → fetch templates (deduplicated) → validate each → format batch report |
 
 Orchestrators carry **state** between skills — the output of one skill becomes the input of the next.
@@ -70,14 +70,14 @@ Orchestrators carry **state** between skills — the output of one skill becomes
 
 Skills are the building blocks. Each one does one thing:
 
-| Category | Skills | What they do |
-|----------|--------|-------------|
-| Fetching | 3 skills | Get data from Jira/Confluence |
-| Analysis | 2 skills | Understand and normalise input |
-| Interaction | 1 skill | Ask you clarifying questions |
-| Production | 2 skills | Write and revise issue drafts |
-| Validation | 6 skills | Check quality (problem framing, scope, AC quality, UI/UX traps, completeness, persona) |
-| Output | 2 skills | Format follow-up questions and readiness reports |
+| Category    | Skills   | What they do                                                                           |
+| ----------- | -------- | -------------------------------------------------------------------------------------- |
+| Fetching    | 3 skills | Get data from Jira/Confluence                                                          |
+| Analysis    | 2 skills | Understand and normalise input                                                         |
+| Interaction | 1 skill  | Ask you clarifying questions                                                           |
+| Production  | 2 skills | Write and revise issue drafts                                                          |
+| Validation  | 6 skills | Check quality (problem framing, scope, AC quality, UI/UX traps, completeness, persona) |
+| Output      | 2 skills | Format follow-up questions and readiness reports                                       |
 
 **Key design principle:** Skills don't know about each other. They receive input, do their job, and produce output. Only orchestrators decide what runs when.
 
@@ -91,13 +91,13 @@ Skills are the building blocks. Each one does one thing:
 
 Configuration files hold your project-specific settings. Skills reference these files — so you change settings in one place and every skill picks up the change.
 
-| File | What it controls |
-|------|-----------------|
-| `project.md` | Jira projects, statuses, template IDs |
-| `quality-standards.md` | Gherkin rules, AC standards, problem statement rules |
-| `output-preferences.md` | What the system shows/hides in output |
-| `personas.md` | Known user roles for your applications |
-| `mcp.md` | External service connections |
+| File                    | What it controls                                     |
+| ----------------------- | ---------------------------------------------------- |
+| `project.md`            | Jira projects, statuses, template IDs                |
+| `quality-standards.md`  | Gherkin rules, AC standards, problem statement rules |
+| `output-preferences.md` | What the system shows/hides in output                |
+| `personas.md`           | Known user roles for your applications               |
+| `mcp.md`                | External service connections                         |
 
 **Secrets** (API tokens, emails) live in `.env` at the repository root — git-ignored, never committed. The `.vscode/mcp.json` reads from `.env` for VS Code users; other runtimes read `.env` directly.
 
@@ -110,6 +110,7 @@ Configuration files hold your project-specific settings. Skills reference these 
 **Connection:** Via [MCP](GLOSSARY.md#mcp) (Model Context Protocol)
 
 The system connects to:
+
 - **Jira** — to fetch issues, read templates, and (when instructed) create/update issues
 - **Confluence** — to fetch reference documentation (Quality Management Playbook)
 
@@ -119,10 +120,10 @@ Skills instruct the AI to fetch data; the AI handles the actual MCP communicatio
 
 ## How a typical `/craft` run works
 
-Here is what happens when you type `/craft BAIKAL-1234`:
+Here is what happens when you type `/craft PROJECT-1234`:
 
 1. The entry point triggers `orchestrate-craft`
-2. The orchestrator reads `skills/fetch-issue-by-key/SKILL.md` → fetches BAIKAL-1234 from Jira
+2. The orchestrator reads `skills/fetch-issue-by-key/SKILL.md` → fetches PROJECT-1234 from Jira
 3. It reads `skills/analyze-input-type/SKILL.md` → determines it is a Story
 4. It reads `skills/fetch-required-templates/SKILL.md` → fetches only the Story template
 5. It reads `skills/normalize-issue-context/SKILL.md` → converts the issue into a standard format
