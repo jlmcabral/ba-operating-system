@@ -190,7 +190,7 @@ When a skill or config file exceeds 100 lines, apply progressive disclosure:
 ```
 skills/
 └── validate-ac-quality/
-    ├── validate-ac-quality.md   # Lean core (<100 lines)
+    ├── SKILL.md                 # Lean core (<100 lines)
     ├── REFERENCE.md             # Detailed examples, loaded on demand
     └── scripts/
         └── validate-gherkin.js
@@ -205,7 +205,7 @@ When a skill includes logic that doesn't require LLM judgment, extract it into a
 ```
 skills/
 └── validate-ac-quality/
-    ├── validate-ac-quality.md   # Main skill (references script)
+    ├── SKILL.md                 # Main skill (references script)
     └── scripts/
         └── validate-gherkin.js  # Deterministic format check
 ```
@@ -215,13 +215,13 @@ Every skill is a directory — even those without scripts. This keeps the struct
 ```
 skills/
 ├── analyze-input-type/
-│   └── analyze-input-type.md
+│   └── SKILL.md
 ├── validate-ac-quality/
-│   ├── validate-ac-quality.md
+│   ├── SKILL.md
 │   └── scripts/
 │       └── validate-gherkin.js
 └── validate-completeness/
-    ├── validate-completeness.md
+    ├── SKILL.md
     └── scripts/
         └── check-completeness.js
 ```

@@ -92,7 +92,7 @@ When you update a standard:
 
 | Item | Convention | Example |
 |------|-----------|---------|
-| Skill files | kebab-case | `validate-ac-quality.md` |
+| Skill files | `SKILL.md` inside kebab-case directory | `skills/validate-ac-quality/SKILL.md` |
 | Orchestrator files | `orchestrate-` prefix, kebab-case | `orchestrate-craft.md` |
 | Config files | kebab-case | `quality-standards.md` |
 | Glossary anchors | lowercase, hyphenated | `{#api-token}` |

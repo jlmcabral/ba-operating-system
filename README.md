@@ -59,9 +59,9 @@ ba-operating-system/
 │   ├── personas.md                  # Known user roles
 │   └── mcp.md                       # External service documentation
 ├── skills/                          # Building blocks (one job each)
-│   ├── fetch-issue-by-key.md
-│   ├── analyze-input-type.md
-│   ├── validate-problem-framing.md
+│   ├── fetch-issue-by-key/SKILL.md
+│   ├── analyze-input-type/SKILL.md
+│   ├── validate-problem-framing/SKILL.md
 │   └── ... (16 skills total)
 ├── orchestrators/                   # Recipes that chain skills
 │   ├── orchestrate-craft.md
