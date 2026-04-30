@@ -10,7 +10,10 @@ Before you start, you need:
 
 1. **Visual Studio Code** (VS Code) — the code editor this system runs in. [Download it here](https://code.visualstudio.com/).
 2. **GitHub Copilot extension** — installed in VS Code with an active subscription.
-3. **Access to your Jira and Confluence instance** — you need to be able to create API tokens.
+3. **Docker** — required to run the MCP server that connects to Jira/Confluence. [Install Docker Desktop](https://www.docker.com/products/docker-desktop/).
+4. **Node.js** (v18+) — required to run deterministic validation scripts. [Download here](https://nodejs.org/).
+5. **Git** — required to clone the repository. [Download here](https://git-scm.com/downloads). Most systems have it pre-installed.
+6. **Access to your Jira and Confluence instance** — you need to be able to create API tokens.
 
 ---
 

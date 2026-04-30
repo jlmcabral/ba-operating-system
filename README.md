@@ -12,12 +12,23 @@ The system runs on any AI tool that supports [MCP](GLOSSARY.md#mcp) (Model Conte
 
 ---
 
+## Prerequisites
+
+| Dependency | Version | Purpose |
+|-----------|---------|---------|
+| [VS Code](https://code.visualstudio.com/) | Latest | Code editor / AI runtime |
+| [GitHub Copilot](https://github.com/features/copilot) | Active subscription | AI agent that runs the system |
+| [Docker](https://www.docker.com/products/docker-desktop/) | Latest | Runs the MCP server (Jira/Confluence connection) |
+| [Node.js](https://nodejs.org/) | 18+ | Runs deterministic validation scripts |
+| [Git](https://git-scm.com/) | Any | Clone the repository |
+
 ## Quick start
 
-1. Clone this repository
-2. Copy `.env.example` to `.env` and add your credentials
-3. Open it in your AI runtime (VS Code with Copilot, or any MCP-compatible tool)
-4. Start using the commands below
+1. Install the prerequisites above
+2. Clone this repository
+3. Copy `.env.example` to `.env` and add your Jira/Confluence credentials
+4. Open it in your AI runtime (VS Code with Copilot, or any MCP-compatible tool)
+5. Start using the commands below
 
 → Full setup instructions: [SETUP.md](SETUP.md)
 

@@ -21,7 +21,7 @@ Credentials live in a `.env` file at the repository root (git-ignored). Copy `.e
 
 ### VS Code users
 
-A `.vscode/mcp.json` file is included and reads from your `.env` automatically. No extra configuration needed.
+A `.vscode/mcp.json` file is included and reads from your `.env` automatically. It runs the MCP server via Docker — ensure Docker Desktop is running before opening the project.
 
 ### Other runtimes
 

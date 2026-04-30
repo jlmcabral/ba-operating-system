@@ -35,6 +35,7 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
        └── scripts/
            └── validator.js
    ```
+   Scripts must: read JSON from stdin, write JSON to stdout, always exit 0, use zero external dependencies (Node.js stdlib only). Node.js 18+ is required (see [SETUP.md](SETUP.md#prerequisites)).
    Skills should call the script first, then apply LLM judgment only to ambiguous cases.
 
 5. **Keep it under 100 lines:** If a skill exceeds 100 lines, split reference material into a `REFERENCE.md` file alongside it. The main skill stays lean; advanced content is loaded on demand.
