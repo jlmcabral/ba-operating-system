@@ -1,147 +1,184 @@
 #!/usr/bin/env node
 
 /**
- * Validates Gherkin-formatted acceptance criteria against formatting rules.
- * Reads from stdin, outputs JSON to stdout.
- * 
- * Validation Rules:
- * 1. Each scenario begins with "Scenario:" followed by a descriptive title
- * 2. Each step keyword (Given, When, Then, And) is on its own line
- * 3. Given, When, Then keywords are wrapped in **bold** markdown
- * 4. And keywords are NOT bold
- * 5. One blank line between scenarios
+ * Validates Gherkin-formatted acceptance criteria against the project's
+ * formatting standard (see config/quality-standards.md and REFERENCE.md).
+ *
+ * Input:  JSON on stdin  — { "acceptance_criteria": "..." }
+ * Output: JSON on stdout — { "valid": bool, "scenarios_found": n, "findings": [] }
+ * Exit:   always 0 (errors are reported inside the JSON output)
+ *
+ * Rules checked:
+ *  1. Scenario title line is fully bold and numbered: **Scenario N: Title**
+ *  2. Given / When / Then keywords are bold: **Given** ...
+ *  3. And keyword is NOT bold: And ...
+ *  4. Every scenario contains at least Given, When, and Then
+ *  5. Blank line between consecutive scenarios
+ *  6. Scenario numbers are sequential starting from 1
  */
 
-const readline = require('readline');
-
-async function validateGherkin() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    terminal: false
-  });
-
-  const lines = [];
-
-  // Read all input
-  for await (const line of rl) {
-    lines.push(line);
+function run() {
+  let raw = '';
+  try {
+    raw = require('fs').readFileSync('/dev/stdin', 'utf8');
+  } catch (_) {
+    output(false, 0, [{ type: 'error', message: 'Failed to read stdin', line: null }]);
+    return;
   }
 
-  const issues = [];
-  let lastScenarioLine = -2; // Track last scenario line for spacing validation
+  let ac;
+  try {
+    const parsed = JSON.parse(raw);
+    ac = parsed.acceptance_criteria;
+    if (typeof ac !== 'string') throw new Error();
+  } catch (_) {
+    output(false, 0, [{ type: 'error', message: 'Invalid input: expected JSON with string field "acceptance_criteria"', line: null }]);
+    return;
+  }
+
+  if (ac.trim() === '') {
+    output(false, 0, [{ type: 'error', message: 'Acceptance criteria text is empty', line: null }]);
+    return;
+  }
+
+  const lines = ac.split(/\r?\n/);
+  const findings = [];
+  const scenarios = []; // { startIdx, number, hasGiven, hasWhen, hasThen }
+
+  const scenarioRe = /^\*\*Scenario\s+(\d+)\s*:\s*(.+?)\*\*$/;
+  const boldKeywordRe = /^\*\*(Given|When|Then)\*\*\s/;
+  const andRe = /^And\s/;
+  const badBoldAndRe = /^\*\*And\*\*\s/;
+  // Detect unbolded Given/When/Then (keyword at start without bold markers)
+  const unboldedKeywordRe = /^(Given|When|Then)\s/;
+  // Detect a scenario-like line that doesn't match the strict pattern
+  const looseScenarioRe = /Scenario/i;
+
+  let expectedNumber = 1;
+  let prevScenarioIdx = -1;
 
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const lineNumber = i + 1;
-    const trimmed = line.trim();
+    const trimmed = lines[i].trim();
+    const lineNum = i + 1;
 
-    // Skip empty lines
-    if (trimmed === '') {
+    if (trimmed === '') continue;
+
+    // --- Scenario title detection ---
+    const scenarioMatch = trimmed.match(scenarioRe);
+    if (scenarioMatch) {
+      const num = parseInt(scenarioMatch[1], 10);
+      const title = scenarioMatch[2].trim();
+
+      if (!title) {
+        findings.push({ type: 'error', message: `Scenario ${num} has no title after the colon`, line: lineNum });
+      }
+
+      if (num !== expectedNumber) {
+        findings.push({ type: 'error', message: `Expected Scenario ${expectedNumber} but found Scenario ${num}`, line: lineNum });
+      }
+      expectedNumber = num + 1;
+
+      // Blank-line check between scenarios
+      if (prevScenarioIdx >= 0) {
+        let hasBlank = false;
+        for (let j = i - 1; j > prevScenarioIdx; j--) {
+          if (lines[j].trim() === '') { hasBlank = true; break; }
+        }
+        if (!hasBlank) {
+          findings.push({ type: 'error', message: 'Missing blank line before this scenario', line: lineNum });
+        }
+      }
+      prevScenarioIdx = i;
+
+      scenarios.push({ startLine: lineNum, number: num, hasGiven: false, hasWhen: false, hasThen: false });
       continue;
     }
 
-    // Check for Scenario line
-    if (trimmed.startsWith('Scenario:')) {
-      // Validate scenario has a title
-      if (trimmed === 'Scenario:') {
-        issues.push({
-          line: lineNumber,
-          rule: 'scenario_title',
-          message: 'Scenario must have a descriptive title after "Scenario:"',
-          text: line
-        });
-      }
-
-      // Validate blank line before scenario (except first scenario)
-      if (lastScenarioLine >= 0) {
-        // Check if there's exactly one blank line before this scenario
-        let blankLinesBefore = 0;
-        for (let j = i - 1; j >= 0 && lines[j].trim() === ''; j--) {
-          blankLinesBefore++;
+    // Catch malformed scenario lines (looks like a scenario but wrong format)
+    if (looseScenarioRe.test(trimmed) && /^\*?\*?Scenario/.test(trimmed)) {
+      // Not matched by the strict regex — likely a formatting error
+      // Avoid false positives on step text that happens to contain the word
+      const looksLikeTitle = /^(\*{0,2})Scenario\s*\d*\s*:?/i.test(trimmed);
+      if (looksLikeTitle) {
+        findings.push({ type: 'error', message: 'Scenario title must be bold and numbered: **Scenario N: Title**', line: lineNum });
+        scenarios.push({ startLine: lineNum, number: expectedNumber, hasGiven: false, hasWhen: false, hasThen: false });
+        expectedNumber++;
+        if (prevScenarioIdx >= 0) {
+          let hasBlank = false;
+          for (let j = i - 1; j > prevScenarioIdx; j--) {
+            if (lines[j].trim() === '') { hasBlank = true; break; }
+          }
+          if (!hasBlank) {
+            findings.push({ type: 'error', message: 'Missing blank line before this scenario', line: lineNum });
+          }
         }
-
-        if (blankLinesBefore === 0) {
-          issues.push({
-            line: lineNumber,
-            rule: 'scenario_spacing',
-            message: 'Missing blank line before scenario',
-            text: line
-          });
-        }
+        prevScenarioIdx = i;
+        continue;
       }
-
-      lastScenarioLine = i;
     }
 
-    // Check for step keywords (Given, When, Then, And)
-    const stepKeywordRegex = /^(\*\*)?(?:Given|When|Then|And)(\*\*)?(?:\s|$)/;
-    const stepMatch = trimmed.match(stepKeywordRegex);
+    // --- Step keyword checks ---
+    const current = scenarios.length > 0 ? scenarios[scenarios.length - 1] : null;
 
-    if (stepMatch) {
-      // Extract the keyword
-      const keywordMatch = trimmed.match(/^(\*\*)?(?:(Given|When|Then|And))(\*\*)?/);
-      if (keywordMatch) {
-        const beforeBold = keywordMatch[1];
-        const keyword = keywordMatch[2];
-        const afterBold = keywordMatch[3];
-
-        // Check if keyword is properly bolded
-        const isBold = beforeBold === '**' && afterBold === '**';
-
-        // Given, When, Then must be bold
-        if (['Given', 'When', 'Then'].includes(keyword) && !isBold) {
-          issues.push({
-            line: lineNumber,
-            rule: 'bold_keyword',
-            message: `Step keyword '${keyword}' is not bold (should be **${keyword}**)`,
-            text: line
-          });
-        }
-
-        // And must NOT be bold
-        if (keyword === 'And' && isBold) {
-          issues.push({
-            line: lineNumber,
-            rule: 'and_not_bold',
-            message: "'And' keyword should not be bold",
-            text: line
-          });
-        }
-
-        // Verify step is on its own line (keyword at start of line)
-        if (!trimmed.startsWith('**' + keyword + '**') && !trimmed.startsWith(keyword)) {
-          issues.push({
-            line: lineNumber,
-            rule: 'keyword_position',
-            message: `Step keyword '${keyword}' must be at the beginning of the line`,
-            text: line
-          });
-        }
+    if (boldKeywordRe.test(trimmed)) {
+      const kw = trimmed.match(boldKeywordRe)[1];
+      if (current) {
+        if (kw === 'Given') current.hasGiven = true;
+        if (kw === 'When') current.hasWhen = true;
+        if (kw === 'Then') current.hasThen = true;
       }
+      continue;
+    }
+
+    if (andRe.test(trimmed)) {
+      // Correctly formatted And — nothing to flag
+      continue;
+    }
+
+    if (badBoldAndRe.test(trimmed)) {
+      findings.push({ type: 'error', message: 'And keyword must NOT be bold', line: lineNum });
+      continue;
+    }
+
+    if (unboldedKeywordRe.test(trimmed)) {
+      const kw = trimmed.match(unboldedKeywordRe)[1];
+      findings.push({ type: 'error', message: `${kw} keyword must be bold: **${kw}**`, line: lineNum });
+      if (current) {
+        if (kw === 'Given') current.hasGiven = true;
+        if (kw === 'When') current.hasWhen = true;
+        if (kw === 'Then') current.hasThen = true;
+      }
+      continue;
+    }
+
+    // Line that doesn't match any known pattern — if no scenario declared yet, warn
+    if (scenarios.length === 0) {
+      findings.push({ type: 'warning', message: 'Content found before any scenario declaration', line: lineNum });
     }
   }
 
-  const result = {
-    valid: issues.length === 0,
-    issues: issues
-  };
+  // Validate each scenario has the required keywords
+  for (const s of scenarios) {
+    const missing = [];
+    if (!s.hasGiven) missing.push('Given');
+    if (!s.hasWhen) missing.push('When');
+    if (!s.hasThen) missing.push('Then');
+    if (missing.length > 0) {
+      findings.push({ type: 'error', message: `Scenario ${s.number} is missing required step(s): ${missing.join(', ')}`, line: s.startLine });
+    }
+  }
 
-  console.log(JSON.stringify(result, null, 2));
+  if (scenarios.length === 0) {
+    findings.push({ type: 'error', message: 'No scenarios found in acceptance criteria', line: null });
+  }
+
+  const hasErrors = findings.some(f => f.type === 'error');
+  output(!hasErrors, scenarios.length, findings);
+}
+
+function output(valid, scenariosFound, findings) {
+  console.log(JSON.stringify({ valid, scenarios_found: scenariosFound, findings }, null, 2));
   process.exit(0);
 }
 
-// Execute validation
-validateGherkin().catch(() => {
-  // On error, still output valid JSON format
-  const errorResult = {
-    valid: false,
-    issues: [{
-      line: 0,
-      rule: 'parse_error',
-      message: 'Error reading input',
-      text: ''
-    }]
-  };
-  console.log(JSON.stringify(errorResult, null, 2));
-  process.exit(0);
-});
+run();

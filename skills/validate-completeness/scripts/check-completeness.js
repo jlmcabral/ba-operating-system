@@ -2,179 +2,97 @@
 
 const { stdin, stdout } = process;
 
-// Define required fields by issue type
-const REQUIRED_FIELDS = {
-  ALL: ['summary', 'acceptance_criteria'],
-  STORY: ['problem_statement', 'persona', 'candidate_story'],
-  BUG: ['problem_statement', 'persona'],
-};
+// Fields excluded from validation — teams fill these during refinement
+const EXCLUDED_FIELDS = ['technical_approach'];
 
-// Placeholders that count as missing
-const PLACEHOLDERS = ['[TBD]', '[TODO]', '...'];
+// Default required fields when template_structure is not provided
+const DEFAULT_REQUIRED_FIELDS = [
+  'summary',
+  'acceptance_criteria',
+  'problem_statement',
+];
 
-/**
- * Check if a field value is missing
- */
-function isMissing(value) {
+// Values treated as effectively empty
+const EMPTY_MARKERS = ['[TBD]', '[TODO]', '[MISSING]', '...'];
+
+function isEmpty(value) {
   if (value === null || value === undefined) return true;
-  if (value === '[MISSING]') return true;
-  if (typeof value === 'string' && value.trim() === '') return true;
-  if (Array.isArray(value) && value.length === 0) return true;
-  return false;
-}
-
-/**
- * Check if a field has unresolved inference
- */
-function hasInference(value) {
-  if (typeof value === 'string') {
-    return value.includes('[INFERRED]');
-  }
-  return false;
-}
-
-/**
- * Check if a field is a placeholder
- */
-function isPlaceholder(value) {
   if (typeof value === 'string') {
     const trimmed = value.trim();
-    return PLACEHOLDERS.includes(trimmed);
+    return trimmed === '' || EMPTY_MARKERS.includes(trimmed);
   }
+  if (Array.isArray(value)) return value.length === 0;
   return false;
 }
 
-/**
- * Get all required fields for an issue type
- */
-function getRequiredFields(issueType) {
-  const required = [...REQUIRED_FIELDS.ALL];
-  
-  if (issueType === 'Story') {
-    required.push(...REQUIRED_FIELDS.STORY);
-  } else if (issueType === 'Bug') {
-    required.push(...REQUIRED_FIELDS.BUG);
-  }
-  
-  return required;
+function errorResult(message) {
+  return {
+    complete: false,
+    fields_checked: 0,
+    missing_fields: [],
+    empty_fields: [],
+    findings: [],
+    error: message,
+  };
 }
 
-/**
- * Check completeness of canonical issue
- */
 function checkCompleteness(input) {
-  try {
-    const { canonical_issue, issue_type } = input;
-    
-    if (!canonical_issue || typeof canonical_issue !== 'object') {
-      return {
-        error: 'Invalid input: canonical_issue must be an object',
-        complete: false,
-        missing_fields: [],
-        inferred_fields: [],
-        placeholder_fields: [],
-        severity: null,
-      };
-    }
-    
-    if (!issue_type || typeof issue_type !== 'string') {
-      return {
-        error: 'Invalid input: issue_type must be a non-empty string',
-        complete: false,
-        missing_fields: [],
-        inferred_fields: [],
-        placeholder_fields: [],
-        severity: null,
-      };
-    }
-    
-    const requiredFields = getRequiredFields(issue_type);
-    const missingFields = [];
-    const inferredFields = [];
-    const placeholderFields = [];
-    
-    // Check each required field
-    for (const field of requiredFields) {
-      const value = canonical_issue[field];
-      
-      // Never flag technical_approach as missing
-      if (field === 'technical_approach') {
-        continue;
-      }
-      
-      if (isMissing(value)) {
-        missingFields.push(field);
-      } else if (hasInference(value)) {
-        inferredFields.push(field);
-      } else if (isPlaceholder(value)) {
-        placeholderFields.push(field);
-      }
-    }
-    
-    // Determine severity
-    let severity = null;
-    if (missingFields.length > 0) {
-      severity = 'critical';
-    } else if (inferredFields.length > 0 || placeholderFields.length > 0) {
-      severity = 'minor';
-    }
-    
-    const complete = missingFields.length === 0 && 
-                     inferredFields.length === 0 && 
-                     placeholderFields.length === 0;
-    
-    return {
-      complete,
-      missing_fields: missingFields,
-      inferred_fields: inferredFields,
-      placeholder_fields: placeholderFields,
-      severity,
-    };
-  } catch (error) {
-    return {
-      error: `Validation error: ${error.message}`,
-      complete: false,
-      missing_fields: [],
-      inferred_fields: [],
-      placeholder_fields: [],
-      severity: null,
-    };
+  const issue = input.issue;
+  if (!issue || typeof issue !== 'object') {
+    return errorResult('Invalid input: "issue" must be an object');
   }
+
+  const templateFields =
+    input.template_structure &&
+    Array.isArray(input.template_structure.required_fields)
+      ? input.template_structure.required_fields
+      : null;
+
+  const requiredFields = (templateFields || DEFAULT_REQUIRED_FIELDS).filter(
+    (f) => !EXCLUDED_FIELDS.includes(f)
+  );
+
+  const missingFields = [];
+  const emptyFields = [];
+  const findings = [];
+
+  for (const field of requiredFields) {
+    if (!(field in issue)) {
+      missingFields.push(field);
+      findings.push({ field, status: 'missing' });
+    } else if (isEmpty(issue[field])) {
+      emptyFields.push(field);
+      findings.push({ field, status: 'empty' });
+    } else {
+      findings.push({ field, status: 'present' });
+    }
+  }
+
+  return {
+    complete: missingFields.length === 0 && emptyFields.length === 0,
+    fields_checked: requiredFields.length,
+    missing_fields: missingFields,
+    empty_fields: emptyFields,
+    findings,
+  };
 }
 
-// Read from stdin
+// --- stdin reader ---
 let data = '';
 
-stdin.on('data', chunk => {
+stdin.on('data', (chunk) => {
   data += chunk;
 });
 
 stdin.on('end', () => {
   try {
     const input = JSON.parse(data);
-    const result = checkCompleteness(input);
-    stdout.write(JSON.stringify(result) + '\n');
-  } catch (error) {
-    const errorResult = {
-      error: `JSON parse error: ${error.message}`,
-      complete: false,
-      missing_fields: [],
-      inferred_fields: [],
-      placeholder_fields: [],
-      severity: null,
-    };
-    stdout.write(JSON.stringify(errorResult) + '\n');
+    stdout.write(JSON.stringify(checkCompleteness(input)) + '\n');
+  } catch (err) {
+    stdout.write(JSON.stringify(errorResult('JSON parse error: ' + err.message)) + '\n');
   }
 });
 
-stdin.on('error', (error) => {
-  const errorResult = {
-    error: `Input error: ${error.message}`,
-    complete: false,
-    missing_fields: [],
-    inferred_fields: [],
-    placeholder_fields: [],
-    severity: null,
-  };
-  stdout.write(JSON.stringify(errorResult) + '\n');
+stdin.on('error', (err) => {
+  stdout.write(JSON.stringify(errorResult('Input error: ' + err.message)) + '\n');
 });
