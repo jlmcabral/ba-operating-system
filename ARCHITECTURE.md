@@ -10,7 +10,7 @@ The system has five layers. Each layer has a clear job:
 
 ```
 ┌─────────────────────────────────────────────┐
-│           Entry Points (/craft, /assess)    │  ← What you interact with
+│     Entry Points (/help, /craft, /assess)   │  ← What you interact with
 ├─────────────────────────────────────────────┤
 │           Orchestrators                      │  ← Recipes that chain skills
 ├─────────────────────────────────────────────┤
@@ -30,10 +30,11 @@ The system has five layers. Each layer has a clear job:
 
 **Location:** `entry-points.md`
 
-These are the commands you use. There are three:
+These are the commands you use. There are four:
 
 | Command | What it does |
 |---------|-------------|
+| `/help` | Interactive guide to choose the right command |
 | `/craft [input]` | Shape an idea, draft, or Jira issue into a complete issue |
 | `/assess [key]` | Check if one specific issue is ready for refinement |
 | `/assess-refinement` | Check all issues in your configured columns |
@@ -52,6 +53,7 @@ Orchestrators are recipes. They define which skills to run, in what order, and w
 
 | Orchestrator | Skills chained |
 |-------------|---------------|
+| `orchestrate-help` | Pure presentation — interactive decision tree, no skills chained |
 | `orchestrate-craft` | analyse → fetch template → ask questions → normalise → draft → validate → revise → follow-up |
 | `orchestrate-assess-single` | fetch issue → analyse → fetch template → normalise → validate → format report |
 | `orchestrate-assess-refinement` | fetch all issues → classify → fetch templates (deduplicated) → validate each → format batch report |

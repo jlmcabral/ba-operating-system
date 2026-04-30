@@ -169,6 +169,6 @@ This orchestrator is **simpler than others** because:
 
 ## Related Documents
 
-- [entry-points.md](entry-points.md) — Full command reference
-- [ARCHITECTURE.md](ARCHITECTURE.md) — System overview
-- [README.md](README.md) — Getting started
+- [entry-points.md](../entry-points.md) — Full command reference
+- [ARCHITECTURE.md](../ARCHITECTURE.md) — System overview
+- [README.md](../README.md) — Getting started

@@ -10,6 +10,7 @@ description: Write a complete issue draft from enriched canonical issue and temp
 **Config references:**
 - `config/quality-standards.md` — Gherkin formatting rules, problem statement rules
 - `config/output-preferences.md` — Output style rules
+- `config/personas.md` — Known user roles for persona matching
 
 ---
 

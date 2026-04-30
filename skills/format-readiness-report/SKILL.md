@@ -20,86 +20,19 @@ description: Generate readiness assessment output in single or batch mode with t
   - Validation findings from all applicable checks
   - Reporter name
 
----
-
-## Readiness Tier Logic
-
-Determine the readiness tier for each issue based on its validation findings:
-
-| Tier                 | Condition                                                                |
-|----------------------|--------------------------------------------------------------------------|
-| ✅ Ready             | All applicable checks pass. No critical or minor findings.               |
-| ⚠️ Needs Minor Work | One or two non-critical findings present. No critical blockers.          |
-| ❌ Not Ready         | One or more critical findings present.                                   |
-
-**Critical blockers:**
-- Problem framing failure → Always ❌
-- Scope failure → Always ❌
-- AC quality failure (majority of criteria) → ❌
-- AC UI/UX trap (majority of criteria) → ❌
-- Completeness failure (required fields missing) → ❌
-
-**Minor issues:**
-- AC quality (one or two weak criteria) → ⚠️
-- AC UI/UX trap (one or two design debt markers) → ⚠️
-- Completeness (fields present but thin) → ⚠️
-
-**Observational only (never affects tier):**
-- Persona findings
-
----
-
-## Failure Categories
-
-| Category              | Icon | Applies to          |
-|-----------------------|------|---------------------|
-| Problem framing       | 🎯   | Story, Bug          |
-| Scope                 | 📐   | Story, Task, Bug    |
-| AC — quality          | ✅   | Story, Task, Bug    |
-| AC — UI/UX trap       | 🖥️   | Story, Bug          |
-| Completeness          | 📋   | Story, Task, Bug    |
-
-Only include rows for categories that apply to the issue type.
+**Reference:** See `REFERENCE.md` for detailed tier definitions and examples.
 
 ---
 
 ## Instructions
 
-### Single mode (`/assess`)
+1. **Classify each issue** into a readiness tier (✅ Ready, ⚠️ Needs Minor Work, ❌ Not Ready) using the tier logic in `REFERENCE.md`.
 
-Produce a detailed assessment for one issue:
+2. **Single mode** (`/assess`): Produce a detailed assessment for one issue using the single mode template in `REFERENCE.md`.
 
-```
-**[ISSUE KEY](https://jira.int.kn/browse/ISSUE-KEY) — [Title]**
-**Type:** Story / Task / Bug
-**Readiness:** ✅ / ⚠️ / ❌
-**Reporter:** [reporter name]
+3. **Batch mode** (`/assess-refinement`): Produce a summary table of all issues sorted by tier (✅ first, then ⚠️, then ❌), followed by detailed assessments for non-ready issues only. See `REFERENCE.md` for templates.
 
-**Check results:**
-
-| Category | Result | Finding |
-|----------|--------|---------|
-| [applicable categories only] | ⚠️ / ❌ | [brief finding] |
-
-**What needs to change before refinement:**
-[numbered list of specific, actionable items — one per failing check]
-```
-
-### Batch mode (`/assess-refinement`)
-
-**Output 1 — Summary table:**
-
-| Issue Key | Title | Type | Readiness | Failure categories |
-|-----------|-------|------|-----------|-------------------|
-| [linked key] | [title] | Story/Task/Bug | ✅/⚠️/❌ | [icons + names, or "None"] |
-
-Sort: ✅ Ready first, then ⚠️, then ❌.
-
-**Output 2 — Detailed assessment (⚠️ and ❌ only):**
-
-For each issue that is not ✅ Ready, produce the same detailed format as single mode.
-
-Do **not** produce detailed assessments for ✅ Ready issues.
+4. Only include failure categories that apply to the issue type.
 
 ---
 

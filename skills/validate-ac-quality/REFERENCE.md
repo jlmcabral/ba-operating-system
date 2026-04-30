@@ -2,7 +2,7 @@
 
 This file contains detailed formatting rules and examples for acceptance criteria. Referenced by validation skills when checking AC quality.
 
-For the quick rules summary, see [`quality-standards.md`](quality-standards.md).
+For the quick rules summary, see [`quality-standards.md`](../../config/quality-standards.md).
 
 ---
 
