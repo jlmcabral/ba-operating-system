@@ -1,6 +1,10 @@
 # Environment secrets
 .env
 
+# Project-specific configuration (use .example files as templates)
+config/project.md
+config/personas.md
+
 # OS files
 .DS_Store
 Thumbs.db

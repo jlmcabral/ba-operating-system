@@ -27,8 +27,10 @@ The system runs on any AI tool that supports [MCP](GLOSSARY.md#mcp) (Model Conte
 1. Install the prerequisites above
 2. Clone this repository
 3. Copy `.env.example` to `.env` and add your Jira/Confluence credentials
-4. Open it in your AI runtime (VS Code with Copilot, or any MCP-compatible tool)
-5. Start using the commands below
+4. Copy `config/project.md.example` to `config/project.md` and fill in your project details
+5. Copy `config/personas.md.example` to `config/personas.md` and add your user roles
+6. Open it in your AI runtime (VS Code with Copilot, or any MCP-compatible tool)
+7. Start using the commands below
 
 → Full setup instructions: [SETUP.md](SETUP.md)
 

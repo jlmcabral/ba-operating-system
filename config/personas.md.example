@@ -1,0 +1,35 @@
+# Application Personas
+
+This file defines the known user roles and personas for the applications managed by this BA Operating System. Skills that validate persona specificity reference this file.
+
+> **Note:** This system is used for applications with a limited, well-known user base. Engineering already knows who they are building for. Persona checks validate that issues clearly identify which of these known personas is affected — they do not block readiness.
+
+---
+
+## How to use this file
+
+When adding or updating personas:
+1. List each distinct user role with a brief description of their context
+2. Include what they typically need from the system and what permissions or access they have
+3. Group personas by application if they differ across products
+
+When a persona is referenced in an issue, it should match one of the roles listed here. Generic labels like "user" are discouraged — use a specific role from this list.
+
+---
+
+## Personas
+
+### [Application Name]
+
+| Persona / Role | Description | Key needs | Access level |
+|----------------|-------------|-----------|-------------|
+| Operations Manager | Oversees daily operations and team assignments | Needs visibility into workload and bottlenecks | Full access to dashboards and reports |
+| Field Technician | Performs on-site work based on assigned tasks | Needs clear task details and location info on mobile | Mobile app, read-only for schedules |
+
+---
+
+## Persona Check Behaviour
+
+- **Observational only** — persona gaps never block readiness and never drive a flag on their own.
+- When an issue references a vague persona (e.g., "user", "someone"), the system will suggest a more specific role from this list.
+- When no persona from this list matches the issue context, the system will note this as an observation — not a blocker.

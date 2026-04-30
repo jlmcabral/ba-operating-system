@@ -83,10 +83,18 @@ For more details on MCP configuration, see [config/mcp.md](config/mcp.md).
 
 ## Step 4: Customise your configuration
 
-The `/config` directory contains settings specific to your projects. Review and update:
+The `/config` directory contains settings specific to your projects. Two files need creating from examples:
 
-1. **`config/project.md`** — Update the Jira project keys and template issue keys if yours differ from the defaults.
-2. **`config/personas.md`** — Add the user roles for your applications (there is a template with examples to guide you).
+1. **`config/project.md`** — Copy `config/project.md.example` to `config/project.md` and fill in your Jira project keys, statuses, and template issue keys.
+2. **`config/personas.md`** — Copy `config/personas.md.example` to `config/personas.md` and add the user roles for your applications.
+
+```
+cp config/project.md.example config/project.md
+cp config/personas.md.example config/personas.md
+```
+
+These files are git-ignored (like `.env`) because they contain project-specific data.
+
 3. **Other config files** — Review but likely don't need changes yet.
 
 See the [Configuration README](config/README.md) for details on each file.
