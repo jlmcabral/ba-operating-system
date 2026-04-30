@@ -1,0 +1,93 @@
+# Skills
+
+Skills are the building blocks of the BA Operating System. Each skill does **one thing** and does it well — like a specialist you can call on when needed.
+
+> **New to this system?** Think of skills like individual tools in a toolbox. A hammer drives nails, a screwdriver turns screws. You don't use them all at once — you pick the right ones for the job. [Orchestrators](../orchestrators/README.md) are the instructions that tell you which tools to use and in what order.
+
+---
+
+## How skills work
+
+1. **You never run a skill directly.** Orchestrators chain skills together in the right order for your task.
+2. **Each skill has a clear input and output.** It knows what it needs to receive and what it produces.
+3. **Skills read from configuration.** Project-specific settings live in `/config` — skills stay generic and reusable.
+4. **Skills don't know about each other.** They don't call other skills or decide what runs next. That's the orchestrator's job.
+
+---
+
+## Skill inventory
+
+### Fetching skills
+These retrieve data from external systems (Jira, Confluence) via [MCP](../GLOSSARY.md#mcp).
+
+| Skill | Purpose |
+|-------|---------|
+| [`fetch-issue-by-key`](fetch-issue-by-key.md) | Fetch a single Jira issue by its key |
+| [`fetch-issues-by-status`](fetch-issues-by-status.md) | Fetch all issues from configured project columns |
+| [`fetch-required-templates`](fetch-required-templates.md) | Fetch the right issue template based on issue type |
+
+### Analysis skills
+These examine input to determine what it is and prepare it for processing.
+
+| Skill | Purpose |
+|-------|---------|
+| [`analyze-input-type`](analyze-input-type.md) | Determine if the input is a Story, Task, or Bug |
+| [`normalize-issue-context`](normalize-issue-context.md) | Transform any input format into a standard shape |
+
+### Interaction skills
+These involve direct communication with you.
+
+| Skill | Purpose |
+|-------|---------|
+| [`ask-clarification-questions`](ask-clarification-questions.md) | Ask targeted questions before writing a draft |
+
+### Production skills
+These create or improve issue content.
+
+| Skill | Purpose |
+|-------|---------|
+| [`produce-issue-draft`](produce-issue-draft.md) | Write a complete issue draft from the template |
+| [`revise-draft-from-findings`](revise-draft-from-findings.md) | Improve a draft based on validation feedback |
+
+### Validation skills
+These check specific quality aspects of an issue. They all operate on the same standardised input format (produced by `normalize-issue-context`).
+
+| Skill | Purpose | Applies to |
+|-------|---------|------------|
+| [`validate-problem-framing`](validate-problem-framing.md) | Is this grounded in a real user need? | Story, Bug |
+| [`validate-scope`](validate-scope.md) | Is this trying to do too much? | All types |
+| [`validate-ac-quality`](validate-ac-quality.md) | Are acceptance criteria testable and coherent? | All types |
+| [`validate-ac-uiux-trap`](validate-ac-uiux-trap.md) | Are criteria describing outcomes, not interfaces? | Story, Bug |
+| [`validate-completeness`](validate-completeness.md) | Are all required fields filled? | All types |
+| [`validate-persona`](validate-persona.md) | Is the affected persona specific enough? | Story, Bug |
+
+### Output skills
+These format results for presentation.
+
+| Skill | Purpose |
+|-------|---------|
+| [`generate-follow-up-questions`](generate-follow-up-questions.md) | Create targeted questions from validation gaps |
+| [`format-readiness-report`](format-readiness-report.md) | Generate readiness reports (single or batch) |
+
+---
+
+## How to read a skill file
+
+Every skill file follows the same structure:
+
+1. **Purpose** — What the skill does (one sentence)
+2. **Config references** — Which configuration files it reads
+3. **Input** — What it needs to receive
+4. **Applicability** (validation skills only) — Which issue types it applies to
+5. **Instructions** — Step-by-step logic the AI follows
+6. **Output** — What it produces for downstream skills
+
+---
+
+## Adding a new skill
+
+1. Create a new `.md` file in this directory
+2. Follow the structure above (Purpose → Config → Input → Instructions → Output)
+3. Add the skill to the inventory table in this README
+4. Reference it in any orchestrators that should use it
+5. Update the [Architecture guide](../ARCHITECTURE.md) if the skill introduces a new category
