@@ -9,7 +9,8 @@ This file is the single source of truth for acceptance criteria formatting, issu
 All acceptance criteria must use Gherkin format. For the full formatting rules with examples, see [`skills/validate-ac-quality/REFERENCE.md`](../skills/validate-ac-quality/REFERENCE.md).
 
 **Quick reference:**
-- `Scenario:` + descriptive title (entire title line bold, numbered sequentially)
+
+- `Scenario :` + descriptive title (entire title line bold, numbered sequentially)
 - **Given** / **When** / **Then** in bold, one per line
 - **And** keyword is NOT bold
 - Blank line between scenarios
