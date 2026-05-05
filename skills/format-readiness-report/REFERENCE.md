@@ -20,14 +20,20 @@ Determine the readiness tier for each issue based on its validation findings:
 - AC quality failure (majority of criteria) → ❌
 - AC UI/UX trap (majority of criteria) → ❌
 - Completeness failure (required fields missing) → ❌
+- Scenario coverage failure (zero unhappy paths when context implies error states exist) → ❌
+- Dependencies failure (unacknowledged dependency that could block delivery) → ❌
+- Persona role coverage failure (story implies role-differentiated behaviour but AC does not capture it) → ❌
 
 **Minor issues:**
 - AC quality (one or two weak criteria) → ⚠️
 - AC UI/UX trap (one or two design debt markers) → ⚠️
 - Completeness (fields present but thin) → ⚠️
+- Scenario coverage (some unhappy paths covered but significant gaps remain) → ⚠️
+- Dependencies (dependency exists but likely known/resolved) → ⚠️
+- Design reference (user-facing story with no design link and no acknowledgement) → ⚠️
 
 **Observational only (never affects tier):**
-- Persona findings
+- Persona specificity findings (Behaviour A — generic persona label)
 
 ---
 
@@ -40,8 +46,12 @@ Determine the readiness tier for each issue based on its validation findings:
 | AC — quality          | ✅   | Story, Task, Bug    |
 | AC — UI/UX trap       | 🖥️   | Story, Bug          |
 | Completeness          | 📋   | Story, Task, Bug    |
+| Scenario coverage     | 🔀   | Story, Bug          |
+| Dependencies          | 🔗   | Story, Task, Bug    |
+| Design reference      | 🎨   | Story               |
+| Persona — role coverage | 👥 | Story, Bug          |
 
-Only include rows for categories that apply to the issue type.
+Only include rows for categories that apply to the issue type. The Persona — role coverage row only appears when the `validate-persona` skill returns a role differentiation finding (Behaviour B). Generic persona observations (Behaviour A) are never shown in the check results table.
 
 ---
 

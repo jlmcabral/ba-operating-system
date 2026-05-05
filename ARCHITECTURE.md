@@ -76,7 +76,7 @@ Skills are the building blocks. Each one does one thing:
 | Analysis    | 2 skills | Understand and normalise input                                                         |
 | Interaction | 1 skill  | Ask you clarifying questions                                                           |
 | Production  | 2 skills | Write and revise issue drafts                                                          |
-| Validation  | 6 skills | Check quality (problem framing, scope, AC quality, UI/UX traps, completeness, persona) |
+| Validation  | 9 skills | Check quality (problem framing, scope, AC quality, UI/UX traps, completeness, persona and role coverage, scenario coverage, dependencies, design reference) |
 | Output      | 2 skills | Format follow-up questions and readiness reports                                       |
 
 **Key design principle:** Skills don't know about each other. They receive input, do their job, and produce output. Only orchestrators decide what runs when.

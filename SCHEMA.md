@@ -237,7 +237,10 @@ readiness_assessment = {
     ac_quality: boolean,
     ac_uiux: boolean,
     completeness: boolean,
-    persona: boolean
+    persona: boolean,
+    scenario_coverage: boolean,
+    dependencies: boolean,
+    design_reference: boolean
   },
   failed_checks: validation_finding[],  // Only critical or major findings
   summary: string,                       // One-sentence summary for readiness tier

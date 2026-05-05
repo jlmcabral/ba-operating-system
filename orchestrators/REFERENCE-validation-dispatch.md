@@ -8,9 +8,9 @@ This reference defines the standard pattern for running validation skills in par
 
 | Issue Type | Validators to run |
 |------------|-------------------|
-| Story | validate-problem-framing, validate-scope, validate-ac-quality, validate-ac-uiux-trap, validate-completeness, validate-persona |
-| Bug | validate-problem-framing, validate-scope, validate-ac-quality, validate-ac-uiux-trap, validate-completeness, validate-persona |
-| Task | validate-scope, validate-ac-quality, validate-completeness |
+| Story | validate-problem-framing, validate-scope, validate-ac-quality, validate-ac-uiux-trap, validate-completeness, validate-persona, validate-scenario-coverage, validate-dependencies, validate-design-reference |
+| Bug | validate-problem-framing, validate-scope, validate-ac-quality, validate-ac-uiux-trap, validate-completeness, validate-persona, validate-scenario-coverage, validate-dependencies |
+| Task | validate-scope, validate-ac-quality, validate-completeness, validate-dependencies |
 
 ---
 
@@ -64,6 +64,7 @@ Only findings with non-null `finding` values proceed to downstream skills.
 
 ## Notes
 
-- **Persona findings** are always `observational` severity and never affect readiness tier
-- **validate-completeness** requires `template_structure` as additional input — other validators do not
+- **validate-persona** has two behaviours: persona specificity (always `observational`) and role-based coverage (can be `critical`). Both findings are returned from the same skill invocation.
+- **validate-completeness** requires `template_structure` as additional input — other validators do not.
+- **validate-design-reference** applies to Story only — skip for Bug and Task.
 - For batch operations (`/assess-refinement`), validators run per-issue inside a composite agent. The dispatch pattern is the same but executed within the agent context rather than at the orchestrator level.

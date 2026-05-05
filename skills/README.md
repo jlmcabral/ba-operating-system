@@ -59,7 +59,10 @@ These check specific quality aspects of an issue. They all operate on the same s
 | [`validate-ac-quality`](validate-ac-quality/SKILL.md) | Are acceptance criteria testable and coherent? | All types |
 | [`validate-ac-uiux-trap`](validate-ac-uiux-trap/SKILL.md) | Are criteria describing outcomes, not interfaces? | Story, Bug |
 | [`validate-completeness`](validate-completeness/SKILL.md) | Are all required fields filled? | All types |
-| [`validate-persona`](validate-persona/SKILL.md) | Is the affected persona specific enough? | Story, Bug |
+| [`validate-persona`](validate-persona/SKILL.md) | Is the persona specific, and do AC differentiate between roles when behaviour differs by role? | Story, Bug |
+| [`validate-scenario-coverage`](validate-scenario-coverage/SKILL.md) | Do AC cover unhappy paths and error states, not just the happy path? | Story, Bug |
+| [`validate-dependencies`](validate-dependencies/SKILL.md) | Are external dependencies, pending decisions, or cross-team reliances acknowledged? | All types |
+| [`validate-design-reference`](validate-design-reference/SKILL.md) | Does the story reference a design file when one is expected? | Story |
 
 ### Output skills
 These format results for presentation.
