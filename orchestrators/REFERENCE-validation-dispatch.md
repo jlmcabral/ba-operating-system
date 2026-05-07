@@ -68,3 +68,7 @@ Only findings with non-null `finding` values proceed to downstream skills.
 - **validate-completeness** requires `template_structure` as additional input — other validators don't.
 - **validate-design-reference** applies to Story only — skip for Bug and Task.
 - Batch operations (`/assess-refinement`): validators run per-issue inside composite agent. Dispatch pattern same but executed within agent context.
+
+---
+
+**See also:** [`orchestrators/REFERENCE-agent-dispatch.md`](REFERENCE-agent-dispatch.md) — general agent dispatch rules (when to use agents, prompt packaging, parallel launch, result merge).
