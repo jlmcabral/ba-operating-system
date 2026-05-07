@@ -5,41 +5,41 @@ description: Produce targeted follow-up questions from unresolved validation fin
 
 # Skill: Generate Follow-up Questions
 
-**Purpose:** Based on validation findings and unresolved gaps, produce a targeted list of follow-up questions that would bring the issue closer to refinement-ready quality.
+**Purpose:** Based on validation findings and unresolved gaps, produce targeted list of follow-up questions that would bring issue closer to refinement-ready quality.
 
-**Config references:** None directly — operates on validation output.
+**Config references:** None — operates on validation output.
 
 ---
 
 ## Input
 
-- **unresolved_findings** — Findings from validation skills that could not be addressed by `revise-draft-from-findings`
-- **canonical_issue** — The normalised issue context (for reference)
+- **unresolved_findings** — Findings from validation skills that couldn't be addressed by `revise-draft-from-findings`
+- **canonical_issue** — Normalised issue context (for reference)
 - **issue_type** — Story, Task, or Bug
 
 ---
 
 ## Instructions
 
-1. Review each unresolved finding. For each, formulate one specific question that would resolve it.
+1. Review each unresolved finding. Formulate one specific question that would resolve it.
 
 2. Group questions by theme:
-   - **Problem clarity** — Questions about the user need, friction, or impact
-   - **Scope** — Questions about what is included/excluded, split decisions
-   - **Missing information** — Questions about empty fields or unconfirmed inferences
-   - **Ambiguity** — Questions about criteria or requirements that could be interpreted multiple ways
+   - **Problem clarity** — User need, friction, or impact
+   - **Scope** — What's included/excluded, split decisions
+   - **Missing information** — Empty fields or unconfirmed inferences
+   - **Ambiguity** — Criteria or requirements interpretable multiple ways
 
 3. Questions must be:
-   - **Specific** — Not "Can you provide more detail?" but "What happens when the user submits the form with an invalid date range?"
-   - **Actionable** — The answer should directly resolve a gap in the issue
-   - **One per gap** — Do not bundle multiple questions together
+   - **Specific** — Not "Can you provide more detail?" but "What happens when user submits form with invalid date range?"
+   - **Actionable** — Answer directly resolves a gap in issue
+   - **One per gap** — Don't bundle multiple questions
 
-4. Prioritise questions by impact — which answers would improve the issue the most?
+4. Prioritise by impact — which answers improve issue most?
 
-5. Keep the list concise. If there are many findings, focus on the top 5-7 most impactful questions.
+5. Keep concise. Many findings: focus on top 5-7 most impactful.
 
 ---
 
 ## Output
 
-- **questions** — A numbered list of specific follow-up questions, grouped by theme
+- **questions** — Numbered list of specific follow-up questions, grouped by theme

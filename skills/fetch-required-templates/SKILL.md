@@ -5,7 +5,7 @@ description: Fetch the Jira issue template for a given type (Story, Task, Bug) a
 
 # Skill: Fetch Required Templates
 
-**Purpose:** Fetch only the Jira issue template(s) needed for the current work, based on the determined issue type. Optionally fetch the Quality Management Playbook when classifying bugs.
+**Purpose:** Fetch only Jira issue template(s) needed for current work, based on determined issue type. Optionally fetch Quality Management Playbook when classifying bugs.
 
 **Config references:**
 - `config/project.md` — Template issue keys and Playbook page ID
@@ -14,29 +14,29 @@ description: Fetch the Jira issue template for a given type (Story, Task, Bug) a
 
 ## Input
 
-- **issue_type** — The determined issue type: Story, Task, or Bug
-- **fetch_playbook** — Whether to also fetch the Quality Management Playbook (true for Bugs, false otherwise)
+- **issue_type** — Determined issue type: Story, Task, or Bug
+- **fetch_playbook** — Whether to also fetch Quality Management Playbook (true for Bugs, false otherwise)
 
 ---
 
 ## Instructions
 
-1. Read `config/project.md` to find the template issue key for the given issue type.
-2. Use the Atlassian MCP server to fetch that template issue.
-3. From the template, extract:
-   - All field names and their descriptions
-   - Any placeholder text or formatting instructions in the description body
-   - Any required vs optional field distinctions
-4. If `fetch_playbook` is true, also fetch the Quality Management Playbook from Confluence using the page ID in `config/project.md`. Use this as the reference for bug classification and severity.
-5. If any fetch fails, report which resource failed and why. Do not proceed until required templates are available.
-6. Store the extracted template structure internally — do not reproduce it in the output to the user.
+1. Read `config/project.md` to find template issue key for given issue type.
+2. Use Atlassian MCP server to fetch that template issue.
+3. From template, extract:
+   - All field names and descriptions
+   - Placeholder text or formatting instructions in description body
+   - Required vs optional field distinctions
+4. `fetch_playbook` is true: also fetch Quality Management Playbook from Confluence using page ID in `config/project.md`. Use as reference for bug classification and severity.
+5. Any fetch fails: report which resource failed and why. Don't proceed until required templates available.
+6. Store extracted template structure internally — don't reproduce in output to user.
 
-**Token optimisation for batch runs:** When an orchestrator processes multiple issues, this skill should be called once per unique issue type encountered — not once per issue. The orchestrator is responsible for deduplicating these calls.
+**Token optimisation for batch runs:** Call once per unique issue type — not once per issue. Orchestrator responsible for deduplicating calls.
 
 ---
 
 ## Output
 
-- **template_structure** — The extracted field structure for the relevant issue type
-- **playbook_reference** — The Quality Management Playbook content (only when fetched)
+- **template_structure** — Extracted field structure for relevant issue type
+- **playbook_reference** — Quality Management Playbook content (only when fetched)
 - **fetch_success** — Whether all required fetches succeeded

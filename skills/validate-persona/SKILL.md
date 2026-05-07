@@ -5,7 +5,7 @@ description: Check whether the persona is specific and whether role-based behavi
 
 # Skill: Validate Persona and Role Coverage
 
-**Purpose:** Check two things: (1) whether the affected persona is specific enough, and (2) whether the acceptance criteria differentiate between user roles when the story context implies different roles have different access or behaviour.
+**Purpose:** Check two things: (1) whether affected persona is specific enough, and (2) whether acceptance criteria differentiate between user roles when story context implies different roles have different access or behaviour.
 
 **Config references:**
 - `config/personas.md` — Known application personas
@@ -14,7 +14,7 @@ description: Check whether the persona is specific and whether role-based behavi
 
 ## Input
 
-- **canonical_issue** — The normalised issue context (or draft)
+- **canonical_issue** — Normalised issue context (or draft)
 - **issue_type** — Story, Task, or Bug
 
 ---
@@ -23,52 +23,52 @@ description: Check whether the persona is specific and whether role-based behavi
 
 | Issue Type | Applies? |
 |------------|----------|
-| Story      | ✅ Yes   |
-| Bug        | ✅ Yes   |
-| Task       | ❌ Skip  |
+| Story | ✅ Yes |
+| Bug | ✅ Yes |
+| Task | ❌ Skip |
 
-If the issue type is Task, skip this check entirely and return no findings.
+If Task, skip entirely and return no findings.
 
 ---
 
 ## Instructions
 
-1. Read `config/personas.md` to review the known personas for the application.
+1. Read `config/personas.md` to review known personas.
 
-2. Identify all user roles referenced in the issue (in the user narrative, problem statement, and acceptance criteria).
+2. Identify all user roles referenced in issue (user narrative, problem statement, and acceptance criteria).
 
 ---
 
 ### Behaviour A — Persona specificity (observational)
 
-3. Check whether the story's primary persona is a **specific role** from `config/personas.md` or a **generic label** (e.g., "the user", "someone", "they").
+3. Check whether story's primary persona is **specific role** from `config/personas.md` or **generic label** (e.g., "the user", "someone", "they").
 
-4. If the persona is too vague or generic, suggest a more specific role from `config/personas.md` based on the issue context.
+4. If too vague, suggest more specific role from `config/personas.md` based on issue context.
 
-5. If `config/personas.md` has not been populated yet (TODO section still present), note this observation without making specific persona suggestions.
+5. If `config/personas.md` not yet populated (TODO section still present), note observation without making specific suggestions.
 
-**This check is always observational — it never blocks readiness.**
+**Always observational — never blocks readiness.**
 
 ---
 
 ### Behaviour B — Role-based behavioural differentiation (readiness gate)
 
-6. Determine whether the story context implies **multiple user roles with different access, permissions, or behaviour**. Signals include:
-   - The problem statement or description mentions different role types (e.g., admin, viewer, operator)
-   - The feature being described typically has role-gated behaviour (e.g., permissions, approval steps, visibility restrictions)
-   - The `config/personas.md` list contains distinct roles that would interact with this feature differently
+6. Determine whether story context implies **multiple user roles with different access, permissions, or behaviour**. Signals:
+   - Problem statement or description mentions different role types (admin, viewer, operator)
+   - Feature typically has role-gated behaviour (permissions, approval steps, visibility restrictions)
+   - `config/personas.md` contains distinct roles that would interact with feature differently
 
-7. If multiple roles are implied:
-   - Check whether the acceptance criteria scenarios **explicitly differentiate** between them (e.g., separate scenarios for "admin can do X" vs. "viewer cannot do X")
-   - If the AC treats all roles as "the user" without differentiation, flag this as a **critical finding** — engineering cannot implement role logic they do not know about
+7. If multiple roles implied:
+   - Check whether AC scenarios **explicitly differentiate** between them (e.g., separate scenarios for "admin can do X" vs "viewer cannot do X")
+   - If AC treats all roles as "the user" without differentiation, flag as **critical finding** — engineering can't implement role logic they don't know about
 
-8. If the story is clearly single-role (one persona, no access control implied), skip Behaviour B.
+8. If story is clearly single-role (one persona, no access control implied), skip Behaviour B.
 
 ---
 
 ## Output
 
 - **finding_persona** — Observation about persona specificity, or null if persona is clear
-- **finding_role_coverage** — Description of missing role differentiation in AC, or null if check passes or does not apply
+- **finding_role_coverage** — Description of missing role differentiation in AC, or null if check passes or doesn't apply
 - **severity_persona** — `observational` (always)
-- **severity_role_coverage** — `critical` when role differences are implied but AC does not capture them; `null` otherwise
+- **severity_role_coverage** — `critical` when role differences implied but AC doesn't capture them; `null` otherwise

@@ -5,7 +5,7 @@ description: Apply validation findings to improve an issue draft — rewrite bad
 
 # Skill: Revise Draft from Findings
 
-**Purpose:** After validation skills have run and produced findings, apply those findings to improve the issue draft. This skill rewrites problematic acceptance criteria, fixes UI/UX trap issues, resolves test-case drift, and strengthens weak problem statements — producing a revised draft.
+**Purpose:** After validation skills produce findings, apply those findings to improve the issue draft. Rewrites problematic AC, fixes UI/UX trap issues, resolves test-case drift, strengthens weak problem statements.
 
 **Config references:**
 - `config/quality-standards.md` — Rules for correct criteria, problem framing, etc.
@@ -14,41 +14,41 @@ description: Apply validation findings to improve an issue draft — rewrite bad
 
 ## Input
 
-- **issue_draft** — The current draft (from `produce-issue-draft`)
-- **validation_findings** — Combined findings from all validation skills that ran
+- **issue_draft** — Current draft (from `produce-issue-draft`)
+- **validation_findings** — Combined findings from all validation skills
 - **issue_type** — Story, Task, or Bug
 
 ---
 
 ## Instructions
 
-1. Review each validation finding against the current draft.
+1. Review each validation finding against current draft.
 
-2. For each finding, determine whether it can be addressed by revising the draft:
+2. For each finding, determine whether it can be addressed by revising draft:
 
    **Can be addressed (apply the fix):**
    - UI/UX trap criteria → Rewrite as outcome-focused criteria
    - Test-case drift criteria → Generalise into behaviour patterns
-   - Formatting errors in acceptance criteria → Fix to match Gherkin standard
+   - Formatting errors in AC → Fix to match Gherkin standard
    - Weak problem statement where enough context exists → Strengthen it
 
    **Cannot be addressed (leave for follow-up):**
-   - Missing information that requires user input
-   - Scope splits that require user decision
-   - Ambiguity that cannot be resolved from context alone
+   - Missing info requiring user input
+   - Scope splits requiring user decision
+   - Ambiguity unresolvable from context alone
 
-3. Produce a revised draft with all applicable fixes applied. For each change made, include a brief inline note explaining what was changed and why, using this format:
+3. Produce revised draft with all applicable fixes applied. For each change, include brief inline note:
 
    > ✏️ **Revised:** [brief explanation of what changed and why]
 
-4. Do not over-revise. Only change what the validation findings specifically identified. Do not introduce new content or restructure sections that passed validation.
+4. Don't over-revise. Only change what validation findings specifically identified. Don't introduce new content or restructure sections that passed validation.
 
-5. For findings that cannot be addressed, leave them as-is — the `generate-follow-up-questions` skill will handle them.
+5. Findings that can't be addressed: leave as-is — `generate-follow-up-questions` will handle them.
 
 ---
 
 ## Output
 
-- **revised_draft** — The improved issue draft with fixes applied and revision notes
-- **applied_fixes** — List of changes made (for transparency)
-- **unresolved_findings** — List of findings that could not be addressed without user input
+- **revised_draft** — Improved issue draft with fixes applied and revision notes
+- **applied_fixes** — List of changes made
+- **unresolved_findings** — Findings that couldn't be addressed without user input

@@ -5,6 +5,12 @@
 config/project.md
 config/personas.md
 
+# Caveman-compress originals (human-readable backups, not committed)
+*.original.md
+
+# Caveman installed skills (generated from skills-lock.json, like node_modules)
+.roo/
+
 # OS files
 .DS_Store
 Thumbs.db

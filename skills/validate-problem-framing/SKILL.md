@@ -5,7 +5,7 @@ description: Check whether an issue is grounded in a real user problem or is des
 
 # Skill: Validate Problem Framing
 
-**Purpose:** Check whether the issue is framed around a real user problem or is describing a solution, feature preference, or internal assumption.
+**Purpose:** Check whether issue is framed around a real user problem or describing a solution, feature preference, or internal assumption.
 
 **Config references:**
 - `config/quality-standards.md` — Problem statement rules
@@ -14,7 +14,7 @@ description: Check whether an issue is grounded in a real user problem or is des
 
 ## Input
 
-- **canonical_issue** — The normalised issue context (or draft)
+- **canonical_issue** — Normalised issue context (or draft)
 - **issue_type** — Story, Task, or Bug
 
 ---
@@ -23,32 +23,32 @@ description: Check whether an issue is grounded in a real user problem or is des
 
 | Issue Type | Applies? |
 |------------|----------|
-| Story      | ✅ Yes   |
-| Bug        | ✅ Yes   |
-| Task       | ❌ Skip — technical work is not grounded in user needs |
+| Story | ✅ Yes |
+| Bug | ✅ Yes |
+| Task | ❌ Skip — technical work isn't grounded in user needs |
 
-If the issue type is Task, skip this check entirely and return no findings.
+If Task, skip entirely and return no findings.
 
 ---
 
 ## Instructions
 
-1. Read the problem statement (or description if no explicit problem statement exists).
+1. Read problem statement (or description if no explicit problem statement exists).
 
-2. Check for these failure signals:
-   - The problem statement describes a **feature or solution** rather than a user need
-   - The problem statement is **absent or too vague** to be actionable
-   - The "so that" clause in the story describes a **feature delivery** rather than a user outcome
-   - The description jumps straight into **what to build** without explaining **why**
+2. Check for failure signals:
+   - Problem statement describes **feature or solution** rather than user need
+   - Problem statement is **absent or too vague** to be actionable
+   - "So that" clause in story describes **feature delivery** rather than user outcome
+   - Description jumps straight into **what to build** without explaining **why**
 
-3. If any signal is present, produce a finding that:
-   - Explains what is wrong (be specific — quote the problematic text)
-   - Explains why it matters (what goes wrong downstream if this is not fixed)
-   - Suggests how to think about reframing it (do not write the fix — that is for `revise-draft-from-findings`)
+3. If any signal present, produce finding that:
+   - Explains what's wrong (be specific — quote problematic text)
+   - Explains why it matters (what goes wrong downstream if not fixed)
+   - Suggests how to think about reframing (don't write the fix — that's for `revise-draft-from-findings`)
 
 ---
 
 ## Output
 
-- **finding** — Description of the problem framing issue, or empty if the check passes
+- **finding** — Description of problem framing issue, or empty if check passes
 - **severity** — `critical` (always, when this check fails — problem framing is a readiness blocker)

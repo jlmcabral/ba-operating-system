@@ -1,8 +1,8 @@
 # Reference: Acceptance Criteria Standards
 
-This file contains detailed formatting rules and examples for acceptance criteria. Referenced by validation skills when checking AC quality.
+Detailed formatting rules and examples for acceptance criteria. Referenced by validation skills when checking AC quality.
 
-For the quick rules summary, see [`quality-standards.md`](../../config/quality-standards.md).
+For quick rules summary, see [`quality-standards.md`](../../config/quality-standards.md).
 
 ---
 
@@ -12,12 +12,12 @@ All acceptance criteria must follow this format without exception.
 
 **Structure rules:**
 
-- Each scenario begins with `Scenario :` followed by a short descriptive title — the **entire scenario title line is bold**
-- Each step keyword (**Given**, **When**, **Then**, **And**) is on its own line
-- Step keywords are in **bold** with the exception of **And** keyword
-- The rest of the sentence is not bold
+- Each scenario begins with `Scenario :` followed by short descriptive title — **entire scenario title line is bold**
+- Each step keyword (**Given**, **When**, **Then**, **And**) on own line
+- Step keywords in **bold** except **And**
+- Rest of sentence not bold
 - One blank line between scenarios
-- Scenarios are always numbered sequentially
+- Scenarios numbered sequentially
 
 **Example of correct formatting:**
 
@@ -33,7 +33,7 @@ And the filter selection is visually indicated
 
 ## Outcome Focus Rules
 
-Criteria describe **what outcome must be true** — not **how the interface should look or behave**.
+Criteria describe **what outcome must be true** — not **how interface should look or behave**.
 
 **Correct (outcome-focused):**
 - "The user cannot submit the form until all required fields are valid"
@@ -43,27 +43,27 @@ Criteria describe **what outcome must be true** — not **how the interface shou
 - "The submit button is greyed out when fields are incomplete"
 - "A red border appears around invalid fields"
 
-When no design exists and UI detail is genuinely necessary to avoid ambiguity, mark it as design debt — not as a permanent acceptance criterion.
+When no design exists and UI detail is genuinely necessary to avoid ambiguity, mark as design debt — not as permanent acceptance criterion.
 
 ---
 
 ## Test Case Drift
 
-Criteria define the **behaviour pattern**. Test cases verify the **exhaustive permutations**. When criteria enumerate every column, field, or data combination, they have drifted from acceptance criteria into test plan territory.
+Criteria define **behaviour pattern**. Test cases verify **exhaustive permutations**. When criteria enumerate every column, field, or data combination, they've drifted from acceptance criteria into test plan territory.
 
 **Signals of drift:**
-- Multiple scenarios differing only by which column, field, or entity they reference
-- Criteria specifying data-type-specific behaviour that follows standard conventions
-- Scenarios that read like a test matrix row rather than a user outcome
+- Multiple scenarios differing only by which column, field, or entity referenced
+- Criteria specifying data-type-specific behaviour following standard conventions
+- Scenarios reading like test matrix rows rather than user outcomes
 
 ---
 
 ## Script-Assisted Validation
 
-For deterministic format checks, use the co-located script `scripts/validate-gherkin.js`:
+For deterministic format checks, use co-located script `scripts/validate-gherkin.js`:
 
 ```bash
 echo "[acceptance criteria text]" | node scripts/validate-gherkin.js
 ```
 
-This catches formatting issues (missing bold, spacing, structure) without LLM interpretation. Use the script output as a starting point, then apply judgment for semantic quality (testability, coherence, drift).
+Catches formatting issues (missing bold, spacing, structure) without LLM interpretation. Use script output as starting point, then apply judgment for semantic quality (testability, coherence, drift).

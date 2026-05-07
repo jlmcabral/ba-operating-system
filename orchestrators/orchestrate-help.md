@@ -5,7 +5,7 @@ description: Guide the user to the right entry point with an interactive decisio
 
 # Orchestrator: Help
 
-**Purpose:** Guide the user to the right entry point based on what they're trying to do. Interactive decision tree.
+**Purpose:** Guide user to right entry point based on what they're trying to do. Interactive decision tree.
 
 **Entry point:** `/help`
 
@@ -13,9 +13,9 @@ description: Guide the user to the right entry point with an interactive decisio
 
 ## When to use
 
-- You're new to the system and don't know which command to run
-- You're unsure whether to use `/craft`, `/assess`, or `/assess-refinement`
-- You want to understand what each command does before choosing
+- New to system, don't know which command to run
+- Unsure whether to use `/craft`, `/assess`, or `/assess-refinement`
+- Want to understand what each command does before choosing
 
 ---
 
@@ -37,7 +37,7 @@ OUTPUT: Recommended command + brief explanation
 
 ### Step 1 — Ask the User's Goal
 
-**Present a simple multiple-choice question:**
+**Present simple multiple-choice question:**
 
 ```
 What are you trying to do right now?
@@ -49,21 +49,19 @@ Options:
   D) I just want to understand the commands available
 ```
 
-**⏸️ PAUSE HERE.** Wait for the user to select A, B, C, or D.
+**⏸️ PAUSE HERE.** Wait for user to select A, B, C, or D.
 
-If the user selects D, jump to Step 4 (show all commands).
-
-Otherwise, proceed to Step 2.
+User selects D → jump to Step 4 (show all commands).
 
 ---
 
 ### Step 2 — Interpret the Goal
 
-Based on the user's answer from Step 1:
+Based on user's answer:
 
-- **Answer A** → `recommended_command = "/craft"`
-- **Answer B** → `recommended_command = "/assess"`
-- **Answer C** → `recommended_command = "/assess-refinement"`
+- **A** → `recommended_command = "/craft"`
+- **B** → `recommended_command = "/assess"`
+- **C** → `recommended_command = "/assess-refinement"`
 
 Carry forward: **recommended_command**, **user_goal**.
 
@@ -71,48 +69,44 @@ Carry forward: **recommended_command**, **user_goal**.
 
 ### Step 3 — Recommend the Entry Point
 
-Present to the user:
-
 ```
 🎯 Recommended command: {recommended_command}
 
 Here's what it does:
-[Explanation of the command — see OUTPUT section below]
+[Explanation — see OUTPUT section]
 
 Ready to run it?
   Yes, let's go!
   No, show me all commands
 ```
 
-**⏸️ PAUSE HERE.** Wait for user response.
+**⏸️ PAUSE HERE.** Wait for response.
 
-- If "Yes" → Output the command recommendation and end.
-- If "No" → Proceed to Step 4.
+- "Yes" → Output recommendation and end.
+- "No" → Proceed to Step 4.
 
 ---
 
 ### Step 4 — Show All Commands
-
-If the user wants to see all options, present:
 
 ```
 Here are all the BA Operating System commands:
 
 📝 `/craft [input]`
    Use this to: Shape an idea, draft, or existing issue into a complete, validated issue
-   Input: A brief description, a detailed draft, or a Jira issue key
+   Input: Brief description, detailed draft, or Jira issue key
    Output: Complete issue draft with validation findings
    Best for: Day-to-day issue writing
 
 🔍 `/assess [JIRA-KEY]`
    Use this to: Check if a specific issue is ready for refinement
-   Input: A Jira issue key (e.g., PROJECT-1234)
+   Input: Jira issue key (e.g., PROJECT-1234)
    Output: Readiness report with specific, actionable feedback
    Best for: Quick sanity checks after crafting
 
 📊 `/assess-refinement`
-   Use this to: Check all issues in your backlog columns before a refinement session
-   Input: None (uses your configured project settings)
+   Use this to: Check all issues in backlog columns before refinement session
+   Input: None (uses configured project settings)
    Output: Summary table of all issues + detailed breakdowns for non-ready ones
    Best for: Pre-refinement health checks
 
@@ -123,7 +117,7 @@ Here are all the BA Operating System commands:
 
 ---
 
-Choose the command that fits what you want to do. Then use it!
+Choose the command that fits. Then use it!
 ```
 
 ---
@@ -155,17 +149,15 @@ Here are all the BA Operating System commands:
 
 ## Implementation Notes
 
-This orchestrator is **simpler than others** because:
-
-- No skills are chained (it's pure presentation)
-- No state is carried between steps (each step is independent)
+Simpler than other orchestrators:
+- No skills chained (pure presentation)
+- No state carried between steps
 - All logic is conditional branching and UI presentation
 
-**The AI handles:**
-
+**AI handles:**
 1. Asking the question naturally
-2. Interpreting the user's answer (even if not word-for-word)
-3. Explaining the recommendation in the user's own language
+2. Interpreting user's answer (even if not word-for-word)
+3. Explaining recommendation in user's own language
 
 ---
 

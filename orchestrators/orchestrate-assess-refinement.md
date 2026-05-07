@@ -5,7 +5,7 @@ description: Assess all issues from configured columns for refinement readiness 
 
 # Orchestrator: Assess Refinement Readiness
 
-**Purpose:** Assess all issues from configured Jira project columns for refinement readiness. Produces a summary table of all issues and detailed breakdowns for those that are not ready.
+**Purpose:** Assess all issues from configured Jira project columns for refinement readiness. Produces summary table of all issues and detailed breakdowns for those not ready.
 
 **Entry point:** `/assess-refinement`
 
@@ -15,9 +15,9 @@ description: Assess all issues from configured columns for refinement readiness 
 
 ## When to use
 
-- Before a refinement session — run this to get an honest picture of what is ready and what is not
-- After a batch of issues have been crafted — verify they meet the readiness standard
-- Regularly, as a health check on your backlog pipeline
+- Before refinement session — honest picture of what's ready and what's not
+- After batch of issues crafted — verify they meet readiness standard
+- Regular backlog pipeline health check
 
 ---
 
@@ -50,16 +50,16 @@ OUTPUT: Summary table + detailed breakdowns for failures
 ### Step 1 — Fetch all eligible issues
 **Read:** `skills/fetch-issues-by-status/SKILL.md`
 
-Fetch all issues from the projects and statuses configured in `config/project.md`. This uses the default refinement assessment columns.
+Fetch all issues from projects and statuses in `config/project.md`. Uses default refinement assessment columns.
 
-Carry forward: **issues** (list of all fetched issues), **fetch_summary**.
+Carry forward: **issues** (list of all fetched), **fetch_summary**.
 
-If no issues are found, report this and stop.
+No issues found: report and stop.
 
 ### Step 2 — Classify all issues first (Parallel)
 **Read:** `skills/analyze-input-type/SKILL.md`
 
-Before fetching any templates, determine the issue type for every fetched issue. **Launch all classifications in parallel as background agents:**
+Before fetching templates, determine issue type for every fetched issue. **Launch all classifications in parallel as background agents:**
 
 For each issue:
 ```
@@ -71,29 +71,26 @@ Launch background agent with:
   - Record the agent_id returned
 ```
 
-After all agents are launched, wait for all to complete using `read_agent` with `wait: true` on each.
+After all agents launched: wait for all using `read_agent` with `wait: true` on each.
 
-**Combine results:**
-
-Merge all returned issue types into **issue_types** map (issue key → determined type).
+**Combine results:** Merge all returned issue types into **issue_types** map (issue key → determined type).
 
 Carry forward: **issue_types** (map of issue key → determined type).
 
 ### Step 3 — Fetch templates (deduplicated)
 **Read:** `skills/fetch-required-templates/SKILL.md`
 
-**Token optimisation:** Identify the unique issue types present in the batch. Fetch each template **once** — not once per issue.
+**Token optimisation:** Identify unique issue types in batch. Fetch each template **once** — not once per issue.
 
-- If any issue is a Bug, fetch the Quality Management Playbook once.
-- If all issues are Stories, fetch only the Story template.
-- If the batch contains Stories and Tasks, fetch both templates — but only once each.
+- Any Bug: fetch Quality Management Playbook once.
+- All Stories: fetch only Story template.
+- Stories + Tasks: fetch both — once each.
 
 Carry forward: **templates** (map of issue type → template structure), **playbook_reference** (if fetched).
 
 ### Step 4 — Assess each issue (Parallel per issue)
-For each issue in the batch, create a **composite agent task** that runs normalize + applicable validations in one shot:
+For each issue, launch **composite agent task** running normalize + applicable validations in one shot:
 
-**For each issue, launch a background agent:**
 ```
 Launch background agent with:
   - name: "assess-issue-{issue_key}"
@@ -112,33 +109,30 @@ Launch background agent with:
   - Record the agent_id returned
 ```
 
-**Validation logic per issue type:** See [`orchestrators/REFERENCE-validation-dispatch.md`](REFERENCE-validation-dispatch.md) for the applicable validators table and dispatch pattern.
+**Validation logic per issue type:** See [`orchestrators/REFERENCE-validation-dispatch.md`](REFERENCE-validation-dispatch.md).
 
-**Wait for all issue agents to complete:**
+**Wait for all issue agents:**
 
-After all issue assessment agents are launched, wait for all to complete using `read_agent` with `wait: true` on each.
+After all launched: wait using `read_agent` with `wait: true` on each.
 
-**Combine all assessments:**
+**Combine all assessments:** Merge all returned validation_findings into **assessments** list (map of issue key → validation findings).
 
-Merge all returned validation_findings into a single **assessments** list (map of issue key → validation findings).
-
-Carry forward: **assessments** (list of issue key + validation findings for all issues).
+Carry forward: **assessments** (issue key + validation findings for all issues).
 
 ### Step 5 — Format the batch report
 **Read:** `skills/format-readiness-report/SKILL.md`
 
-Generate the readiness report in **batch mode**:
+Generate readiness report in **batch mode**:
 
-1. **Summary table** — One row per issue, showing key, title, type, readiness tier, and failure categories. All issues shown (including ✅ Ready). Sorted: Ready first, then Needs Minor Work, then Not Ready.
-
-2. **Detailed breakdowns** — Only for ⚠️ and ❌ issues. Each includes check results table and actionable items.
+1. **Summary table** — One row per issue: key, title, type, readiness tier, failure categories. All issues shown (including ✅ Ready). Sorted: Ready first, then Needs Minor Work, then Not Ready.
+2. **Detailed breakdowns** — ⚠️ and ❌ issues only. Each includes check results table and actionable items.
 
 ---
 
 ## Output
 
-1. **Summary table** — Quick overview of all issues and their readiness
-2. **Detailed assessments** — For non-ready issues only, with specific findings and what needs to change
+1. **Summary table** — Quick overview of all issues and readiness
+2. **Detailed assessments** — Non-ready issues only, with specific findings and what needs to change
 
 Refer to `config/output-preferences.md` for output style rules.
 
@@ -146,7 +140,7 @@ Refer to `config/output-preferences.md` for output style rules.
 
 ## Tone and approach
 
-- This is a final gate, not a coaching session. Be direct and unambiguous.
-- Do not upgrade readiness tiers to soften the assessment. If it is Not Ready, say so.
-- Focus findings on what would actually cause problems in a refinement session.
-- The report is for the BA to act on — write for someone who wants the truth, not reassurance.
+- Final gate, not coaching session. Direct, unambiguous.
+- Don't upgrade readiness tiers to soften assessment. Not Ready = say so.
+- Focus findings on what would cause problems in refinement session.
+- Report for BA to act on — write for someone who wants truth, not reassurance.

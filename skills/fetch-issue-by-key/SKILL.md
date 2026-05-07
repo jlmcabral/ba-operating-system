@@ -5,32 +5,31 @@ description: Fetch a single Jira issue by key via MCP and return its full conten
 
 # Skill: Fetch Issue by Key
 
-**Purpose:** Fetch a single Jira issue by its key via the MCP server and return its full content.
+**Purpose:** Fetch single Jira issue by key via MCP server and return full content.
 
 **Config references:**
-
 - `config/mcp.md` — MCP server details
 
 ---
 
 ## Input
 
-- **issue_key** — A Jira issue key (e.g., `PROJECT-1234`)
+- **issue_key** — Jira issue key (e.g., `PROJECT-1234`)
 
 ---
 
 ## Instructions
 
-1. Use the Atlassian MCP server to fetch the issue identified by the provided key.
+1. Use Atlassian MCP server to fetch issue by provided key.
 2. Retrieve all fields: summary, description, status, issue type, reporter, assignee, labels, acceptance criteria, and any additional context sections.
-3. If the fetch fails, report which issue failed and the reason. Do not proceed with downstream skills until the fetch succeeds.
-4. Return the full issue content as-is — do not modify, summarise, or interpret it at this stage.
+3. Fetch fails: report which issue failed and reason. Don't proceed with downstream skills until fetch succeeds.
+4. Return full issue content as-is — don't modify, summarise, or interpret at this stage.
 
 ---
 
 ## Output
 
-- **issue_content** — The full Jira issue content including all fields
-- **issue_type** — The issue type as declared in Jira (Story, Task, Bug, etc.)
-- **issue_status** — The current status of the issue
-- **fetch_success** — Whether the fetch succeeded (true/false)
+- **issue_content** — Full Jira issue content including all fields
+- **issue_type** — Issue type as declared in Jira (Story, Task, Bug, etc.)
+- **issue_status** — Current status of issue
+- **fetch_success** — Whether fetch succeeded (true/false)

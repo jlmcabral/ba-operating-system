@@ -5,16 +5,16 @@ description: Ask targeted questions to fill gaps in a canonical issue before dra
 
 # Skill: Ask Clarification Questions
 
-**Purpose:** Before producing a draft, ask the user targeted questions to build a shared understanding of the problem and scope. This reduces assumptions, avoids wasteful draft-then-question cycles, and saves tokens.
+**Purpose:** Before drafting, ask user targeted questions to build shared understanding of problem and scope. Reduces assumptions, avoids wasteful draft-then-question cycles, saves tokens.
 
 **Config references:**
-- `config/quality-standards.md` — To understand what a complete issue requires
+- `config/quality-standards.md` — What a complete issue requires
 
 ---
 
 ## Input
 
-- **canonical_issue** — The normalised issue context (from `normalize-issue-context`)
+- **canonical_issue** — Normalised issue context (from `normalize-issue-context`)
 - **issue_type** — Story, Task, or Bug
 - **input_mode** — idea, draft, or jira
 
@@ -22,25 +22,25 @@ description: Ask targeted questions to fill gaps in a canonical issue before dra
 
 ## Instructions
 
-1. Review the canonical issue object. Identify which fields are `[MISSING]` or too vague to produce a meaningful draft.
+1. Review canonical issue. Identify `[MISSING]` or too-vague fields that would produce a weak draft.
 
 2. Focus questions on two areas:
-   - **Problem understanding** — What is the real user need? What friction exists today? What outcome matters?
-   - **Scope boundaries** — What is included? What is explicitly excluded? Which personas are affected? What does "done" look like?
+   - **Problem understanding** — Real user need? Friction today? Outcome that matters?
+   - **Scope boundaries** — What's included? Explicitly excluded? Which personas affected? What does "done" look like?
 
-3. Consider what is already provided. Do not ask about information that is clearly present in the canonical issue.
+3. Don't ask about information clearly present in canonical issue.
 
-4. For **idea** mode: expect more questions (less context provided). For **jira** mode: expect fewer questions (more context already available). For **draft** mode: somewhere in between.
+4. **idea** mode: expect more questions. **jira** mode: expect fewer. **draft** mode: in between.
 
-5. Ask questions in a conversational, direct style. Group related questions together. Do not ask more than 5-7 questions — prioritise the gaps that would have the biggest impact on draft quality.
+5. Ask conversationally, direct style. Group related questions. Max 5-7 — prioritise gaps with biggest impact on draft quality.
 
-6. If the input is already rich enough to produce a solid draft (e.g., a well-structured Jira issue or detailed draft), skip questions and proceed directly. State that you have enough context.
+6. Input already rich enough (well-structured Jira issue or detailed draft): skip questions, proceed directly. State that sufficient context exists.
 
-7. After receiving answers, proceed to the next skill in the orchestration flow. Do not re-ask or expand. Use the answers together with the canonical issue as the enriched context for drafting.
+7. After answers received: proceed to next skill. Don't re-ask or expand. Use answers + canonical issue as enriched context for drafting.
 
 ---
 
 ## Output
 
-- **questions** — A list of targeted questions grouped by theme (problem, scope), or a statement that sufficient context exists
-- **enriched_context** — After answers are received: the canonical issue updated with the user's responses
+- **questions** — Targeted questions grouped by theme (problem, scope), or statement that sufficient context exists
+- **enriched_context** — After answers received: canonical issue updated with user's responses

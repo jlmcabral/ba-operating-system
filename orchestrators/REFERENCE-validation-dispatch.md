@@ -1,6 +1,6 @@
 # Reference: Validation Dispatch Pattern
 
-This reference defines the standard pattern for running validation skills in parallel. Orchestrators reference this document instead of repeating the dispatch logic inline.
+Standard pattern for running validation skills in parallel. Orchestrators reference this instead of repeating dispatch logic inline.
 
 ---
 
@@ -16,7 +16,7 @@ This reference defines the standard pattern for running validation skills in par
 
 ## Dispatch Template
 
-For each applicable validator, launch a background agent:
+For each applicable validator, launch background agent:
 
 ```
 Launch background agent with:
@@ -24,26 +24,26 @@ Launch background agent with:
   - agent_type: "general-purpose"
   - mode: "background"
   - prompt: Include:
-    1. The full skill file content
-    2. The enriched_canonical_issue (or canonical_issue for /assess flows)
-    3. The issue_type
-    4. The template_structure (for validate-completeness)
+    1. Full skill file content
+    2. enriched_canonical_issue (or canonical_issue for /assess flows)
+    3. issue_type
+    4. template_structure (for validate-completeness)
   - Record the agent_id returned
 ```
 
-Launch ALL applicable validators simultaneously. Do not wait between launches.
+Launch ALL applicable validators simultaneously. Don't wait between launches.
 
 ---
 
 ## Collecting Results
 
-After all agents are launched:
+After all agents launched:
 
-1. Wait for all to complete using `read_agent` with `wait: true` on each agent_id
+1. Wait for all using `read_agent` with `wait: true` on each agent_id
 2. From each result, extract `finding` and `severity`
-3. Merge into a single **validation_findings** list
+3. Merge into single **validation_findings** list
 4. Filter out entries where `finding` is null or empty (these passed)
-5. Sort remaining findings by severity: critical → minor → observational
+5. Sort remaining by severity: critical → minor → observational
 
 ---
 
@@ -64,7 +64,7 @@ Only findings with non-null `finding` values proceed to downstream skills.
 
 ## Notes
 
-- **validate-persona** has two behaviours: persona specificity (always `observational`) and role-based coverage (can be `critical`). Both findings are returned from the same skill invocation.
-- **validate-completeness** requires `template_structure` as additional input — other validators do not.
+- **validate-persona** has two behaviours: persona specificity (always `observational`) and role-based coverage (can be `critical`). Both findings returned from same skill invocation.
+- **validate-completeness** requires `template_structure` as additional input — other validators don't.
 - **validate-design-reference** applies to Story only — skip for Bug and Task.
-- For batch operations (`/assess-refinement`), validators run per-issue inside a composite agent. The dispatch pattern is the same but executed within the agent context rather than at the orchestrator level.
+- Batch operations (`/assess-refinement`): validators run per-issue inside composite agent. Dispatch pattern same but executed within agent context.

@@ -5,7 +5,7 @@ description: Generate readiness assessment output in single or batch mode with t
 
 # Skill: Format Readiness Report
 
-**Purpose:** Generate the readiness assessment output in the appropriate format — either a detailed report for a single issue, or a summary table with failure details for a batch of issues.
+**Purpose:** Generate readiness assessment output — detailed report for single issue, or summary table with failure details for batch.
 
 **Config references:**
 - `config/output-preferences.md` — Output style rules
@@ -20,22 +20,22 @@ description: Generate readiness assessment output in single or batch mode with t
   - Validation findings from all applicable checks
   - Reporter name
 
-**Reference:** See `REFERENCE.md` for detailed tier definitions and examples.
+**Reference:** See `REFERENCE.md` for tier definitions and examples.
 
 ---
 
 ## Instructions
 
-1. **Classify each issue** into a readiness tier (✅ Ready, ⚠️ Needs Minor Work, ❌ Not Ready) using the tier logic in `REFERENCE.md`.
+1. **Classify each issue** into readiness tier (✅ Ready, ⚠️ Needs Minor Work, ❌ Not Ready) using tier logic in `REFERENCE.md`.
 
-2. **Single mode** (`/assess`): Produce a detailed assessment for one issue using the single mode template in `REFERENCE.md`.
+2. **Single mode** (`/assess`): Produce detailed assessment for one issue using single mode template in `REFERENCE.md`.
 
-3. **Batch mode** (`/assess-refinement`): Produce a summary table of all issues sorted by tier (✅ first, then ⚠️, then ❌), followed by detailed assessments for non-ready issues only. See `REFERENCE.md` for templates.
+3. **Batch mode** (`/assess-refinement`): Produce summary table of all issues sorted by tier (✅ first, then ⚠️, then ❌), followed by detailed assessments for non-ready issues only. See `REFERENCE.md` for templates.
 
-4. Only include failure categories that apply to the issue type.
+4. Only include failure categories applicable to the issue type.
 
 ---
 
 ## Output
 
-- **report** — The formatted readiness report in the appropriate mode
+- **report** — Formatted readiness report in appropriate mode
