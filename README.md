@@ -22,7 +22,7 @@
 
 A modular system of **skills**, **orchestrators**, and **configuration** that takes you from a rough idea to a refinement-ready Jira issue — or assesses an entire board for refinement readiness.
 
-Each skill does one thing. Orchestrators chain them together. Configuration adapts the system to your projects. Runs on any AI tool that supports [MCP](GLOSSARY.md#mcp) — currently configured for GitHub Copilot in agent mode.
+Each skill does one thing. Orchestrators chain them together. Configuration adapts the system to your projects. Runs on any AI tool that supports [MCP](GLOSSARY.md#mcp) — currently configured for [GitHub Copilot CLI](https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli) in agent mode.
 
 ---
 
@@ -53,6 +53,8 @@ Each skill does one thing. Orchestrators chain them together. Configuration adap
 ---
 
 ## 🚀 Getting started
+
+Requires [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli) — install that first.
 
 Full setup walkthrough → [SETUP.md](SETUP.md)
 
