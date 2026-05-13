@@ -33,6 +33,6 @@ This means:
 
 Connection credentials (API tokens, email, instance URL) live in a `.env` file at the **repository root** — not in this directory. The `.env` file is git-ignored so secrets are never committed.
 
-The `.vscode/mcp.json` reads from `.env` for VS Code users. Other AI runtimes can read `.env` directly.
+The root `.mcp.json` reads from `.env` for Copilot CLI users. Other AI runtimes can read `.env` directly.
 
 See [Setup Guide](../SETUP.md) for how to create your `.env` file from the provided `.env.example` template.

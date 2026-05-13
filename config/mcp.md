@@ -17,9 +17,9 @@ Credentials live in `.env` at repo root (git-ignored). Copy `.env.example` to `.
 | `CONFLUENCE_USERNAME`       | Confluence account email         | `your-email@example.com`                  |
 | `CONFLUENCE_PERSONAL_TOKEN` | Confluence personal access token | _(generate from your Confluence profile)_ |
 
-### VS Code users
+### GitHub Copilot CLI users
 
-`.vscode/mcp.json` included — reads `.env` automatically. Runs MCP server via Docker. Ensure Docker Desktop running before opening project.
+Use the root-level `.mcp.json` file. It keeps the same Docker-based `mcp-atlassian` server definition and reads `.env` automatically.
 
 ### Other runtimes
 

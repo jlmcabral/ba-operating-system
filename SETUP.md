@@ -69,9 +69,9 @@ The steps depend on your Atlassian instance type (Server/DC or Cloud). Check wit
 
 The [MCP server](GLOSSARY.md#mcp) is what lets the AI assistant talk to Jira and Confluence. How you configure it depends on which AI runtime you use.
 
-### VS Code with GitHub Copilot
+### GitHub Copilot CLI
 
-A `.vscode/mcp.json` file is included in the project. It reads credentials from your `.env` file automatically — no extra configuration needed. Just open the project in VS Code.
+The project includes a root `.mcp.json` file for Copilot CLI. It reads credentials from your `.env` file automatically.
 
 ### Other MCP-compatible runtimes
 
@@ -137,7 +137,7 @@ The system will:
 
 - Check that your `.env` values are correct (URL, email, token)
 - Verify your API token hasn't expired at [Atlassian token management](https://id.atlassian.com/manage-profile/security/api-tokens)
-- If using VS Code, restart the session so `.vscode/mcp.json` re-reads the `.env` file
+- If using Copilot CLI, restart the session so `.mcp.json` re-reads the `.env` file
 
 ### "Template not found"
 

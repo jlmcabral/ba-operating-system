@@ -99,7 +99,7 @@ Configuration files hold your project-specific settings. Skills reference these 
 | `personas.md`           | Known user roles for your applications               |
 | `mcp.md`                | External service connections                         |
 
-**Secrets** (API tokens, emails) live in `.env` at the repository root — git-ignored, never committed. The `.vscode/mcp.json` reads from `.env` for VS Code users; other runtimes read `.env` directly.
+**Secrets** (API tokens, emails) live in `.env` at the repository root — git-ignored, never committed. The root `.mcp.json` reads from `.env` for Copilot CLI users.
 
 → [Full details](config/README.md)
 

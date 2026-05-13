@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "mcp-atlassian": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_USERNAME",
+        "-e",
+        "JIRA_PERSONAL_TOKEN",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "CONFLUENCE_USERNAME",
+        "-e",
+        "CONFLUENCE_PERSONAL_TOKEN",
+        "-e",
+        "JIRA_SSL_VERIFY",
+        "-e",
+        "CONFLUENCE_SSL_VERIFY",
+        "ghcr.io/sooperset/mcp-atlassian:latest"
+      ],
+      "envFile": ".env"
+    }
+  }
+}

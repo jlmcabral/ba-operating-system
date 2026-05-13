@@ -90,7 +90,7 @@ Carry forward: **issue_types** (map of issue key → determined type).
 Carry forward: **templates** (map of issue type → template structure), **playbook_reference** (if fetched).
 
 ### Step 4 — Assess each issue (Parallel per issue)
-For each issue, launch **composite agent task** running normalize + applicable validations in one shot. Use `cavecrew-ba-assessor` preset — see `.roo/skills/cavecrew-ba/SKILL.md` for output contract and prompt packaging.
+For each issue, launch **composite agent task** running normalize + applicable validations in one shot. Use the normalize + validate composite agent pattern from `REFERENCE-agent-dispatch.md`.
 
 ```
 Launch background agent with:

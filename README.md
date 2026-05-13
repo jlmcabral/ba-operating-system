@@ -114,4 +114,4 @@ ba-operating-system/
 | -------------------------------------------------------- | ---------------------------------------- |
 | [mcp-atlassian](https://mcp-atlassian.soomiles.com/docs) | Jira issues, templates, Confluence pages |
 
-See [config/mcp.md](config/mcp.md) for configuration details. Credentials live in a `.env` file (git-ignored). A `.vscode/mcp.json` is included for VS Code users, but any MCP-compatible runtime can read from `.env`.
+See [config/mcp.md](config/mcp.md) for configuration details. Credentials live in a `.env` file (git-ignored). GitHub Copilot CLI uses the root `.mcp.json` file.

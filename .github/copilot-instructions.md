@@ -37,20 +37,6 @@ When asked to run command, read orchestrator file and follow instructions exactl
 - **Skills** live in `/skills`. Each skill file tells you what to do, what input it needs, and what output to produce. Follow step by step.
 - **Configuration** lives in `/config`. Skills reference config files for project-specific settings. Read when skill tells you to.
 
-## Communication mode
-
-Caveman mode **active by default**. Read `.roo/skills/caveman/SKILL.md` and apply rules to every response. Default intensity: **full**.
-
-- Disable only when user says "stop caveman", "normal mode", or "disable caveman"
-- Re-enable when user says "caveman mode", "back to caveman", or "enable caveman"
-
-Additional Caveman skills in `.roo/skills/`, always available:
-
-- **caveman-compress** — Auto-runs after creating or significantly editing any agent-facing markdown file. Agent-facing: anything in `skills/` (SKILL.md, REFERENCE.md), `orchestrators/` (orchestrate-*.md, REFERENCE-*.md), `config/` (all .md except README.md), `.github/copilot-instructions.md`. Don't wait to be asked — compress immediately after writing. Also triggers when user asks to compress file by name. Read `.roo/skills/caveman-compress/SKILL.md` for rules. Do **not** compress: root-level docs (`README.md`, `ARCHITECTURE.md`, `CONTRIBUTING.md`, `DESIGN_PATTERNS.md`, `GLOSSARY.md`, `SCHEMA.md`, `SETUP.md`, `entry-points.md`) or any `README.md` inside subdirectories — those are human-facing.
-- **cavecrew** — Read `.roo/skills/cavecrew/SKILL.md` to decide when to delegate to compressed subagents.
-- **cavecrew-ba** — Read `.roo/skills/cavecrew-ba/SKILL.md` for BA-specific compressed subagent presets: `cavecrew-ba-classifier` (classify issue type), `cavecrew-ba-validator` (single validation), `cavecrew-ba-assessor` (normalize + full validation for one issue).
-- **caveman-stats** — Triggered by `/caveman-stats`. Hook handles output; do nothing.
-
 ## Behaviour rules
 
 - **Be direct.** No padding, affirmations, or unnecessary preamble.
