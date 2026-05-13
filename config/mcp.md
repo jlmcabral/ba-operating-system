@@ -8,14 +8,16 @@ External services (via [MCP — Model Context Protocol](../glossary.md#mcp)) ski
 
 Credentials live in `.env` at repo root (git-ignored). Copy `.env.example` to `.env` and fill in values.
 
-| Variable                    | Purpose                          | Example                                   |
-| --------------------------- | -------------------------------- | ----------------------------------------- |
-| `JIRA_URL`                  | Jira instance URL                | `https://jira.example.com/`               |
-| `JIRA_USERNAME`             | Jira account email               | `your-email@example.com`                  |
-| `JIRA_PERSONAL_TOKEN`       | Jira personal access token       | _(generate from your Jira profile)_       |
-| `CONFLUENCE_URL`            | Confluence instance URL          | `https://wiki.example.com/`               |
-| `CONFLUENCE_USERNAME`       | Confluence account email         | `your-email@example.com`                  |
-| `CONFLUENCE_PERSONAL_TOKEN` | Confluence personal access token | _(generate from your Confluence profile)_ |
+| Variable                    | Shared? | Purpose                          |
+| --------------------------- | ------- | -------------------------------- |
+| `JIRA_USERNAME`             | ✅ Typically same as Confluence | Jira account email |
+| `CONFLUENCE_USERNAME`       | ✅ Typically same as Jira | Confluence account email |
+| `JIRA_SSL_VERIFY`           | ✅ Typically same as Confluence | SSL verification (`true`/`false`) |
+| `CONFLUENCE_SSL_VERIFY`     | ✅ Typically same as Jira | SSL verification (`true`/`false`) |
+| `JIRA_URL`                  | — | Jira instance URL |
+| `JIRA_PERSONAL_TOKEN`       | — | Jira personal access token |
+| `CONFLUENCE_URL`            | — | Confluence instance URL |
+| `CONFLUENCE_PERSONAL_TOKEN` | — | Confluence personal access token |
 
 ### GitHub Copilot CLI users
 
@@ -39,16 +41,7 @@ Connects to Jira and Confluence — reads issues, fetches templates, queries boa
 - `fetch-issues-by-status` — reads multiple issues filtered by project and status
 - `fetch-required-templates` — reads issue template structures from Jira; reads Quality Management Playbook from Confluence (bug classification)
 
-**Credentials (from `.env`):**
-
-| Variable                    | Purpose                          | Example                                   |
-| --------------------------- | -------------------------------- | ----------------------------------------- |
-| `JIRA_URL`                  | Jira instance URL                | `https://jira.example.com/`               |
-| `JIRA_USERNAME`             | Jira account email               | `your-email@example.com`                  |
-| `JIRA_PERSONAL_TOKEN`       | Jira personal access token       | _(generate from your Jira profile)_       |
-| `CONFLUENCE_URL`            | Confluence instance URL          | `https://wiki.example.com/`               |
-| `CONFLUENCE_USERNAME`       | Confluence account email         | `your-email@example.com`                  |
-| `CONFLUENCE_PERSONAL_TOKEN` | Confluence personal access token | _(generate from your Confluence profile)_ |
+**Credentials (from `.env`):** See the [full variable reference](#how-it-is-configured) above.
 
 **Docs:** [mcp-atlassian docs](https://mcp-atlassian.soomiles.com/docs)
 

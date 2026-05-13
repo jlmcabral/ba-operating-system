@@ -49,11 +49,18 @@ The system needs to connect to your Jira and Confluence instance. Credentials ar
    ```
 3. Open `.env` and fill in your values:
    ```
-   JIRA_URL=https://your-jira-instance.example.com/
+   # Shared (same value for both services)
    JIRA_USERNAME=your.name@company.com
-   JIRA_PERSONAL_TOKEN=your_jira_token_here
-   CONFLUENCE_URL=https://your-confluence-instance.example.com/
    CONFLUENCE_USERNAME=your.name@company.com
+   JIRA_SSL_VERIFY=true
+   CONFLUENCE_SSL_VERIFY=true
+
+   # Jira
+   JIRA_URL=https://your-jira-instance.example.com/
+   JIRA_PERSONAL_TOKEN=your_jira_token_here
+
+   # Confluence
+   CONFLUENCE_URL=https://your-confluence-instance.example.com/
    CONFLUENCE_PERSONAL_TOKEN=your_confluence_token_here
    ```
 
