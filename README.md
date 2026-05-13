@@ -36,6 +36,9 @@ Each skill does one thing. Orchestrators chain them together. Configuration adap
 
 → Full details and examples: [entry-points.md](entry-points.md)
 
+> [!NOTE]
+> The system is designed to be AI runtime agnostic — skills, orchestrators, and configuration are plain Markdown and work with any MCP-compatible tool. However, it is currently configured and tested for **GitHub Copilot** (CLI and VS Code agent mode). Support for other runtimes (e.g. Claude Code) is planned but not yet available. A migration guide will be added when that support lands.
+
 ---
 
 ## 🧱 Principles

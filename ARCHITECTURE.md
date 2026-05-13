@@ -116,6 +116,9 @@ The system connects to:
 
 Skills instruct the AI to fetch data; the AI handles the actual MCP communication.
 
+> [!NOTE]
+> The system is designed to be AI runtime agnostic — skills, orchestrators, and configuration are plain Markdown and work with any MCP-compatible tool. It is currently configured and tested for **GitHub Copilot** (CLI and VS Code agent mode). Support for other runtimes (e.g. Claude Code) is planned. A migration guide covering configuration differences between runtimes will be added when that support lands.
+
 ---
 
 ## How a typical `/craft` run works
