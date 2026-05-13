@@ -37,6 +37,10 @@ When asked to run command, read orchestrator file and follow instructions exactl
 - **Skills** live in `/skills`. Each skill file tells you what to do, what input it needs, and what output to produce. Follow step by step.
 - **Configuration** lives in `/config`. Skills reference config files for project-specific settings. Read when skill tells you to.
 
+## Git rules
+
+- **Never commit without explicit approval.** Make all file changes, show a summary of what changed, and wait for the user to say "commit" or equivalent before running any `git commit` command.
+
 ## Behaviour rules
 
 - **Be direct.** No padding, affirmations, or unnecessary preamble.
