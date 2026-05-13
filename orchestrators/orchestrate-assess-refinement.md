@@ -58,7 +58,7 @@ No issues found: report and stop.
 
 ### Step 2 — Classify all issues first (Parallel)
 **Read:** `skills/analyze-input-type/SKILL.md`
-**Read also:** [`orchestrators/REFERENCE-agent-dispatch.md`](REFERENCE-agent-dispatch.md) — general dispatch rules for Steps 2+4.
+**Read also:** [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md) — general dispatch rules for Steps 2+4.
 
 Before fetching templates, determine issue type for every fetched issue. **Launch all classifications in parallel as background agents:**
 
@@ -90,7 +90,7 @@ Carry forward: **issue_types** (map of issue key → determined type).
 Carry forward: **templates** (map of issue type → template structure), **playbook_reference** (if fetched).
 
 ### Step 4 — Assess each issue (Parallel per issue)
-For each issue, launch **composite agent task** running normalize + applicable validations in one shot. Use the normalize + validate composite agent pattern from `REFERENCE-agent-dispatch.md`.
+For each issue, launch **composite agent task** running normalize + applicable validations in one shot. Use the normalize + validate composite agent pattern from `reference-agent-dispatch.md`.
 
 ```
 Launch background agent with:
@@ -110,7 +110,7 @@ Launch background agent with:
   - Record the agent_id returned
 ```
 
-**Validation logic per issue type:** See [`orchestrators/REFERENCE-validation-dispatch.md`](REFERENCE-validation-dispatch.md).
+**Validation logic per issue type:** See [`orchestrators/reference-validation-dispatch.md`](reference-validation-dispatch.md).
 
 **Wait for all issue agents:**
 

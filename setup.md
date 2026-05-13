@@ -1,10 +1,10 @@
-# Setup Guide
+# 🛠️ Setup Guide
 
 This guide walks you through setting up the BA Operating System from scratch. No technical experience is assumed — every step is explained.
 
 ---
 
-## Prerequisites
+## 📋 Prerequisites
 
 Before you start, you need:
 
@@ -67,7 +67,7 @@ The steps depend on your Atlassian instance type (Server/DC or Cloud). Check wit
 
 ## Step 3: Configure your AI runtime
 
-The [MCP server](GLOSSARY.md#mcp) is what lets the AI assistant talk to Jira and Confluence. How you configure it depends on which AI runtime you use.
+The [MCP server](glossary.md#mcp) is what lets the AI assistant talk to Jira and Confluence. How you configure it depends on which AI runtime you use.
 
 ### GitHub Copilot CLI
 
@@ -131,7 +131,7 @@ The system will:
 
 ---
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### "MCP fetch failed" or "Cannot connect to Jira"
 
@@ -151,8 +151,8 @@ The system will:
 
 ---
 
-## What's next
+## 🚀 What's next
 
-- Read the [Architecture guide](ARCHITECTURE.md) to understand how the system is structured
+- Read the [Architecture guide](architecture.md) to understand how the system is structured
 - Browse the [Skills inventory](skills/README.md) to see what building blocks are available
 - Check the [Entry Points](entry-points.md) for all available commands

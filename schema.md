@@ -409,12 +409,12 @@ When adding new data structures:
 2. Document when it's populated (which skills create it)
 3. Document when it's used (which skills consume it)
 4. Add to "Quick Reference" table
-5. Update relevant skill files to reference SCHEMA.md
+5. Update relevant skill files to reference schema.md
 
 ---
 
 ## Related Documents
 
-- [DESIGN_PATTERNS.md](DESIGN_PATTERNS.md) — How to make design decisions
+- [design-patterns.md](design-patterns.md) — How to make design decisions
 - [skills/README.md](skills/README.md) — Skill file template
 - [config/quality-standards.md](config/quality-standards.md) — Validation rules (references this schema)

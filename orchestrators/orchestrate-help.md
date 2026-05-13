@@ -164,5 +164,5 @@ Simpler than other orchestrators:
 ## Related Documents
 
 - [entry-points.md](../entry-points.md) — Full command reference
-- [ARCHITECTURE.md](../ARCHITECTURE.md) — System overview
+- [architecture.md](../architecture.md) — System overview
 - [README.md](../README.md) — Getting started

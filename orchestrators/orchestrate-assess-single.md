@@ -65,7 +65,7 @@ Carry forward: **issue_type** (confirmed or recommended), **type_mismatch** (if 
 
 ### Step 3 — Fetch the right template
 **Read:** `skills/fetch-required-templates/SKILL.md`
-**Read also:** [`orchestrators/REFERENCE-agent-dispatch.md`](REFERENCE-agent-dispatch.md) — general dispatch rules for Steps 3+4.
+**Read also:** [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md) — general dispatch rules for Steps 3+4.
 
 Fetch only template for determined issue type. Bug: also fetch Quality Management Playbook.
 
@@ -104,7 +104,7 @@ Carry forward: **canonical_issue**, **template_structure**, **playbook_reference
 
 ### Step 5 — Run validations (Parallel)
 
-**Read:** [`orchestrators/REFERENCE-validation-dispatch.md`](REFERENCE-validation-dispatch.md) + [`orchestrators/REFERENCE-agent-dispatch.md`](REFERENCE-agent-dispatch.md)
+**Read:** [`orchestrators/reference-validation-dispatch.md`](reference-validation-dispatch.md) + [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md)
 
 Run applicable validation skills based on issue type **in parallel** using standard dispatch pattern.
 

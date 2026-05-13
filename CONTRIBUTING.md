@@ -35,7 +35,7 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
        └── scripts/
            └── validator.js
    ```
-   Scripts must: read JSON from stdin, write JSON to stdout, always exit 0, use zero external dependencies (Node.js stdlib only). Node.js 18+ is required (see [SETUP.md](SETUP.md#prerequisites)).
+   Scripts must: read JSON from stdin, write JSON to stdout, always exit 0, use zero external dependencies (Node.js stdlib only). Node.js 18+ is required (see [setup.md](setup.md#prerequisites)).
    Skills should call the script first, then apply LLM judgment only to ambiguous cases.
 
 5. **Keep it under 100 lines:** If a skill exceeds 100 lines, split reference material into a `REFERENCE.md` file alongside it. The main skill stays lean; advanced content is loaded on demand.
@@ -44,7 +44,7 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
 
 7. **Reference it in orchestrators:** If an existing orchestrator should use this skill, add it to the orchestrator's flow.
 
-8. **Update architecture:** If the skill introduces a new category, update `ARCHITECTURE.md`.
+8. **Update architecture:** If the skill introduces a new category, update `architecture.md`.
 
 ---
 
@@ -56,13 +56,13 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
 
 3. **Define the flow:** List which skills run, in what order, with what state passes between them.
 
-4. **Use shared references:** For validation dispatch, reference `orchestrators/REFERENCE-validation-dispatch.md` instead of repeating the pattern inline.
+4. **Use shared references:** For validation dispatch, reference `orchestrators/reference-validation-dispatch.md` instead of repeating the pattern inline.
 
 5. **Mark pause points:** If the orchestrator needs user input mid-flow, mark it with ⏸️.
 
 6. **Add an entry point:** Create a command for it in `entry-points.md`.
 
-7. **Update READMEs:** Add it to `orchestrators/README.md` and `ARCHITECTURE.md`.
+7. **Update READMEs:** Add it to `orchestrators/README.md` and `architecture.md`.
 
 ---
 

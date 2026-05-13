@@ -149,7 +149,7 @@ Skills are **composable** because they have clear contracts. When you write a sk
 
 ```
 ## Input
-- **canonical_issue** — The normalized issue object (see SCHEMA.md)
+- **canonical_issue** — The normalized issue object (see schema.md)
 - **issue_type** — One of: Story, Task, Bug
 
 ## Output
@@ -254,7 +254,7 @@ An orchestrator is a **recipe** — it chains skills together in a specific orde
 | Pattern | Example | Purpose |
 |---------|---------|---------|
 | `orchestrate-{domain}` | `orchestrate-craft`, `orchestrate-assess-single` | Main workflows for a domain |
-| `orchestrate-{verb}` | `orchestrate-help` | Specialized workflows (questioning, diagnosing, etc.) |
+| `orchestrate-{verb}` | `orchestrate-assess-refinement` | Specialized workflows (batch processing, etc.) |
 
 ---
 
@@ -277,7 +277,6 @@ Is this a new entry point? (Will users type a new command?)
 - ✅ **Create new orchestrator** when:
   - You want `/assess-scope` (assess just one aspect of an issue)
   - You want `/extract-from-transcript` (new workflow)
-  - You want `/help` (interactive guidance)
 
 - ⚠️ **Modify existing** when:
   - You want to support Task validation in `/craft` (already does, via conditional logic)
@@ -346,7 +345,7 @@ Step 3: ...
 **Rules:**
 
 1. **Name state explicitly** — Use `snake_case` names. Examples: `canonical_issue`, `validation_findings`, `enriched_issue`.
-2. **Document state shape** — Reference `SCHEMA.md` for complex objects.
+2. **Document state shape** — Reference `schema.md` for complex objects.
 3. **Never lose state** — If a skill needs data from Step 1, don't forget to carry it forward through every step.
 4. **Filter as you go** — If Step 2 only needs part of Step 1's output, be explicit: "Carry forward: **issue_type** (ignore issue_mode and type_confidence)."
 
@@ -379,7 +378,7 @@ orchestrators/
 ├─ orchestrate-craft.md              # References dispatch pattern
 ├─ orchestrate-assess-single.md      # References dispatch pattern
 ├─ orchestrate-assess-refinement.md  # References dispatch pattern
-└─ REFERENCE-validation-dispatch.md  # Defines the pattern once
+└─ reference-validation-dispatch.md  # Defines the pattern once
 ```
 
 **Why:** Changes to dispatch logic (adding a new validator, changing the combine format) happen in one place. Orchestrators stay focused on their unique flow rather than repeating boilerplate.
@@ -500,8 +499,8 @@ Is it >25 steps?
 
 ## Related Documents
 
-- [SCHEMA.md](SCHEMA.md) — Exact shapes of data structures
-- [ARCHITECTURE.md](ARCHITECTURE.md) — System overview
+- [schema.md](schema.md) — Exact shapes of data structures
+- [architecture.md](architecture.md) — System overview
 - [entry-points.md](entry-points.md) — User-facing commands
 - [skills/README.md](skills/README.md) — Skill file templates
 - [orchestrators/README.md](orchestrators/README.md) — Orchestrator overview

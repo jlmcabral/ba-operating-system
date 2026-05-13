@@ -22,7 +22,7 @@
 
 A modular system of **skills**, **orchestrators**, and **configuration** that takes you from a rough idea to a refinement-ready Jira issue — or assesses an entire board for refinement readiness.
 
-Each skill does one thing. Orchestrators chain them together. Configuration adapts the system to your projects. Runs on any AI tool that supports [MCP](GLOSSARY.md#mcp) — currently configured for [GitHub Copilot CLI](https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli) in agent mode.
+Each skill does one thing. Orchestrators chain them together. Configuration adapts the system to your projects. Runs on any AI tool that supports [MCP](glossary.md#mcp) — currently configured for [GitHub Copilot CLI](https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli) in agent mode.
 
 ---
 
@@ -47,7 +47,7 @@ Each skill does one thing. Orchestrators chain them together. Configuration adap
 - **Modular.** Skills do one thing. Orchestrators compose them. Configuration adapts to your context.
 - **Token-efficient.** Fetches only what is needed. Shows only what matters. Questions come before drafts, not after.
 - **Human gates, not full automation.** The AI handles structure, fetching, and analysis. You make the decisions.
-- **BA-friendly.** No technical background assumed. Every concept is explained in the [Glossary](GLOSSARY.md).
+- **BA-friendly.** No technical background assumed. Every concept is explained in the [Glossary](glossary.md).
 - **Designed to evolve.** Add new skills, create new orchestrators, or adjust configuration without rebuilding.
 
 ---
@@ -56,9 +56,9 @@ Each skill does one thing. Orchestrators chain them together. Configuration adap
 
 Requires [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli) — install that first.
 
-Full setup walkthrough → [SETUP.md](SETUP.md)
+Full setup walkthrough → [setup.md](setup.md)
 
-How the layers fit together → [ARCHITECTURE.md](ARCHITECTURE.md)
+How the layers fit together → [architecture.md](architecture.md)
 
 ---
 
@@ -66,11 +66,11 @@ How the layers fit together → [ARCHITECTURE.md](ARCHITECTURE.md)
 
 | Document | What it covers |
 | -------- | -------------- |
-| [SETUP.md](SETUP.md) | Step-by-step setup from scratch |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | How the layers fit together |
+| [setup.md](setup.md) | Step-by-step setup from scratch |
+| [architecture.md](architecture.md) | How the layers fit together |
 | [entry-points.md](entry-points.md) | Available commands with examples |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to add or modify skills |
-| [GLOSSARY.md](GLOSSARY.md) | Technical terms explained simply |
+| [glossary.md](glossary.md) | Technical terms explained simply |
 | [config/README.md](config/README.md) | Configuration guide |
 | [skills/README.md](skills/README.md) | Skill inventory |
 | [orchestrators/README.md](orchestrators/README.md) | How orchestrators work |

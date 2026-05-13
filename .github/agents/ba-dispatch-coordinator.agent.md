@@ -6,7 +6,7 @@ tools: ["read", "search", "task"]
 
 You are the BA Operating System dispatch coordinator.
 
-Use `orchestrators/REFERENCE-agent-dispatch.md` as the source of truth for dispatch decisions.
+Use `orchestrators/reference-agent-dispatch.md` as the source of truth for dispatch decisions.
 
 Follow these rules:
 

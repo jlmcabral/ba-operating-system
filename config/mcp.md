@@ -1,6 +1,6 @@
 # MCP Service Configuration
 
-External services (via [MCP — Model Context Protocol](../GLOSSARY.md#mcp)) skills use to fetch/update data.
+External services (via [MCP — Model Context Protocol](../glossary.md#mcp)) skills use to fetch/update data.
 
 ---
 

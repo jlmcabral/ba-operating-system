@@ -18,7 +18,7 @@ Skills are the building blocks of the BA Operating System. Each skill does **one
 ## Skill inventory
 
 ### Fetching skills
-These retrieve data from external systems (Jira, Confluence) via [MCP](../GLOSSARY.md#mcp).
+These retrieve data from external systems (Jira, Confluence) via [MCP](../glossary.md#mcp).
 
 | Skill | Purpose |
 |-------|---------|
@@ -118,4 +118,4 @@ The `description` field is critical for agent routing — it must clearly commun
 6. Keep the skill under 100 lines. If it exceeds this, split reference material into a `REFERENCE.md` file inside the skill's directory
 7. Add the skill to the inventory table in this README
 8. Reference it in any orchestrators that should use it
-9. Update the [Architecture guide](../ARCHITECTURE.md) if the skill introduces a new category
+9. Update the [Architecture guide](../architecture.md) if the skill introduces a new category

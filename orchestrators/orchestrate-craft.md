@@ -103,7 +103,7 @@ Carry forward: **issue_draft**.
 
 ### Step 6 — Run validations (Parallel)
 
-**Read:** [`orchestrators/REFERENCE-validation-dispatch.md`](REFERENCE-validation-dispatch.md) + [`orchestrators/REFERENCE-agent-dispatch.md`](REFERENCE-agent-dispatch.md)
+**Read:** [`orchestrators/reference-validation-dispatch.md`](reference-validation-dispatch.md) + [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md)
 
 Run applicable validation skills based on issue type **in parallel** using standard dispatch pattern. All agents operate on same enriched_canonical_issue.
 

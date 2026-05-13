@@ -1,16 +1,16 @@
-# Architecture
+# 🗺️ Architecture
 
-This document explains how the BA Operating System is structured and how the pieces fit together. For a quick-start guide, see [SETUP.md](SETUP.md). For term definitions, see the [Glossary](GLOSSARY.md).
+This document explains how the BA Operating System is structured and how the pieces fit together. For a quick-start guide, see [setup.md](setup.md). For term definitions, see the [Glossary](glossary.md).
 
 ---
 
-## The big picture
+## 🔭 The big picture
 
 The system has five layers. Each layer has a clear job:
 
 ```
 ┌─────────────────────────────────────────────┐
-│     Entry Points (/help, /craft, /assess)   │  ← What you interact with
+│      Entry Points (/craft, /assess)          │  ← What you interact with
 ├─────────────────────────────────────────────┤
 │           Orchestrators                      │  ← Recipes that chain skills
 ├─────────────────────────────────────────────┤
@@ -26,15 +26,14 @@ The system has five layers. Each layer has a clear job:
 
 ---
 
-## Layer 1: Entry Points
+## 🚪 Layer 1: Entry Points
 
 **Location:** `entry-points.md`
 
-These are the commands you use. There are four:
+These are the commands you use. There are three:
 
 | Command              | What it does                                              |
 | -------------------- | --------------------------------------------------------- |
-| `/help`              | Interactive guide to choose the right command             |
 | `/craft [input]`     | Shape an idea, draft, or Jira issue into a complete issue |
 | `/assess [key]`      | Check if one specific issue is ready for refinement       |
 | `/assess-refinement` | Check all issues in your configured columns               |
@@ -45,7 +44,7 @@ Entry points are just triggers — they tell the system which orchestrator to ru
 
 ---
 
-## Layer 2: Orchestrators
+## 🔗 Layer 2: Orchestrators
 
 **Location:** `orchestrators/`
 
@@ -53,7 +52,6 @@ Orchestrators are recipes. They define which skills to run, in what order, and w
 
 | Orchestrator                    | Skills chained                                                                                     |
 | ------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `orchestrate-help`              | Pure presentation — interactive decision tree, no skills chained                                   |
 | `orchestrate-craft`             | analyse → fetch template → ask questions → normalise → draft → validate → revise → follow-up       |
 | `orchestrate-assess-single`     | fetch issue → analyse → fetch template → normalise → validate → format report                      |
 | `orchestrate-assess-refinement` | fetch all issues → classify → fetch templates (deduplicated) → validate each → format batch report |
@@ -64,7 +62,7 @@ Orchestrators carry **state** between skills — the output of one skill becomes
 
 ---
 
-## Layer 3: Skills
+## 🧱 Layer 3: Skills
 
 **Location:** `skills/`
 
@@ -85,7 +83,7 @@ Skills are the building blocks. Each one does one thing:
 
 ---
 
-## Layer 4: Configuration
+## ⚙️ Layer 4: Configuration
 
 **Location:** `config/`
 
@@ -105,9 +103,9 @@ Configuration files hold your project-specific settings. Skills reference these 
 
 ---
 
-## Layer 5: External Services
+## 🌐 Layer 5: External Services
 
-**Connection:** Via [MCP](GLOSSARY.md#mcp) (Model Context Protocol)
+**Connection:** Via [MCP](glossary.md#mcp) (Model Context Protocol)
 
 The system connects to:
 
@@ -121,7 +119,7 @@ Skills instruct the AI to fetch data; the AI handles the actual MCP communicatio
 
 ---
 
-## How a typical `/craft` run works
+## 📋 How a typical `/craft` run works
 
 Here is what happens when you type `/craft PROJECT-1234`:
 
@@ -140,9 +138,7 @@ Here is what happens when you type `/craft PROJECT-1234`:
 
 ---
 
----
-
-## Design principles
+## 💡 Design principles
 
 1. **Single responsibility.** Each skill does one thing. Each config file controls one concern.
 2. **DRY.** Validation logic is defined once in skills, used by multiple orchestrators.

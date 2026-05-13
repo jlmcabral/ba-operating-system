@@ -71,4 +71,4 @@ Only findings with non-null `finding` values proceed to downstream skills.
 
 ---
 
-**See also:** [`orchestrators/REFERENCE-agent-dispatch.md`](REFERENCE-agent-dispatch.md) — general agent dispatch rules (when to use agents, prompt packaging, parallel launch, result merge).
+**See also:** [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md) — general agent dispatch rules (when to use agents, prompt packaging, parallel launch, result merge).

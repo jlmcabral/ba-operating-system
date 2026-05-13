@@ -2,7 +2,7 @@
 
 This directory contains all the settings that make the BA Operating System work for **your** projects. When you clone this repository to use it for your own work, these are the files you customise.
 
-> **New here?** Start with the [Setup Guide](../SETUP.md) which walks you through configuring everything step by step.
+> **New here?** Start with the [Setup Guide](../setup.md) which walks you through configuring everything step by step.
 
 ---
 
@@ -35,4 +35,4 @@ Connection credentials (API tokens, email, instance URL) live in a `.env` file a
 
 The root `.mcp.json` reads from `.env` for Copilot CLI users. Other AI runtimes can read `.env` directly.
 
-See [Setup Guide](../SETUP.md) for how to create your `.env` file from the provided `.env.example` template.
+See [Setup Guide](../setup.md) for how to create your `.env` file from the provided `.env.example` template.

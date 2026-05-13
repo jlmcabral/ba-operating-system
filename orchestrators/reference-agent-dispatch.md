@@ -144,4 +144,4 @@ Keep names short, stable, grepable.
 - Main thread owns dispatch decision, prompt packaging, result merge.
 - Sub-agent owns only work described in prompt.
 - Prefer embedded file content over extra tool calls when file short.
-- `orchestrators/REFERENCE-validation-dispatch.md` stays narrow validator guide. This file covers broader dispatch pattern.
+- `orchestrators/reference-validation-dispatch.md` stays narrow validator guide. This file covers broader dispatch pattern.

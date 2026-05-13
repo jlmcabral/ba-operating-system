@@ -6,33 +6,7 @@ Entry points are the commands you use to interact with the BA Operating System. 
 
 ---
 
-## Quick Decision Tree
-
-Not sure which command to use? Run `/help` — it will guide you to the right one.
-
----
-
 ## Available commands
-
-### `/help` — Get guidance
-
-**What it does:** Interactive guide to help you choose the right command based on what you're trying to do.
-
-**How to use it:**
-
-```
-/help
-```
-
-**What you get back:**
-
-- A simple question about your goal
-- A recommendation for which command to use
-- Explanations of all available commands
-
-**Best for:** You're new to the system or unsure which command to run next.
-
----
 
 ### `/craft` — Shape an issue
 

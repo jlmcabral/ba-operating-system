@@ -2,7 +2,7 @@
 
 Orchestrators are the "recipes" of the BA Operating System. They chain [skills](../skills/README.md) together in the right order to accomplish a specific task.
 
-> **New to this system?** Think of orchestrators like a recipe in a cookbook. The recipe doesn't teach you how to chop an onion — it tells you _when_ to chop it and what to do next. Skills are the individual techniques; orchestrators are the recipes that combine them. See the [Glossary](../GLOSSARY.md#orchestrator) for more.
+> **New to this system?** Think of orchestrators like a recipe in a cookbook. The recipe doesn't teach you how to chop an onion — it tells you _when_ to chop it and what to do next. Skills are the individual techniques; orchestrators are the recipes that combine them. See the [Glossary](../glossary.md#orchestrator) for more.
 
 ---
 
@@ -20,7 +20,6 @@ Orchestrators are the "recipes" of the BA Operating System. They chain [skills](
 
 | Orchestrator                                                        | Entry point          | Purpose                                                              | When to use                            |
 | ------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------- | -------------------------------------- |
-| [`orchestrate-help`](orchestrate-help.md)                           | `/help`              | Get guidance on which command to use                                 | You're unsure which entry point to run |
 | [`orchestrate-craft`](orchestrate-craft.md)                         | `/craft`             | Shape an idea, draft, or Jira issue into a complete, validated issue | Day-to-day issue writing               |
 | [`orchestrate-assess-single`](orchestrate-assess-single.md)         | `/assess [key]`      | Assess one issue for refinement readiness                            | Quick check on a specific issue        |
 | [`orchestrate-assess-refinement`](orchestrate-assess-refinement.md) | `/assess-refinement` | Assess all issues in configured columns                              | Before a refinement session            |
@@ -53,4 +52,4 @@ Orchestrators are the "recipes" of the BA Operating System. They chain [skills](
 3. Mark any pause points where user input is needed
 4. Add the orchestrator to the table in this README
 5. Define an entry point command in `entry-points.md`
-6. Update the [Architecture guide](../ARCHITECTURE.md) if the orchestrator represents a new capability
+6. Update the [Architecture guide](../architecture.md) if the orchestrator represents a new capability
