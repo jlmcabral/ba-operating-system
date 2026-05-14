@@ -73,7 +73,7 @@ Only findings with non-null `finding` values proceed to downstream skills.
 - **validate-persona** has two behaviours: persona specificity (always `observational`) and role-based coverage (can be `critical`). Both findings returned from same skill invocation.
 - **validate-completeness** requires `template_structure` as additional input — other validators don't.
 - **validate-design-reference** applies to Story only — skip for Bug and Task.
-- Batch operations (`/assess-refinement`): validators run per-issue inside composite agent. Dispatch pattern same but executed within agent context.
+- Batch operations (`/assess-refinement`): validators run per-issue inside composite agent. The orchestrator pre-determines issue type from Jira data (deterministic field read) and loads **only validators applicable to that type** — reducing prompt size 30-55% per agent. The agent still classifies independently and flags type mismatches.
 
 ---
 

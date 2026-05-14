@@ -26,14 +26,16 @@ description: Assess all issues from configured columns for refinement readiness 
 ```
 Step 1: fetch-issues-by-status
     ↓
-Step 2: read all templates from local cache (instant — no MCP)
+Step 2: read templates + config (cache — instant)
     ↓
-Step 3: classify all issues + assess (PARALLEL — per-issue composite agents)
-    ├─ Issue 1: classify → normalize → validate
-    ├─ Issue 2: classify → normalize → validate
-    ├─ Issue N: classify → normalize → validate
+Step 3: extract issue types from Jira data (deterministic — no LLM)
+    ↓
+Step 4: assess each issue (PARALLEL — targeted validators per type)
+    ├─ Issue 1 (Story): 9 validators
+    ├─ Issue 2 (Task):  4 validators
+    ├─ Issue N (Bug):   8 validators
     ↓ (wait for all to complete)
-Step 4: format-readiness-report (batch mode)
+Step 5: format-readiness-report (batch mode)
     ↓
 OUTPUT: Summary table + detailed breakdowns for failures
 ```
@@ -70,10 +72,25 @@ If cache is empty (fresh checkout), `fetch-required-templates` auto-fetches via 
 
 Carry forward: **templates** (map of type → template structure), **playbook_reference** (if available), **config_content** (inline text of quality-standards.md and personas.md).
 
-### Step 3 — Assess each issue (Parallel composite agents)
-For each issue, launch **one-shot composite agent** that classifies, normalizes, and validates in a single pass. No separate classification step — each agent handles everything for its issue.
+### Step 3 — Extract issue types from Jira data (deterministic)
+For each fetched issue, read `fields.issuetype.name` from the Jira response. No LLM call — this is a deterministic field access. Use the Jira-declared type to determine which validators to include for each issue.
 
-**Embed config files once into every agent prompt** — agents use the pre-loaded content instead of reading config files individually per validator.
+Map to issue type: Story, Task, or Bug. Unknown type: default to Story.
+
+Build an **issue_type_map** (issue key → declared type). Carry this forward so each composite agent receives validators matching its declared type.
+
+Carry forward: **issue_type_map** (map of issue key → declared type).
+
+### Step 4 — Assess each issue (Parallel — targeted per type)
+For each issue, launch **one-shot composite agent** that classifies, normalizes, and validates in a single pass. Each agent receives **only the validators applicable to its declared type** (from Step 3) — not all 9. This reduces prompt size per agent by 30-55% depending on type.
+
+**Build per-type prompt sets** using validators from [`orchestrators/reference-validation-dispatch.md`](reference-validation-dispatch.md):
+
+| Declared type | Validators to include | Templates to include |
+|---|---|---|
+| Story | all 9 validators | story.md only |
+| Bug | all 8 validators (excl. design-reference) | bug.md + playbook.md |
+| Task | scope, ac-quality, completeness, dependencies | task.md only |
 
 ```
 Launch background agent with:
@@ -84,28 +101,28 @@ Launch background agent with:
       Include:
       - skills/analyze-input-type/SKILL.md
       - skills/normalize-issue-context/SKILL.md
-      - applicable validation skills (based on issue type — the agent first classifies, then selects validators)
       - issue_content
       - canonical issue schema
-      - all template structures (all 4 — agent selects the right one after classifying)
+      - template structure (only the one matching declared type, plus playbook if Bug)
+      - validation skills (only those applicable to declared type)
       - [EMBEDDED CONFIG: config/quality-standards.md]
         (content of config/quality-standards.md goes here)
       - [EMBEDDED CONFIG: config/personas.md]
         (content of config/personas.md goes here)
       
-      Note: Config content is already above. Skills may say "Read config/...md" — skip that instruction, use the embedded content directly.
+      Note: Config content is above. Skills may say "Read config/...md" — skip that instruction, use the embedded content.
       
       Task: 
-        1. Classify issue type (Story/Task/Bug)
+        1. Classify issue type (Story/Task/Bug) — flag if different from declared type
         2. Normalize into canonical schema
-        3. Pick the right template from pre-loaded templates
-        4. Run all applicable validators
+        3. Run all applicable validators below
+        4. If type mismatch detected and some validators weren't loaded for the correct type, flag which checks are missing and recommend re-assessment
         5. Return combined findings with issue_type
     ]
   - Record the agent_id returned
 ```
 
-**Validation logic per issue type:** See [`orchestrators/reference-validation-dispatch.md`](reference-validation-dispatch.md).
+**Type mismatch handling:** The agent may determine a different type than Jira declared. It should flag the mismatch and note any validators that were missing because the prompt was built for the declared type. This is an edge case — most Jira types are correct.
 
 **Wait for all issue agents:**
 
@@ -115,7 +132,7 @@ After all launched: wait using `read_agent` with `wait: true` on each.
 
 Carry forward: **assessments** (issue key + issue type + validation findings for all issues).
 
-### Step 4 — Format the batch report
+### Step 5 — Format the batch report
 **Read:** `skills/format-readiness-report/SKILL.md`
 
 Generate readiness report in **batch mode**:
