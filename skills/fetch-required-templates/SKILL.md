@@ -15,7 +15,7 @@ description: Read Jira issue template for a given type from local cache, auto-fe
 
 ## Input
 
-- **issue_type** — Determined issue type: Story, Task, or Bug
+- **issue_type** — Determined issue type: Story, Task, Bug, or Request
 - **fetch_playbook** — Whether to also fetch Quality Management Playbook (true for Bugs, false otherwise)
 
 ---
@@ -29,6 +29,8 @@ For each template needed:
 1. Check cache at `.cache/templates/{type}.md` (e.g. `.cache/templates/story.md`).
 2. If file exists and has content: read it, extract template structure, return.
 3. If file missing or empty: fetch from Jira via MCP using key from `config/project.md`, write raw content to cache file, then extract and return.
+
+**Request type:** The orchestrator will pass `fetch_required_templates` for Story, Task, and Bug — not for Request itself. The skill handles each child type independently. If `issue_type` is Request, expect the caller to specify which child templates to fetch.
 
 For playbook (`fetch_playbook` is true):
 

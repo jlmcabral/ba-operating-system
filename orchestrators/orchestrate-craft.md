@@ -1,6 +1,6 @@
 ---
 name: orchestrate-craft
-description: Shape an idea, draft, or Jira issue into a complete validated issue with clarification, validation, and revision. Use when user says /craft or wants to write/improve an issue.
+description: Shape an idea, draft, or Jira issue into a complete validated issue — or, for Request types, into a child issue breakdown proposal — with clarification, validation, and revision. Use when user says /craft or wants to write/improve an issue.
 ---
 
 # Orchestrator: Craft
@@ -18,6 +18,7 @@ description: Shape an idea, draft, or Jira issue into a complete validated issue
 - Rough idea → shape into proper issue
 - Draft → complete and validate
 - Existing Jira issue → improve before refinement
+- Existing Request → analyse and propose child issue breakdown
 
 ---
 
@@ -32,21 +33,26 @@ Step 3: normalize-issue-context
     ↓
 Step 4: ask-clarification-questions  ← PAUSE (wait for user answers)
     ↓
-Step 5: produce-issue-draft
-    ↓
-Step 6: run validation skills (PARALLEL)
-    ├─ validate-problem-framing (if Story/Bug)
-    ├─ validate-scope
-    ├─ validate-ac-quality
-    ├─ validate-ac-uiux-trap (if Story/Bug)
-    ├─ validate-completeness
-    └─ validate-persona (if Story/Bug)
-    ↓ (wait for all to complete)
-Step 7: revise-draft-from-findings
-    ↓
-Step 8: generate-follow-up-questions
-    ↓
-OUTPUT: Revised draft + mention of available follow-up questions
+┌─ Branch: issue_type == "Request"?
+│       ├─ YES → Step 5b: propose-child-breakdown
+│       │           ↓
+│       │         OUTPUT: Child issue breakdown proposal
+│       │
+│       └─ NO  → Step 5: produce-issue-draft
+│                   ↓
+│                 Step 6: run validation skills (PARALLEL)
+│                   ├─ validate-problem-framing (if Story/Bug)
+│                   ├─ validate-scope
+│                   ├─ validate-ac-quality
+│                   ├─ validate-ac-uiux-trap (if Story/Bug)
+│                   ├─ validate-completeness
+│                   └─ validate-persona (if Story/Bug)
+│                   ↓ (wait for all to complete)
+│                 Step 7: revise-draft-from-findings
+│                   ↓
+│                 Step 8: generate-follow-up-questions
+│                   ↓
+│                 OUTPUT: Revised draft + mention of available follow-up questions
 ```
 
 ---
@@ -67,7 +73,8 @@ Type differs from declared/Jira type: inform user of mismatch and recommendation
 **Read:** `skills/fetch-required-templates/SKILL.md`
 
 Using determined issue type from Step 1:
-- Read template for that type from local cache (`.cache/templates/{type}.md`).
+- **Story/Task/Bug:** Read template for that type from local cache (`.cache/templates/{type}.md`).
+- **Request:** Read templates for Story, Task, and Bug (all three). Children of a Request can be any of these types, and the breakdown skill needs them to shape proposals.
 - Bug type: also read Quality Management Playbook from cache.
 - Type changed in Step 1: read template for recommended type.
 - Cache miss (first run, fresh checkout): auto-fetches via MCP and populates cache silently.
@@ -78,7 +85,7 @@ Also read config files that validators and draft step need — once, then embed 
 
 Local read — no MCP call on subsequent runs.
 
-Carry forward: **template_structure**, **playbook_reference** (if fetched), **config_content** (inline text of quality-standards.md and personas.md).
+Carry forward: **template_structure** (single for Story/Task/Bug; all three as `template_structures` for Request), **playbook_reference** (if fetched), **config_content** (inline text of quality-standards.md and personas.md).
 
 ### Step 3 — Normalise the input
 **Read:** `skills/normalize-issue-context/SKILL.md`
@@ -100,6 +107,19 @@ Review canonical issue for gaps. Ask user targeted questions about:
 Input already rich enough (well-structured Jira issue, detailed draft): skill may determine no questions needed — proceed to Step 5.
 
 After answers received: update canonical issue. Carry forward: **enriched canonical_issue**.
+
+**Branch:** If `issue_type` equals `"Request"`, skip Steps 5–8. Execute **Step 5b** instead and stop.
+
+### Step 5b — Propose child breakdown (Request only)
+**Read:** `skills/propose-child-breakdown/SKILL.md`
+
+Analyse enriched canonical issue as a Request container. Produce a structured proposal of child issues (Stories, Tasks, Bugs, or Epics) with type assignment, rationale, dependencies, and risks.
+
+Carry forward: **child_breakdown_proposal**.
+
+---
+
+The remaining steps (5–8) apply to Story/Task/Bug only.
 
 ### Step 5 — Produce the draft
 **Read:** `skills/produce-issue-draft/SKILL.md`
@@ -151,8 +171,15 @@ From unresolved findings, produce targeted list of follow-up questions.
 
 ## Output
 
+### Story/Task/Bug path
+
 1. **Revised issue draft** — Complete, all sections visible, revision notes inline where changes were made.
 2. **Validation findings** (failing/weak only) — For each finding: why it's a problem and how to think about fixing it. Don't show passing checks.
 3. **Follow-up questions available** — Mention at end: _"I have [N] follow-up questions that would strengthen this issue. Ask me for them when you're ready."_ Deliver separately if asked.
+
+### Request path
+
+1. **Child breakdown proposal** — Structured list of proposed child issues with types, rationale, dependencies, and risks.
+2. **Unresolved gaps** — Information still missing that impacts the breakdown quality.
 
 Refer to `config/output-preferences.md` for output style rules.

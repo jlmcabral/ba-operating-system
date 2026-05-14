@@ -47,6 +47,7 @@ These create or improve issue content.
 | Skill | Purpose |
 |-------|---------|
 | [`produce-issue-draft`](produce-issue-draft/SKILL.md) | Write a complete issue draft from the template |
+| [`propose-child-breakdown`](propose-child-breakdown/SKILL.md) | Analyse a Request and propose a breakdown into child issues |
 | [`revise-draft-from-findings`](revise-draft-from-findings/SKILL.md) | Improve a draft based on validation feedback |
 
 ### Validation skills
