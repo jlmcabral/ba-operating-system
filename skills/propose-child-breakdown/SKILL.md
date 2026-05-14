@@ -45,7 +45,7 @@ description: Analyse a Request-type issue and propose a structured breakdown int
    - **Title:** Concise, outcome-oriented.
    - **Rationale:** Why this exists as a separate issue — what outcome it delivers, and why it's separable from siblings.
    - **Dependencies:** What must exist or be true before this can start (e.g., "Blocked by: Child Issue X", "Depends on: Active CareMap Latest Comment column").
-   - **Persona:** If Story or Bug, identify the affected persona from `config/personas.md`.
+   - **Persona mapping (Story/Bug only):** Required. Map each Story or Bug to an **exact persona** from `config/personas.md` — no ad-hoc labels. See [REFERENCE.md](REFERENCE.md) for flag formats when no match exists or multiple personas are implied.
 
 4. **Flag gaps and risks**
 
@@ -86,5 +86,6 @@ description: Analyse a Request-type issue and propose a structured breakdown int
 - **child_breakdown_proposal** — Structured list of proposed child issues with:
   - Scope assessment (small / medium / large)
   - For each child: type, title, rationale, dependencies, risks/pending info
+  - Persona mapping (Story/Bug only) — each mapped to an exact entry from `config/personas.md`, or flagged with `[PERSONA GAP]` or `[MULTI-PERSONA]`
   - Cross-cutting notes and sequencing recommendations
 - **unresolved_gaps** — Information still missing that impacts the breakdown quality
