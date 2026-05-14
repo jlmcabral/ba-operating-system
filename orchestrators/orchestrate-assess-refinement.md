@@ -51,23 +51,29 @@ Carry forward: **issues** (list of all fetched), **fetch_summary**.
 
 No issues found: report and stop.
 
-### Step 2 — Read templates from cache
+### Step 2 — Read templates and config files from cache
 **Read:** `skills/fetch-required-templates/SKILL.md`
 
-Read all templates from local cache at `.cache/templates/`. This is a local file read — zero MCP calls, zero wait. The read-through cache auto-populates from MCP on first run (or if cache is empty).
+Read all templates from local cache at `.cache/templates/` **and** the config files validators reference. These are local file reads — zero MCP calls, zero wait. The read-through cache auto-populates templates from MCP on first run.
 
-All four files are read upfront regardless of issue types in the batch:
+Templates (all four read upfront):
 - `.cache/templates/story.md`
 - `.cache/templates/task.md`
 - `.cache/templates/bug.md`
 - `.cache/templates/playbook.md`
 
+Config files (read once, embedded in every composite agent prompt):
+- `config/quality-standards.md` — referenced by most validators
+- `config/personas.md` — referenced by validate-persona
+
 If cache is empty (fresh checkout), `fetch-required-templates` auto-fetches via MCP and populates the cache. This is a one-time cost per environment — subsequent runs read locally.
 
-Carry forward: **templates** (map of type → template structure), **playbook_reference** (if available).
+Carry forward: **templates** (map of type → template structure), **playbook_reference** (if available), **config_content** (inline text of quality-standards.md and personas.md).
 
 ### Step 3 — Assess each issue (Parallel composite agents)
 For each issue, launch **one-shot composite agent** that classifies, normalizes, and validates in a single pass. No separate classification step — each agent handles everything for its issue.
+
+**Embed config files once into every agent prompt** — agents use the pre-loaded content instead of reading config files individually per validator.
 
 ```
 Launch background agent with:
@@ -82,6 +88,12 @@ Launch background agent with:
       - issue_content
       - canonical issue schema
       - all template structures (all 4 — agent selects the right one after classifying)
+      - [EMBEDDED CONFIG: config/quality-standards.md]
+        (content of config/quality-standards.md goes here)
+      - [EMBEDDED CONFIG: config/personas.md]
+        (content of config/personas.md goes here)
+      
+      Note: Config content is already above. Skills may say "Read config/...md" — skip that instruction, use the embedded content directly.
       
       Task: 
         1. Classify issue type (Story/Task/Bug)

@@ -16,7 +16,7 @@ Standard pattern for running validation skills in parallel. Orchestrators refere
 
 ## Dispatch Template
 
-For each applicable validator, launch background agent:
+For each applicable validator, launch background agent. **Orchestrator pre-loads config files and embeds them** — validators use embedded content instead of reading config files individually.
 
 ```
 Launch background agent with:
@@ -24,10 +24,16 @@ Launch background agent with:
   - agent_type: "general-purpose"
   - mode: "background"
   - prompt: Include:
-    1. Full skill file content
-    2. enriched_canonical_issue (or canonical_issue for /assess flows)
-    3. issue_type
-    4. template_structure (for validate-completeness)
+     1. Full skill file content
+     2. enriched_canonical_issue (or canonical_issue for /assess flows)
+     3. issue_type
+     4. template_structure (for validate-completeness)
+     5. [EMBEDDED CONFIG: config/quality-standards.md]
+        (orchestrator inlines content here)
+     6. [EMBEDDED CONFIG: config/personas.md]
+        (orchestrator inlines content here)
+     
+     Note: Config content is above. Skill may say "Read config/...md" — skip that instruction, use the embedded content.
   - Record the agent_id returned
 ```
 

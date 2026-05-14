@@ -63,7 +63,7 @@ Determine issue type (Story, Task, Bug) and input mode (idea, draft, jira).
 
 Type differs from declared/Jira type: inform user of mismatch and recommendation before proceeding.
 
-### Step 2 — Read template from cache
+### Step 2 — Read template and config from cache
 **Read:** `skills/fetch-required-templates/SKILL.md`
 
 Using determined issue type from Step 1:
@@ -72,9 +72,13 @@ Using determined issue type from Step 1:
 - Type changed in Step 1: read template for recommended type.
 - Cache miss (first run, fresh checkout): auto-fetches via MCP and populates cache silently.
 
+Also read config files that validators and draft step need — once, then embed downstream:
+- `config/quality-standards.md`
+- `config/personas.md`
+
 Local read — no MCP call on subsequent runs.
 
-Carry forward: **template_structure**, **playbook_reference** (if fetched).
+Carry forward: **template_structure**, **playbook_reference** (if fetched), **config_content** (inline text of quality-standards.md and personas.md).
 
 ### Step 3 — Normalise the input
 **Read:** `skills/normalize-issue-context/SKILL.md`
@@ -108,7 +112,24 @@ Carry forward: **issue_draft**.
 
 **Read:** [`orchestrators/reference-validation-dispatch.md`](reference-validation-dispatch.md) + [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md)
 
-Run applicable validation skills based on issue type **in parallel** using standard dispatch pattern. All agents operate on same enriched_canonical_issue.
+Run applicable validation skills based on issue type **in parallel** using standard dispatch pattern. **Embed config file content once into every validator prompt:**
+
+```
+Launch background agent for each validator with:
+  - prompt: [
+      Include:
+      - validator skill content
+      - enriched_canonical_issue
+      - issue_type
+      - template_structure (for validate-completeness)
+      - [EMBEDDED CONFIG: config/quality-standards.md]
+        (content of config/quality-standards.md goes here)
+      - [EMBEDDED CONFIG: config/personas.md]
+        (content of config/personas.md goes here)
+      
+      Note: Config content is already above. Skill may say "Read config/...md" — skip that instruction, use the embedded content directly.
+    ]
+```
 
 **Input to dispatch:** enriched_canonical_issue, issue_type, template_structure.
 

@@ -63,13 +63,17 @@ Confirm issue type. Jira-declared type appears incorrect: note mismatch in repor
 
 Carry forward: **issue_type** (confirmed or recommended), **type_mismatch** (if any).
 
-### Step 3 — Read template from cache + normalise (Parallel)
+### Step 3 — Read template and config from cache + normalise (Parallel)
 **Read:** `skills/fetch-required-templates/SKILL.md`
 **Read also:** [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md) — general dispatch rules.
 
 Read template for determined issue type from local cache (`.cache/templates/`). Local read — no MCP call, no background agent needed. Bug: also read playbook from cache.
 
-Carry forward: **template_structure**, **playbook_reference** (if fetched).
+Also read config files that validators will need — once, then embed in every validator prompt:
+- `config/quality-standards.md`
+- `config/personas.md`
+
+Carry forward: **template_structure**, **playbook_reference** (if fetched), **config_content** (inline text of quality-standards.md and personas.md).
 
 **Read:** `skills/normalize-issue-context/SKILL.md`
 
@@ -87,7 +91,7 @@ Launch background agent with:
 
 **Wait for normalize agent:**
 
-After it completes (use `read_agent` with `wait: true`), proceed to Step 4.
+After it completes (use `read_agent` with `wait: true`), proceed to Step 5.
 
 Carry forward: **canonical_issue**, **template_structure**, **playbook_reference**.
 
@@ -95,7 +99,24 @@ Carry forward: **canonical_issue**, **template_structure**, **playbook_reference
 
 **Read:** [`orchestrators/reference-validation-dispatch.md`](reference-validation-dispatch.md) + [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md)
 
-Run applicable validation skills based on issue type **in parallel** using standard dispatch pattern.
+Run applicable validation skills based on issue type **in parallel** using standard dispatch pattern. **Embed config file content once into every validator agent prompt** — validators use pre-loaded content instead of reading config files individually.
+
+```
+Launch background agent for each validator with:
+  - prompt: [
+      Include:
+      - validator skill content
+      - canonical_issue
+      - issue_type
+      - template_structure (for validate-completeness)
+      - [EMBEDDED CONFIG: config/quality-standards.md]
+        (content of config/quality-standards.md goes here)
+      - [EMBEDDED CONFIG: config/personas.md]
+        (content of config/personas.md goes here)
+      
+      Note: Config content is already above. Skill may say "Read config/...md" — skip that instruction, use the embedded content directly.
+    ]
+```
 
 **Input to dispatch:** canonical_issue, issue_type, template_structure.
 
