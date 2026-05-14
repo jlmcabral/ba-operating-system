@@ -39,7 +39,7 @@ Connects to Jira and Confluence — reads issues, fetches templates, queries boa
 
 - `fetch-issue-by-key` — reads single Jira issue
 - `fetch-issues-by-status` — reads multiple issues filtered by project and status
-- `fetch-required-templates` — reads issue template structures from Jira; reads Quality Management Playbook from Confluence (bug classification)
+- `fetch-required-templates` — reads from local cache (`.cache/templates/`) on hot path; falls back to MCP only on cache miss (first run or after fresh checkout)
 
 **Credentials (from `.env`):** See the [full variable reference](#how-it-is-configured) above.
 

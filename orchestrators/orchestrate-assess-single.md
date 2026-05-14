@@ -28,11 +28,11 @@ Step 1: fetch-issue-by-key
     ↓
 Step 2: analyze-input-type
     ↓
-Step 3-5: Run in parallel
-    ├─ fetch-required-templates
+Step 3: read template from local cache + normalize (PARALLEL)
+    ├─ fetch-required-templates (local read — instant, no MCP)
     └─ normalize-issue-context
     ↓ (wait for both to complete)
-Step 6: run validation skills (PARALLEL)
+Step 4: run validation skills (PARALLEL)
     ├─ validate-problem-framing (if Story/Bug)
     ├─ validate-scope
     ├─ validate-ac-quality
@@ -40,7 +40,7 @@ Step 6: run validation skills (PARALLEL)
     ├─ validate-completeness
     └─ validate-persona (if Story/Bug)
     ↓ (wait for all to complete)
-Step 7: format-readiness-report (single mode)
+Step 5: format-readiness-report (single mode)
     ↓
 OUTPUT: Detailed readiness report
 ```
@@ -63,30 +63,19 @@ Confirm issue type. Jira-declared type appears incorrect: note mismatch in repor
 
 Carry forward: **issue_type** (confirmed or recommended), **type_mismatch** (if any).
 
-### Step 3 — Fetch the right template
+### Step 3 — Read template from cache + normalise (Parallel)
 **Read:** `skills/fetch-required-templates/SKILL.md`
-**Read also:** [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md) — general dispatch rules for Steps 3+4.
+**Read also:** [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md) — general dispatch rules.
 
-Fetch only template for determined issue type. Bug: also fetch Quality Management Playbook.
-
-**Launch as background agent** (parallel with Step 4):
-```
-Launch background agent with:
-  - name: "fetch-template"
-  - agent_type: "general-purpose"
-  - mode: "background"
-  - prompt: [include skill content + issue_type]
-  - Record the agent_id returned
-```
+Read template for determined issue type from local cache (`.cache/templates/`). Local read — no MCP call, no background agent needed. Bug: also read playbook from cache.
 
 Carry forward: **template_structure**, **playbook_reference** (if fetched).
 
-### Step 4 — Normalise the issue
 **Read:** `skills/normalize-issue-context/SKILL.md`
 
 Transform fetched issue into canonical schema.
 
-**Launch as background agent** (parallel with Step 3):
+**Launch as background agent** (parallel with template read — both are independent):
 ```
 Launch background agent with:
   - name: "normalize-issue"
@@ -96,9 +85,9 @@ Launch background agent with:
   - Record the agent_id returned
 ```
 
-**Wait for both agents:**
+**Wait for normalize agent:**
 
-After Step 3 and Step 4 agents complete (use `read_agent` with `wait: true` on each), proceed to Step 5.
+After it completes (use `read_agent` with `wait: true`), proceed to Step 4.
 
 Carry forward: **canonical_issue**, **template_structure**, **playbook_reference**.
 

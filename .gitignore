@@ -5,6 +5,9 @@
 config/project.md
 config/personas.md
 
+# Template cache — created on first run by fetch-required-templates or /refresh-templates
+.cache/*
+
 # OS files
 .DS_Store
 Thumbs.db

@@ -27,18 +27,18 @@ When running `/assess-refinement`, the system fetches all issues from these stat
 
 ## Issue Template References
 
-Templates are fetched fresh from Jira every time an issue is crafted or assessed. These define the required structure for each issue type.
+Read from local cache (`.cache/templates/`). Cache is populated on first use via MCP (read-through) or manually via `/refresh-templates`. Cache is gitignored — refresh when templates change upstream.
 
-| Issue Type | Jira Key      | When to fetch                              |
-|------------|---------------|-------------------------------------------|
-| Story      | MYPROJECT-100 | When working on a user-facing need         |
-| Task       | MYPROJECT-101 | When working on technical/operational work |
-| Bug        | MYPROJECT-102 | When working on broken/incorrect behaviour |
+| Issue Type | Jira Key      | Cache file                         |
+|------------|---------------|-----------------------------------|
+| Story      | MYPROJECT-100 | `.cache/templates/story.md`        |
+| Task       | MYPROJECT-101 | `.cache/templates/task.md`         |
+| Bug        | MYPROJECT-102 | `.cache/templates/bug.md`          |
 
 ---
 
 ## Quality Reference
 
-| Resource                    | Location         | When to fetch                                    |
-|-----------------------------|------------------|--------------------------------------------------|
-| Quality Management Playbook | Confluence page ID: 0000000000 | When classifying bugs or assessing bug severity |
+| Resource                    | Location         | Cache file                            |
+|-----------------------------|------------------|---------------------------------------|
+| Quality Management Playbook | Confluence page ID: 0000000000 | `.cache/templates/playbook.md` |

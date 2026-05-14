@@ -26,19 +26,14 @@ description: Assess all issues from configured columns for refinement readiness 
 ```
 Step 1: fetch-issues-by-status
     ↓
-Step 2: classify all issues (PARALLEL)
-    ├─ analyze-input-type for issue 1
-    ├─ analyze-input-type for issue 2
-    ├─ analyze-input-type for issue N
-    ↓ (wait for all to complete)
-Step 3: fetch templates ONCE per unique type (+ playbook if any bugs)
+Step 2: read all templates from local cache (instant — no MCP)
     ↓
-Step 4: for each issue, run normalize + validations (PARALLEL)
-    ├─ Issue 1: normalize → validate (6 validators in parallel)
-    ├─ Issue 2: normalize → validate (6 validators in parallel)
-    ├─ Issue N: normalize → validate (3 validators in parallel)
+Step 3: classify all issues + assess (PARALLEL — per-issue composite agents)
+    ├─ Issue 1: classify → normalize → validate
+    ├─ Issue 2: classify → normalize → validate
+    ├─ Issue N: classify → normalize → validate
     ↓ (wait for all to complete)
-Step 5: format-readiness-report (batch mode)
+Step 4: format-readiness-report (batch mode)
     ↓
 OUTPUT: Summary table + detailed breakdowns for failures
 ```
@@ -56,41 +51,23 @@ Carry forward: **issues** (list of all fetched), **fetch_summary**.
 
 No issues found: report and stop.
 
-### Step 2 — Classify all issues first (Parallel)
-**Read:** `skills/analyze-input-type/SKILL.md`
-**Read also:** [`orchestrators/reference-agent-dispatch.md`](reference-agent-dispatch.md) — general dispatch rules for Steps 2+4.
-
-Before fetching templates, determine issue type for every fetched issue. **Launch all classifications in parallel as background agents:**
-
-For each issue:
-```
-Launch background agent with:
-  - name: "analyze-issue-{issue_key}"
-  - agent_type: "general-purpose"
-  - mode: "background"
-  - prompt: [include skill content + issue content]
-  - Record the agent_id returned
-```
-
-After all agents launched: wait for all using `read_agent` with `wait: true` on each.
-
-**Combine results:** Merge all returned issue types into **issue_types** map (issue key → determined type).
-
-Carry forward: **issue_types** (map of issue key → determined type).
-
-### Step 3 — Fetch templates (deduplicated)
+### Step 2 — Read templates from cache
 **Read:** `skills/fetch-required-templates/SKILL.md`
 
-**Token optimisation:** Identify unique issue types in batch. Fetch each template **once** — not once per issue.
+Read all templates from local cache at `.cache/templates/`. This is a local file read — zero MCP calls, zero wait. The read-through cache auto-populates from MCP on first run (or if cache is empty).
 
-- Any Bug: fetch Quality Management Playbook once.
-- All Stories: fetch only Story template.
-- Stories + Tasks: fetch both — once each.
+All four files are read upfront regardless of issue types in the batch:
+- `.cache/templates/story.md`
+- `.cache/templates/task.md`
+- `.cache/templates/bug.md`
+- `.cache/templates/playbook.md`
 
-Carry forward: **templates** (map of issue type → template structure), **playbook_reference** (if fetched).
+If cache is empty (fresh checkout), `fetch-required-templates` auto-fetches via MCP and populates the cache. This is a one-time cost per environment — subsequent runs read locally.
 
-### Step 4 — Assess each issue (Parallel per issue)
-For each issue, launch **composite agent task** running normalize + applicable validations in one shot. Use the normalize + validate composite agent pattern from `reference-agent-dispatch.md`.
+Carry forward: **templates** (map of type → template structure), **playbook_reference** (if available).
+
+### Step 3 — Assess each issue (Parallel composite agents)
+For each issue, launch **one-shot composite agent** that classifies, normalizes, and validates in a single pass. No separate classification step — each agent handles everything for its issue.
 
 ```
 Launch background agent with:
@@ -99,13 +76,19 @@ Launch background agent with:
   - mode: "background"
   - prompt: [
       Include:
+      - skills/analyze-input-type/SKILL.md
       - skills/normalize-issue-context/SKILL.md
-      - applicable validation skills (based on issue_type from Step 2)
+      - applicable validation skills (based on issue type — the agent first classifies, then selects validators)
       - issue_content
       - canonical issue schema
-      - template_structure for this issue type
+      - all template structures (all 4 — agent selects the right one after classifying)
       
-      Task: Normalize, then run all applicable validations, return combined findings
+      Task: 
+        1. Classify issue type (Story/Task/Bug)
+        2. Normalize into canonical schema
+        3. Pick the right template from pre-loaded templates
+        4. Run all applicable validators
+        5. Return combined findings with issue_type
     ]
   - Record the agent_id returned
 ```
@@ -116,11 +99,11 @@ Launch background agent with:
 
 After all launched: wait using `read_agent` with `wait: true` on each.
 
-**Combine all assessments:** Merge all returned validation_findings into **assessments** list (map of issue key → validation findings).
+**Combine all assessments:** Merge all returned validation_findings into **assessments** list (map of issue key → type + validation findings).
 
-Carry forward: **assessments** (issue key + validation findings for all issues).
+Carry forward: **assessments** (issue key + issue type + validation findings for all issues).
 
-### Step 5 — Format the batch report
+### Step 4 — Format the batch report
 **Read:** `skills/format-readiness-report/SKILL.md`
 
 Generate readiness report in **batch mode**:

@@ -63,13 +63,16 @@ Determine issue type (Story, Task, Bug) and input mode (idea, draft, jira).
 
 Type differs from declared/Jira type: inform user of mismatch and recommendation before proceeding.
 
-### Step 2 — Fetch the right template
+### Step 2 — Read template from cache
 **Read:** `skills/fetch-required-templates/SKILL.md`
 
 Using determined issue type from Step 1:
-- Fetch **only** template for that type (Story, Task, or Bug).
-- Bug type: also fetch Quality Management Playbook.
-- Type changed in Step 1: fetch template for recommended type.
+- Read template for that type from local cache (`.cache/templates/{type}.md`).
+- Bug type: also read Quality Management Playbook from cache.
+- Type changed in Step 1: read template for recommended type.
+- Cache miss (first run, fresh checkout): auto-fetches via MCP and populates cache silently.
+
+Local read — no MCP call on subsequent runs.
 
 Carry forward: **template_structure**, **playbook_reference** (if fetched).
 
