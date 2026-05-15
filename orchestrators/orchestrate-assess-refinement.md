@@ -49,7 +49,7 @@ OUTPUT: Summary table + detailed breakdowns for failures
 
 Fetch all issues from projects and statuses in `config/project.md`. Uses default refinement assessment columns.
 
-Carry forward: **issues** (list of all fetched), **fetch_summary**.
+Extract from fetch result `data.issues` and carry forward: **issues** (list of all fetched), **fetch_metadata**.
 
 No issues found: report and stop.
 
@@ -70,7 +70,7 @@ Config files (read once, embedded in every composite agent prompt):
 
 If cache is empty (fresh checkout), `fetch-required-templates` auto-fetches via MCP and populates the cache. This is a one-time cost per environment — subsequent runs read locally.
 
-Carry forward: **templates** (map of type → template structure), **playbook_reference** (if available), **config_content** (inline text of quality-standards.md and personas.md).
+Extract from fetch result `data.templates` and carry forward: **templates** (map of type → template structure), **playbook_reference** (if available), **config_content** (inline text of quality-standards.md and personas.md).
 
 ### Step 3 — Extract issue types from Jira data (deterministic)
 For each fetched issue, read `fields.issuetype.name` from the Jira response. No LLM call — this is a deterministic field access. Use the Jira-declared type to determine which validators to include for each issue.

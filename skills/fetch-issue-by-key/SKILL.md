@@ -29,7 +29,10 @@ description: Fetch a single Jira issue by key via MCP and return the relevant co
 
 ## Output
 
-- **issue_content** — Jira issue content limited to the requested fields
-- **issue_type** — Issue type as declared in Jira (Story, Task, Bug, etc.)
-- **issue_status** — Current status of issue
-- **fetch_success** — Whether fetch succeeded (true/false)
+- **data** — Fetch payload:
+  - `content` — Jira issue content limited to the requested fields
+  - `type` — Issue type as declared in Jira (Story, Task, Bug, etc.)
+  - `status` — Current issue status
+- **success** — Whether fetch succeeded
+- **error** — `null` on success, otherwise structured failure details
+- **metadata** — Fetch metadata such as source (`jira`)

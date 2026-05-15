@@ -15,5 +15,7 @@ Instructions:
 4. If none present: produce finding — engineering won't know what to build.
 
 Output:
-- finding — description of missing design reference, or null if reference exists or issue doesn't require one
-- severity — minor (always — missing design is a gap but not always a delivery blocker)
+- findings — list of finding objects, empty if a reference exists or the issue does not require one. Each object uses:
+  - category — `design-reference`
+  - message — description of the missing design reference
+  - severity — `minor`

@@ -85,7 +85,7 @@ Also read config files that validators and draft step need — once, then embed 
 
 Local read — no MCP call on subsequent runs.
 
-Carry forward: **template_structure** (single for Story/Task/Bug; all three as `template_structures` for Request), **playbook_reference** (if fetched), **config_content** (inline text of quality-standards.md and personas.md).
+Extract from fetch result `data.templates` and carry forward: **template_structure** (single for Story/Task/Bug; all three as `template_structures` for Request), **playbook_reference** (if fetched), **config_content** (inline text of quality-standards.md and personas.md).
 
 ### Step 3 — Normalise the input
 **Read:** `skills/normalize-issue-context/SKILL.md`

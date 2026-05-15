@@ -20,5 +20,7 @@ Instructions:
 5. For each failure: name the specific issue, explain why it matters.
 
 Output:
-- findings — list of issues, or empty if all pass
-- severity — critical if majority fail, minor if 1-2 are weak
+- findings — list of finding objects, empty if all pass. Each object uses:
+  - category — `ac-quality`
+  - message — description of the issue
+  - severity — `critical` if majority fail, `minor` if 1-2 are weak

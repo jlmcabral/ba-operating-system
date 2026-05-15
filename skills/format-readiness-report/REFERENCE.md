@@ -49,7 +49,7 @@ Tier definitions, failure categories, and output templates for the readiness rep
 | Design reference | 🎨 | Story |
 | Persona — role coverage | 👥 | Story, Bug |
 
-Only include rows for categories applicable to issue type. Persona — role coverage row only appears when `validate-persona` returns a role differentiation finding (Behaviour B). Generic persona observations (Behaviour A) never shown.
+Only include rows for categories applicable to issue type. Persona — role coverage row only appears when `validation_findings` includes a `persona-role-coverage` finding. Generic persona observations (`persona-specificity`) never shown.
 
 ---
 

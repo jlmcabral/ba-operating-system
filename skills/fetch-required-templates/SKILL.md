@@ -70,7 +70,9 @@ Any fetch fails: report which resource failed and cache state. Pipeline can proc
 
 ## Output
 
-- **template_structure** — Extracted field structure for relevant issue type
-- **playbook_reference** — Quality Management Playbook content (only when fetched)
-- **fetch_success** — Whether all required data is available
-- **cache_hit** — true if read from cache, false if fetched fresh
+- **data** — Fetch payload:
+  - `templates` — Map of requested template type to extracted field structure
+  - `playbook_reference` — Quality Management Playbook content (only when fetched)
+- **success** — Whether all required data is available
+- **error** — `null` on success, otherwise structured failure details
+- **metadata** — Fetch metadata such as cache usage per requested resource

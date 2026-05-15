@@ -17,5 +17,7 @@ Instructions:
 4. Absence of design file is not reason to describe UI in AC. Write outcome-focused criteria leaving design decisions open.
 
 Output:
-- findings — list of issues with suggested rewrites, or empty if all pass
-- severity — critical if majority are UI/UX-focused, minor if 1-2 carry design debt markers
+- findings — list of finding objects, empty if all pass. Each object uses:
+  - category — `ac-uiux-trap`
+  - message — issue description with suggested rewrite or design-debt note
+  - severity — `critical` if majority are UI/UX-focused, `minor` if 1-2 carry design debt markers

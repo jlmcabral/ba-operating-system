@@ -15,6 +15,32 @@ This document explains **how to extend** the BA Operating System. Use it when wr
 
 ## Skill Design
 
+### External Packaging vs Internal Contracts
+
+The BA Operating System uses two layers of standards:
+
+1. **External packaging standard** — how a skill is structured so an agent can discover and load it consistently
+2. **Internal contract standard** — how skills and orchestrators in this repo pass data to each other predictably
+
+We align the first layer with the open [Agent Skills](https://agentskills.io/specification) format where it helps portability and runtime compatibility.
+We define the second layer locally because the open spec does **not** define output schemas, success/error semantics, or orchestrator state contracts.
+
+**Adopt from Agent Skills:**
+- Directory-per-skill layout with `SKILL.md` as the entry file
+- YAML frontmatter with explicit routing metadata
+- Progressive disclosure: keep `SKILL.md` lean, move depth to `REFERENCE.md` or nearby resources
+- Co-located `scripts/`, `references/`, and `assets/` when the skill needs them
+- Shallow, explicit relative file references
+
+**Keep BA OS-specific:**
+- Required `Purpose`, `Input`, `Instructions`, and `Output` sections in every skill
+- Validation applicability rules by issue type
+- Orchestrator carry-forward state naming and handoff rules
+- Output contract conventions between skills and orchestrators
+- Repo-specific config references and BA domain rules
+
+**Design rule:** Follow the open Agent Skills structure for packaging. Add BA OS conventions only where this repo needs stronger guarantees for multi-step orchestration.
+
 ### What is a Skill?
 
 A skill is a **single, focused decision point or transformation**. It takes input, performs one job, and produces output.
@@ -116,6 +142,10 @@ Every skill file has these sections:
 - **output_field2** — Description
 ```
 
+This structure is intentionally stricter than the base Agent Skills specification.
+The open spec only requires frontmatter plus Markdown instructions.
+BA OS additionally requires explicit `Purpose`, `Input`, `Instructions`, and `Output` sections so orchestrators can treat skills as stable building blocks rather than free-form prompts.
+
 **Why this structure:**
 - **Purpose** clarifies intent (for code review)
 - **Config references** make dependencies explicit (for maintenance)
@@ -136,9 +166,49 @@ Skills are **composable** because they have clear contracts. When you write a sk
 3. **Never assume prior state** — Every skill should be runnable independently (given inputs)
 4. **Never mutate external state** — Skills produce output; they don't modify shared files or config
 
+#### BA OS Contract Boundary
+
+The Agent Skills spec is intentionally minimal and does **not** standardize skill-to-skill data flow.
+In BA OS, every skill must document its inputs and outputs as if another author will consume them later without reading the implementation.
+
+Use the open spec for discoverability.
+Use BA OS contracts for orchestration reliability.
+
+This means:
+
+- The skill package can stay portable across tools
+- The skill contract can stay precise inside this repo
+- We do not assume an external standard will solve internal state-flow problems for us
+
 Document shared object shapes where they are actually used.
 Prefer a short inline contract in the skill or orchestrator, or a nearby `REFERENCE.md` when multiple files need the same detail.
 Do not introduce a standalone schema system unless the structure is enforced in code and reused enough to justify the overhead.
+
+#### Current BA OS Direction for Outputs
+
+Until the repo finishes the output contract standardization work, existing skills may still return different shapes.
+The target direction is:
+
+- Fetch skills should make success/failure explicit
+- Fetch skills should use structured errors rather than implied failures
+- Fetch skills should separate metadata from the main job result
+- Validation skills should return a predictable `findings` list
+
+Do not invent one-off output fields for new skills unless there is a strong reason.
+If you add a new fetch skill before the refactor is complete, prefer a simple explicit pattern such as:
+
+```json
+{
+  "data": {},
+  "success": true,
+  "error": null,
+  "metadata": {}
+}
+```
+
+This is a repo convention, not part of the Agent Skills spec.
+
+For validation skills, prefer a list shape even when the skill usually finds only one issue.
 
 **Example (Good Contract):**
 
@@ -148,8 +218,8 @@ Do not introduce a standalone schema system unless the structure is enforced in 
 - **issue_type** — One of: Story, Task, Bug
 
 ## Output
-- **finding** — Description of the problem, or null if the check passes
-- **severity** — "critical", "major", "minor", or null
+- **findings** — List of finding objects. Empty if the check passes.
+- Each finding object includes: `category`, `message`, `severity`
 ```
 
 **Example (Bad Contract):**

@@ -74,8 +74,8 @@ Wrong pattern: launch one, wait, launch next. Burns time. No gain.
 After all launches:
 
 1. Use `read_agent(agent_id, wait: true)` for each agent
-2. Extract `finding` + `severity` from each result
-3. Drop null or empty `finding`
+2. Extract the `findings` list from each result
+3. Drop empty lists
 4. Merge remaining into single `validation_findings` list
 5. Sort: critical → minor → observational
 
@@ -85,9 +85,9 @@ After all launches:
 
 ```
 validation_findings = [
-  { skill: "validate-problem-framing", finding: "...", severity: "critical" },
-  { skill: "validate-scope", finding: "...", severity: "critical" },
-  { skill: "validate-ac-quality", finding: "...", severity: "minor" },
+  { skill: "validate-problem-framing", category: "problem-framing", message: "...", severity: "critical" },
+  { skill: "validate-scope", category: "scope", message: "...", severity: "critical" },
+  { skill: "validate-ac-quality", category: "ac-quality", message: "...", severity: "minor" },
   ...
 ]
 ```

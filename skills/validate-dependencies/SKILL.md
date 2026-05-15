@@ -16,5 +16,7 @@ Instructions:
 5. Phrase findings as signals to investigate, not confirmed blockers.
 
 Output:
-- findings — list of unacknowledged dependencies, each identifying the dependency and delivery risk. Empty if none found.
-- severity — critical if any could block delivery, minor if likely known/resolved
+- findings — list of finding objects, empty if none are found. Each object uses:
+  - category — `dependencies`
+  - message — identified dependency and delivery risk
+  - severity — `critical` if it could block delivery, `minor` if it is likely known or already resolved

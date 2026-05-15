@@ -46,10 +46,10 @@ Launch ALL applicable validators simultaneously. Don't wait between launches.
 After all agents launched:
 
 1. Wait for all using `read_agent` with `wait: true` on each agent_id
-2. From each result, extract `finding` and `severity`
-3. Merge into single **validation_findings** list
-4. Filter out entries where `finding` is null or empty (these passed)
-5. Sort remaining by severity: critical → minor → observational
+2. From each result, extract the `findings` list
+3. Flatten all non-empty lists into a single **validation_findings** list
+4. Drop empty results (these passed)
+5. Sort remaining findings by severity: critical → minor → observational
 
 ---
 
@@ -57,20 +57,20 @@ After all agents launched:
 
 ```
 validation_findings = [
-  { skill: "validate-problem-framing", finding: "...", severity: "critical" },
-  { skill: "validate-scope", finding: "...", severity: "critical" },
-  { skill: "validate-ac-quality", finding: "...", severity: "minor" },
+  { skill: "validate-problem-framing", category: "problem-framing", message: "...", severity: "critical" },
+  { skill: "validate-scope", category: "scope", message: "...", severity: "critical" },
+  { skill: "validate-ac-quality", category: "ac-quality", message: "...", severity: "minor" },
   ...
 ]
 ```
 
-Only findings with non-null `finding` values proceed to downstream skills.
+Only non-empty `findings` entries proceed to downstream skills.
 
 ---
 
 ## Notes
 
-- **validate-persona** has two behaviours: persona specificity (always `observational`) and role-based coverage (can be `critical`). Both findings returned from same skill invocation.
+- **validate-persona** may return up to two findings from one invocation: `persona-specificity` (`observational`) and `persona-role-coverage` (`critical` when applicable).
 - **validate-completeness** requires `template_structure` as additional input — other validators don't.
 - **validate-design-reference** applies to Story only — skip for Bug and Task.
 - Batch operations (`/assess-refinement`): validators run per-issue inside composite agent. The orchestrator pre-determines issue type from Jira data (deterministic field read) and loads **only validators applicable to that type** — reducing prompt size 30-55% per agent. The agent still classifies independently and flags type mismatches.

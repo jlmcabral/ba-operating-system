@@ -54,7 +54,7 @@ OUTPUT: Detailed readiness report
 
 Fetch Jira issue using provided key. Fetch fails: report failure and stop.
 
-Carry forward: **issue_content**, **issue_type** (as declared in Jira).
+Extract from fetch result `data` and carry forward: **issue_content**, **issue_type** (as declared in Jira).
 
 ### Step 2 — Analyse the issue type
 **Read:** `skills/analyze-input-type/SKILL.md`
@@ -73,7 +73,7 @@ Also read config files that validators will need — once, then embed in every v
 - `config/quality-standards.md`
 - `config/personas.md`
 
-Carry forward: **template_structure**, **playbook_reference** (if fetched), **config_content** (inline text of quality-standards.md and personas.md).
+Extract from fetch result `data.templates` and carry forward: **template_structure**, **playbook_reference** (if fetched), **config_content** (inline text of quality-standards.md and personas.md).
 
 **Read:** `skills/normalize-issue-context/SKILL.md`
 

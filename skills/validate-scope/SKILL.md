@@ -16,5 +16,7 @@ Instructions:
 5. If scope issue found: identify distinct needs, suggest split (Part A / Part B), note user should confirm before proceeding.
 
 Output:
-- finding — description of scope issue with suggested split, or empty if check passes
-- severity — critical (scope issues are readiness blockers)
+- findings — list of finding objects, empty if check passes. Each object uses:
+  - category — `scope`
+  - message — description of the scope issue with suggested split
+  - severity — `critical`

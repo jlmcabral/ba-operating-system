@@ -16,5 +16,7 @@ Instructions:
 5. Genuinely simple story (display-only, no input): note no gaps found.
 
 Output:
-- findings — list of missing unhappy paths or error states, each naming gap and explaining why it'd be raised in refinement. Empty if coverage adequate.
-- severity — critical if zero unhappy paths present and error states clearly implied; minor if some covered but significant gaps remain
+- findings — list of finding objects, empty if coverage is adequate. Each object uses:
+  - category — `scenario-coverage`
+  - message — missing unhappy path or error state, including why it would be raised in refinement
+  - severity — `critical` if zero unhappy paths are present and error states are clearly implied, `minor` if some are covered but significant gaps remain

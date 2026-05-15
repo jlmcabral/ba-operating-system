@@ -31,5 +31,8 @@ No user input required. Reads default projects and statuses from `config/project
 
 ## Output
 
-- **issues** — List of Jira issue contents limited to the requested fields, one per fetched issue
-- **fetch_summary** — Count of issues fetched, any failures reported
+- **data** — Fetch payload:
+  - `issues` — List of Jira issue contents limited to the requested fields, one per fetched issue
+- **success** — `true` when at least one issue was fetched or all requested queries completed without blocking failure; `false` when the fetch should stop the flow
+- **error** — `null` on success, otherwise structured failure details for blocking failures
+- **metadata** — Fetch metadata such as fetched count and any per-project/status failures

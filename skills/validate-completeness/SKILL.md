@@ -17,5 +17,7 @@ Instructions:
 3. Sparse or empty technical approach is expected — dev team defines during refinement. Do not flag.
 
 Output:
-- findings — list of completeness issues, or empty if all required fields populated
-- severity — critical if required fields missing, minor if fields present but thin
+- findings — list of finding objects, empty if all required fields are populated. Each object uses:
+  - category — `completeness`
+  - message — description of the completeness issue
+  - severity — `critical` if required fields are missing, `minor` if fields are present but thin

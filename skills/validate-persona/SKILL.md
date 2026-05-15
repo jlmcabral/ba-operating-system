@@ -24,7 +24,7 @@ Behaviour B — Role-based differentiation (readiness gate):
 - Single-role story: skip Behaviour B.
 
 Output:
-- finding_persona — observation about persona specificity, or null if clear
-- finding_role_coverage — description of missing role differentiation, or null if passes or doesn't apply
-- severity_persona — observational (always)
-- severity_role_coverage — critical when role differences implied but AC doesn't capture them; null otherwise
+- findings — list of finding objects, empty if all applicable checks pass. Each object uses:
+  - category — `persona-specificity` or `persona-role-coverage`
+  - message — observation about persona specificity or missing role differentiation
+  - severity — `observational` for persona specificity, `critical` for missing role differentiation when implied

@@ -14,5 +14,7 @@ Instructions:
 3. If any signal present: quote problematic text, explain why it matters downstream, suggest how to think about reframing (don't write the fix).
 
 Output:
-- finding — description of problem framing issue, or empty if check passes
-- severity — critical (always, when this check fails)
+- findings — list of finding objects, empty if check passes. Each object uses:
+  - category — `problem-framing`
+  - message — description of the problem framing issue
+  - severity — `critical`
