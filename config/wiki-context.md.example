@@ -1,0 +1,131 @@
+# Wiki Context
+
+Confluence space, page mappings, label taxonomy, and placement rules for the wiki-content agent.
+
+Copy this file to `config/wiki-context.md` and fill in your project's values. Or create `config/wiki-context.local.md` for local overrides that won't be committed.
+
+---
+
+## Confluence Space
+
+| Setting | Value |
+|---|---|
+| Space key | `YOUR_SPACE_KEY` |
+| Space name | Your Space Name |
+| Base URL | `https://your-confluence-url` |
+
+---
+
+## Documentation Root
+
+| Setting | Value |
+|---|---|
+| Root page title | Your Root Page Title |
+| Root page ID | `ROOT_PAGE_ID` |
+
+---
+
+## Section Mappings
+
+Top-level sections under the documentation root. Each section has a scope label used for labeling.
+
+| Section Title | Page ID | Scope Label |
+|---|---:|---|
+| `Team Section` | `TEAM_SECTION_ID` | `team` |
+| `Project A` | `PROJECT_A_ID` | `project-a` |
+| `Project B` | `PROJECT_B_ID` | `project-b` |
+
+---
+
+## Label Taxonomy
+
+Every page should aim for **one scope label + one content-type label**.
+
+### Scope labels
+
+| Label | Applies to |
+|---|---|
+| `team` | Team-level content |
+| `project-a` | Project A content |
+| `project-b` | Project B content |
+
+Add or remove scope labels to match your section mappings.
+
+### Content-type labels
+
+| Label | Applies to |
+|---|---|
+| `business` | Business definitions, vision, goals |
+| `functional` | Functional documentation, user flows, capabilities |
+| `technical` | Architecture, technical specs, ADRs, integrations |
+| `operational` | Runbooks, maintenance, environment URLs, processes |
+| `delivery` | CI/CD, deployment, development management |
+| `team-doc` | Onboarding, roles, retrospectives, working agreements |
+
+These content-type labels are generic and can be reused across projects.
+
+### Version labels
+
+Use only where versioning is relevant.
+
+| Label | Applies to |
+|---|---|
+| `v1` | Version 1 content |
+| `v2` | Version 2 content |
+
+Add or remove version labels as needed.
+
+### Cleanup labels
+
+Use only when clearly justified.
+
+| Label | When to use |
+|---|---|
+| `duplicate` | Confirmed duplicate of another page |
+| `deprecated` | Explicitly marked as deprecated or legacy |
+
+### Deferred labels
+
+Do NOT apply these labels unless explicitly instructed:
+
+| Label | Condition for future use |
+|---|---|
+| `archived` | Only if page title explicitly says "archived" or page sits inside an archived section |
+| `to-delete` | Only if page title explicitly says "to be deleted" or user confirms it |
+| `orphaned` | Deferred entirely — revisit when cleanup strategy is defined |
+
+---
+
+## Page Placement Rules
+
+- **Team-level content** → Team Section
+- **Project-specific content** → That project's section
+- **Cross-product content** → Cross-product section (if applicable)
+- **Shared conventions** → Team section, not duplicated in project sections
+
+---
+
+## Page-Linking Convention
+
+When referencing other Confluence pages in content, always use direct links:
+
+```
+[Page Title](https://your-confluence-url/pages/viewpage.action?pageId=PAGE_ID)
+```
+
+Do not use bare page IDs or relative references.
+
+---
+
+## Reference Pages
+
+| Purpose | Page Title | Page ID |
+|---|---|---:|
+| Label taxonomy documentation | Documentation Label Taxonomy | `TAXONOMY_PAGE_ID` |
+
+---
+
+## Notes
+
+- Page IDs are stored here for current project convenience.
+- **Future refactor**: when a local knowledge base / wiki indexing system is in place, page IDs should be resolved dynamically from titles and hierarchy rather than stored in config. This will make the config portable across different Confluence instances without manual ID updates.

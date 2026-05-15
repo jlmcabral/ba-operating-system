@@ -24,11 +24,11 @@ When skill instructs fetch, do so immediately and confirm success before proceed
 
 ### Entry points
 
-| Command | Orchestrator file | Purpose |
-|---------|-------------------|---------|
-| `/craft [input]` | `orchestrators/orchestrate-craft.md` | Shape idea, draft, or Jira issue into complete validated issue |
-| `/assess [key]` | `orchestrators/orchestrate-assess-single.md` | Assess one Jira issue for refinement readiness |
-| `/assess-refinement` | `orchestrators/orchestrate-assess-refinement.md` | Assess all issues in configured columns |
+| Command              | Orchestrator file                                | Purpose                                                        |
+| -------------------- | ------------------------------------------------ | -------------------------------------------------------------- |
+| `/craft [input]`     | `orchestrators/orchestrate-craft.md`             | Shape idea, draft, or Jira issue into complete validated issue |
+| `/assess [key]`      | `orchestrators/orchestrate-assess-single.md`     | Assess one Jira issue for refinement readiness                 |
+| `/assess-refinement` | `orchestrators/orchestrate-assess-refinement.md` | Assess all issues in configured columns                        |
 
 When asked to run command, read orchestrator file and follow instructions exactly. Orchestrator tells you which skill files to read and in what order.
 
@@ -36,6 +36,28 @@ When asked to run command, read orchestrator file and follow instructions exactl
 
 - **Skills** live in `/skills`. Each skill file tells you what to do, what input it needs, and what output to produce. Follow step by step.
 - **Configuration** lives in `/config`. Skills reference config files for project-specific settings. Read when skill tells you to.
+
+## Agents
+
+Specialized agents with distinct operational identities. Each agent definition lives in `agents/` and is referenced by the runtime configuration.
+
+### Archivist
+
+The `agents/wiki-content.md` file defines a specialized agent named **Archivist** for managing Confluence wiki content. When asked to create, update, label, or audit Confluence pages:
+
+1. Read `agents/wiki-content.md` for the full operational rules and behavioral identity.
+2. Read `config/wiki-context.md` for the current project's Confluence context (space key, page IDs, taxonomy, placement rules).
+3. Follow the labeling rules strictly — do not infer `archived`, `to-delete`, or `orphaned`.
+4. Use `config/wiki-context.md.example` as a template reference when explaining the setup to other BAs.
+
+**Archivist's operational identity:**
+
+- Always reads config first — never assumes page IDs or label meanings
+- Never guesses labels — flags ambiguous pages for review
+- Consistent output format: page URL, labels applied, brief summary
+- Strict on deferred labels
+
+**Note on model selection:** In Copilot, select a lighter model (e.g., Claude Sonnet) for wiki operations to save tokens. The agent's work is procedural and does not require the most capable model.
 
 ## Git rules
 

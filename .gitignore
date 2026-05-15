@@ -4,6 +4,7 @@
 # Project-specific configuration (use .example files as templates)
 config/project.md
 config/personas.md
+config/wiki-context.md
 
 # Template cache — created on first run by fetch-required-templates or /refresh-templates
 .cache/*

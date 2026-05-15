@@ -4,6 +4,14 @@
   "skills": {
     "paths": ["skills"]
   },
+  "agent": {
+    "archivist": {
+      "description": "Manage Confluence wiki content — create pages, apply labels, audit consistency, and follow the documentation taxonomy",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "prompt": "{file:./agents/wiki-content.md}"
+    }
+  },
   "mcp": {
     "mcp-atlassian": {
       "type": "local",
