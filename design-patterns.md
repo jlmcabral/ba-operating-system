@@ -236,6 +236,60 @@ The bad example is vague. Downstream skills won't know what to expect.
 
 ---
 
+### Canonical Examples
+
+#### 1. Validator Output
+Every validator returns a `findings` list. Empty when the check passes.
+
+```json
+{
+  "findings": [
+    {
+      "category": "problem-framing",
+      "message": "Problem statement describes a technical implementation rather than a user need",
+      "severity": "critical"
+    }
+  ]
+}
+```
+
+#### 2. Merged Validation Findings
+The orchestrator flattens all validator `findings` lists into one `validation_findings` array, sorted by severity.
+
+```json
+{
+  "validation_findings": [
+    { "skill": "validate-problem-framing", "category": "problem-framing", "message": "...", "severity": "critical" },
+    { "skill": "validate-scope", "category": "scope", "message": "...", "severity": "critical" },
+    { "skill": "validate-ac-quality", "category": "ac-quality", "message": "...", "severity": "minor" }
+  ]
+}
+```
+
+#### 3. Fetch Output Consumed by Orchestrator
+Fetch skills return `data`, `success`, `error`, `metadata`. Orchestrators extract carry-forward state from `data`.
+
+```json
+// Fetch result from fetch-issue-by-key
+{
+  "data": {
+    "content": { "summary": "...", "description": "..." },
+    "type": "Story",
+    "status": "In Progress"
+  },
+  "success": true,
+  "error": null,
+  "metadata": { "source": "jira" }
+}
+```
+
+Orchestrator extraction:
+```text
+Carry forward: **issue_content** (from `data.content`), **issue_type** (from `data.type`)
+```
+
+---
+
 ### Skill Size Heuristic
 
 | Size | What to Do |
