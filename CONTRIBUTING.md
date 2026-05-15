@@ -60,9 +60,11 @@ This guide explains how to add, modify, or extend the BA Operating System. Wheth
 
 5. **Mark pause points:** If the orchestrator needs user input mid-flow, mark it with ⏸️.
 
-6. **Add an entry point:** Create a command for it in `entry-points.md`.
+6. **Add an entry point:** Day-to-day user commands go in `entry-points.md`. Internal maintenance workflows can stay out of it.
 
 7. **Update READMEs:** Add it to `orchestrators/README.md` and `architecture.md`.
+
+**Maintenance workflows:** Document them in contributor-facing docs and orchestrator docs instead.
 
 ---
 
@@ -86,6 +88,11 @@ When you update a standard:
 - **Personas** (`config/personas.md`) — Change when your user base evolves
 - **Output preferences** (`config/output-preferences.md`) — Change when you want to tune verbosity
 - **MCP references** (`config/mcp.md`) — Change when you add or change external services
+
+When upstream Jira templates change:
+- Update the template keys in `config/project.md` if needed
+- Run `/refresh-templates` to refresh the local cache
+- Review the affected skill and orchestrator docs if the template sections or expected structure changed materially
 
 ---
 

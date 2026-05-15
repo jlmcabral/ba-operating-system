@@ -104,16 +104,6 @@ Every skill file has these sections:
 
 ---
 
-## Applicability
-
-| Issue Type | Applies? |
-|------------|----------|
-| Story      | ✅ Yes   |
-| Task       | ❌ No    |
-| Bug        | ✅ Yes   |
-
----
-
 ## Instructions
 
 [Step-by-step process]
@@ -130,9 +120,10 @@ Every skill file has these sections:
 - **Purpose** clarifies intent (for code review)
 - **Config references** make dependencies explicit (for maintenance)
 - **Input** defines the contract (for orchestrator writers)
-- **Applicability** prevents misuse (for error prevention)
 - **Instructions** are the skill logic (for the agent)
 - **Output** completes the contract (for downstream skills)
+
+For validation skills, also add an `## Applicability` section that lists which issue types the check applies to.
 
 ---
 
@@ -145,11 +136,15 @@ Skills are **composable** because they have clear contracts. When you write a sk
 3. **Never assume prior state** — Every skill should be runnable independently (given inputs)
 4. **Never mutate external state** — Skills produce output; they don't modify shared files or config
 
+Document shared object shapes where they are actually used.
+Prefer a short inline contract in the skill or orchestrator, or a nearby `REFERENCE.md` when multiple files need the same detail.
+Do not introduce a standalone schema system unless the structure is enforced in code and reused enough to justify the overhead.
+
 **Example (Good Contract):**
 
 ```
 ## Input
-- **canonical_issue** — The normalized issue object (see schema.md)
+- **canonical_issue** — Normalized issue context with title, problem statement, acceptance criteria, metadata, and missing values marked explicitly
 - **issue_type** — One of: Story, Task, Bug
 
 ## Output
@@ -345,7 +340,7 @@ Step 3: ...
 **Rules:**
 
 1. **Name state explicitly** — Use `snake_case` names. Examples: `canonical_issue`, `validation_findings`, `enriched_issue`.
-2. **Document state shape** — Reference `schema.md` for complex objects.
+2. **Document state shape** — Describe complex state inline at the point of use, or link to a nearby `REFERENCE.md` if several files share the same contract.
 3. **Never lose state** — If a skill needs data from Step 1, don't forget to carry it forward through every step.
 4. **Filter as you go** — If Step 2 only needs part of Step 1's output, be explicit: "Carry forward: **issue_type** (ignore issue_mode and type_confidence)."
 
@@ -472,7 +467,8 @@ Is it >25 steps?
 - [ ] Skill has YAML frontmatter with `name` and `description` (includes "Use when..." trigger)
 - [ ] Skill does **one thing** (test: can you explain it in one sentence?)
 - [ ] Skill name follows naming convention (fetch-, validate-, analyze-, produce-, etc.)
-- [ ] Skill file includes: Purpose, Input, Output, Applicability, Instructions
+- [ ] Skill file includes: Purpose, Input, Output, Instructions
+- [ ] Validation skills include an `Applicability` section
 - [ ] Input/output contracts are **precise** (not vague)
 - [ ] Skill references applicable `config/` files
 - [ ] Skill is <100 lines (if not, split into main + REFERENCE file)
@@ -499,7 +495,6 @@ Is it >25 steps?
 
 ## Related Documents
 
-- [schema.md](schema.md) — Exact shapes of data structures
 - [architecture.md](architecture.md) — System overview
 - [entry-points.md](entry-points.md) — User-facing commands
 - [skills/README.md](skills/README.md) — Skill file templates

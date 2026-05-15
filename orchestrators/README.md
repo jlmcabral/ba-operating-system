@@ -26,6 +26,18 @@ Orchestrators are the "recipes" of the BA Operating System. They chain [skills](
 
 ---
 
+## Internal maintenance workflows
+
+These are maintenance-oriented orchestrators for repo upkeep rather than day-to-day BA usage.
+
+| Orchestrator | Entry point | Purpose |
+| --- | --- | --- |
+| [`orchestrate-refresh-templates`](orchestrate-refresh-templates.md) | `/refresh-templates` | Refresh the local template/playbook cache after upstream template changes |
+
+These workflows are intentionally not listed in `entry-points.md`.
+
+---
+
 ## Choosing the right orchestrator
 
 **"I want to write or improve an issue"** → Use `/craft`

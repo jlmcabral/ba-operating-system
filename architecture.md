@@ -30,7 +30,7 @@ The system has five layers. Each layer has a clear job:
 
 **Location:** `entry-points.md`
 
-These are the commands you use. There are three:
+These are the day-to-day commands you use. There are three:
 
 | Command              | What it does                                              |
 | -------------------- | --------------------------------------------------------- |
@@ -39,6 +39,8 @@ These are the commands you use. There are three:
 | `/assess-refinement` | Check all issues in your configured columns               |
 
 Entry points are just triggers — they tell the system which orchestrator to run.
+
+Internal maintenance workflows such as `/refresh-templates` are documented in `orchestrators/README.md`, not in `entry-points.md`.
 
 → [Full details](entry-points.md)
 
@@ -55,6 +57,7 @@ Orchestrators are recipes. They define which skills to run, in what order, and w
 | `orchestrate-craft`             | analyse → fetch template → ask questions → normalise → draft → validate → revise → follow-up       |
 | `orchestrate-assess-single`     | fetch issue → analyse → fetch template → normalise → validate → format report                      |
 | `orchestrate-assess-refinement` | fetch all issues → classify → fetch templates (deduplicated) → validate each → format batch report |
+| `orchestrate-refresh-templates` | fetch templates and playbook → refresh local cache                                                  |
 
 Orchestrators carry **state** between skills — the output of one skill becomes the input of the next.
 
@@ -145,3 +148,19 @@ Here is what happens when you type `/craft PROJECT-1234`:
 3. **Configuration over code.** Project settings live in config files, not embedded in skills.
 4. **Token efficiency.** Fetch only what is needed. Show only what matters.
 5. **BA-friendly.** Documentation assumes no technical background. Every concept is explained.
+
+---
+
+## 📁 Project structure
+
+Keep the repo structure simple and intentional:
+
+| Path | Purpose |
+| --- | --- |
+| `skills/` | Atomic building blocks. One skill per directory. |
+| `orchestrators/` | Workflow recipes that chain skills together. |
+| `config/` | Project-specific settings and standards. |
+| `.cache/` | Disposable fetched artifacts such as cached templates. Not source-of-truth docs. |
+| root docs (`architecture.md`, `design-patterns.md`, `entry-points.md`, `CONTRIBUTING.md`) | Persistent guidance on how the system works and how to change it. |
+
+If a document describes lasting system behavior or contributor rules, keep it in the normal repo docs, not in `.cache/`.

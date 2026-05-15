@@ -5,7 +5,7 @@ description: Fetch all issue templates and playbook from Jira/Confluence and pop
 
 # Orchestrator: Refresh Template Cache
 
-**Purpose:** Fetch all issue templates (Story, Task, Bug) and Quality Management Playbook from Jira/Confluence and write to `.cache/templates/`. Idempotent — safe to re-run at any time.
+**Purpose:** Fetch all issue templates (Story, Task, Bug) and Quality Management Playbook from Jira/Confluence and write to `.cache/templates/`. Jira-backed template cache files include `issue_type` frontmatter. Idempotent — safe to re-run at any time.
 
 **Entry point:** `/refresh-templates`
 
@@ -56,13 +56,13 @@ Launch 4 parallel MCP fetches:
 - Bug from template key
 - Playbook from Confluence page ID
 
-Use Atlassian MCP server. Launch all in parallel — don't wait between launches.
+Use Atlassian MCP server. For Story, Task, and Bug template issues, use `mcp-atlassian_jira_get_issue` with `fields` set to `summary,description,issuetype`. Launch all fetches in parallel — don't wait between launches.
 
 If any fails: note which, continue with the rest.
 
 ### Step 3 — Write cache
 For each successfully fetched template:
-1. Write raw content to `.cache/templates/{type}.md` (story.md, task.md, bug.md, playbook.md)
+1. For Jira-backed templates, write `.cache/templates/{type}.md` with YAML frontmatter containing `issue_type`, followed by the raw template body. For the Confluence playbook, write raw content to `.cache/templates/playbook.md`.
 2. Overwrite existing file if present
 
 ### Step 4 — Report
