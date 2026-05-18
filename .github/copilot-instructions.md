@@ -43,10 +43,12 @@ Specialized agents with distinct operational identities. Each agent definition l
 
 ### Archivist
 
-The `agents/wiki-content.md` file defines a specialized agent named **Archivist** for managing Confluence wiki content. When asked to create, update, label, or audit Confluence pages:
+The `agents/wiki-content.md` file defines a specialized agent named **Archivist** for managing Confluence wiki content. The agent definition serves as a **behavioral contract** — the rules to follow when doing wiki work — and may be executed directly by the main agent or dispatched as a subagent.
+
+When asked to create, update, label, or audit Confluence pages:
 
 1. Read `agents/wiki-content.md` for the full operational rules and behavioral identity.
-2. Read `config/wiki-context.md` for the current project's Confluence context (space key, page IDs, taxonomy, placement rules).
+2. Read `config/wiki-context.md` for the current project's Confluence context (space key, page IDs, taxonomy, placement rules, page structure conventions).
 3. Follow the labeling rules strictly — do not infer `archived`, `to-delete`, or `orphaned`.
 4. Use `config/wiki-context.md.example` as a template reference when explaining the setup to other BAs.
 
