@@ -105,7 +105,32 @@ All labeling rules, scope/content-type/deferred labels, page placement rules, an
 
 ---
 
-## Instructions by Action
+## Troubleshooting
+
+### "No space or no content type" error on update_page
+
+This error usually means one of:
+1. **Duplicate page title** — The title you're renaming to already exists under the same parent. Rename the conflicting page first (prefix with `[TO-DELETE]`), then retry.
+2. **Wrong content format** — Sending `markdown` content to a page that uses `storage` format (has `<ac:layout>` macros), or vice versa. Match the format the page was originally created with.
+
+### Duplicate title resolution workflow
+
+When you need to replace a page with a new one that has the same title:
+
+1. Rename the old page to `[TO-DELETE] <original title>` — this frees the title
+2. Rename the new page to `<original title>` — this takes the freed title
+3. Apply the `to-delete` label to the old page
+4. If links in other pages pointed to the old page ID, you have two options:
+   - Move the new page to replace the old ID (keeps links valid, but may not work if pages are in different sections)
+   - Update each referring page's link to point to the new page ID
+
+### Config changes not taking effect
+
+If opencode config edits (`opencode.json`, `agent` definitions) don't seem to work:
+- Verify the edit persisted by re-reading the file — the edit tool may report success but the file might not be saved
+- Restart opencode — config is cached at startup
+
+---
 
 ### create
 
