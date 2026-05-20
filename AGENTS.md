@@ -2,26 +2,65 @@
 
 Instructions for how the AI agent operates during implementation.
 
-## Parallel dispatch for independent work
+## Parallel work with sub-agents
 
-When implementing changes across multiple independent files (no shared state, no sequential dependency), dispatch them as parallel sub-agents instead of serializing edits in the main thread.
+When a task decomposes into independent scopes, dispatch sub-agents in parallel
+instead of serializing in the main thread. Two modes, chosen by whether the
+scopes touch overlapping files.
+
+**When NOT to sub-agent:**
+- Very small changes (1-2 files, trivial edits) — orchestration overhead isn't worth it
+- Steps where task B needs task A's output
+
+### Mode 1 — Single worktree (files don't overlap)
+
+Each sub-agent edits different files. They can safely share the current
+worktree on the same branch.
 
 **When to use:**
 - N files to edit that don't overlap in content
 - Reading N independent files for reference
 - Running N independent commands or checks
 
-**When NOT to use:**
-- Edits to the same file from different tasks
-- Steps where task B needs task A's output
-- Very small changes (1-2 files, trivial edits) — overhead isn't worth it
-
 **Pattern:**
 ```
 Task(description="short-name", prompt="detailed task", subagent_type="general")
 ```
 
-Launch all independent tasks in one turn. Collect results. Merge and verify.
+Launch all tasks in one turn. Collect results. Merge and verify.
+
+### Mode 2 — Git worktrees (files overlap)
+
+When two sub-agents need to edit the same files with different changes, use
+git worktrees to give each agent an isolated checkout on its own branch.
+
+**When to use:**
+- Two or more agents modifying the same files concurrently
+- A long-running agent whose intermediate state shouldn't block other work
+- Experiments or spikes that should be easy to discard
+
+**Pattern:**
+
+```
+1. Create worktree per scope:
+     git worktree add ../<repo>-<scope-a> HEAD -b scope-a
+     git worktree add ../<repo>-<scope-b> HEAD -b scope-b
+
+2. Assign each agent to its worktree directory + branch
+
+3. After all finish, merge sequentially (smallest changes first):
+     cd <main-worktree>
+     git merge scope-a --no-ff -m "feat: merge scope-a"
+     git merge scope-b --no-ff -m "feat: merge scope-b"
+
+4. Clean up:
+     git worktree remove ../<repo>-<scope-a>
+     git worktree remove ../<repo>-<scope-b>
+     git branch -D scope-a scope-b
+```
+
+— On conflict, fix in main worktree where the full picture is visible.
+— Don't push worktree branches — they're ephemeral, local only.
 
 ## Plan-first on complex changes
 
